@@ -80,7 +80,7 @@ const projectsData: Project[] = [
     id: 5,
     title: "SaaS Data Analysis Platform",
     description: "Data ingestion + analysis pipeline with modern dashboard UI.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
+    tags: ["Next.js", "TypeScript", "Tailwind", "OpenAI", "Supabase"],
     category: "SaaS",
     image: SaasImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
