@@ -3,6 +3,13 @@ import { Search, ExternalLink, Github, Filter, Star } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
+// ⬇️ Local images
+import Watch from "../assets/projects/luxurywatches.png";
+import TodoImg from "../assets/projects/Todo.png";
+import WeddingImg from "../assets/projects/Wedding.png";
+import EmployeeImg from "../assets/projects/Employee.png";
+import SaasImg from "../assets/projects/saas.png";
+
 interface Project {
   id: number;
   title: string;
@@ -19,78 +26,67 @@ interface Project {
 const projectsData: Project[] = [
   {
     id: 1,
-    title: "E-Commerce Platform",
+    title: "Ecommerce Website",
     description:
-      "Enterprise-level e-commerce solution with real-time analytics, inventory management, payment integration, and order tracking. Built with advanced React patterns and optimized for performance.",
-    tags: ["React", "TypeScript", "Redux Toolkit", "Node.js"],
+      "Luxury watch e-commerce with product browsing and checkout-ready UI.",
+    tags: ["React", "Vite", "Tailwind"],
     category: "Web App",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    hooksUsed: ["useState", "useEffect", "useContext", "useReducer"],
+    image: Watch as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/website-ecommerce",
+    liveUrl: "https://luxurywatches-tau.vercel.app/",
+    hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
   },
   {
     id: 2,
-    title: "Project Management Suite",
+    title: "Todo Application",
     description:
-      "Comprehensive task and project management system with real-time collaboration, drag-and-drop functionality, Gantt charts, and team analytics.",
-    tags: ["React", "Redux", "Socket.io", "Express"],
-    category: "SaaS",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    hooksUsed: ["useState", "useCallback", "useMemo", "Custom Hooks"],
+      "Clean productivity app with task CRUD and modern UI components.",
+    tags: ["React", "Vite", "Tailwind"],
+    category: "Web App",
+    image: TodoImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/todo-app",
+    liveUrl: "https://todothese.vercel.app/",
+    hooksUsed: ["useState", "useReducer", "useRef"],
     featured: true
   },
   {
     id: 3,
-    title: "Real-Time Dashboard",
+    title: "Wedding Invitation",
     description:
-      "Interactive analytics dashboard with live data visualization, customizable widgets, and real-time updates using WebSockets.",
-    tags: ["React", "D3.js", "WebSocket", "Tailwind"],
-    category: "Analytics",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    hooksUsed: ["useState", "useEffect", "useRef", "useMemo"]
+      "Interactive wedding invite site with schedule, RSVP, and gallery.",
+    tags: ["React", "Vite", "Tailwind"],
+    category: "Website",
+    image: WeddingImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/JeizKen",
+    liveUrl: "https://jeizwantsthedy.vercel.app/",
+    hooksUsed: ["useState", "useEffect"],
+    featured: false
   },
   {
     id: 4,
-    title: "Social Media Platform",
+    title: "Multi-Tenant Ticketing & Employee Tracking SaaS",
     description:
-      "Full-featured social network with posts, stories, real-time messaging, notifications, and advanced feed algorithms.",
-    tags: ["React", "Next.js", "PostgreSQL", "Redis"],
-    category: "Web App",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    hooksUsed: ["useContext", "useReducer", "useState", "useEffect"],
+      "Time/geo tracking, ticketing, and auth-gated dashboards for teams.",
+    tags: ["Next.js", "Supabase", "Postgres", "Tailwind"],
+    category: "SaaS",
+    image: EmployeeImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/employee-ticketing-system",
+    liveUrl: "https://employee-system-sooty.vercel.app/auth/login",
+    hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
   },
   {
     id: 5,
-    title: "Design System Library",
-    description:
-      "Comprehensive component library with Storybook documentation, accessibility features, and theme customization.",
-    tags: ["React", "TypeScript", "Storybook", "Tailwind"],
-    category: "Library",
-    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    hooksUsed: ["useState", "useCallback", "useMemo", "useRef"]
-  },
-  {
-    id: 6,
-    title: "Healthcare Portal",
-    description:
-      "HIPAA-compliant patient management system with appointment scheduling, telemedicine integration, and electronic health records.",
-    tags: ["React", "FHIR", "Node.js", "MongoDB"],
-    category: "Healthcare",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    hooksUsed: ["useState", "useEffect", "useMemo", "Custom Hooks"]
+    title: "SaaS Data Analysis Platform",
+    description: "Data ingestion + analysis pipeline with modern dashboard UI.",
+    tags: ["Next.js", "TypeScript", "Tailwind"],
+    category: "SaaS",
+    image: SaasImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
+    liveUrl: "https://employee-system-nine-rosy.vercel.app/",
+    hooksUsed: ["useState", "useCallback", "useMemo"],
+    featured: true
   }
 ];
 
@@ -109,17 +105,12 @@ export function Projects() {
 
   const filteredProjects = useMemo(() => {
     return projectsData.filter((project) => {
+      const q = debouncedSearch.toLowerCase();
       const matchesSearch =
-        project.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        project.description
-          .toLowerCase()
-          .includes(debouncedSearch.toLowerCase()) ||
-        project.tags.some((tag) =>
-          tag.toLowerCase().includes(debouncedSearch.toLowerCase())
-        ) ||
-        project.hooksUsed.some((hook) =>
-          hook.toLowerCase().includes(debouncedSearch.toLowerCase())
-        );
+        project.title.toLowerCase().includes(q) ||
+        project.description.toLowerCase().includes(q) ||
+        project.tags.some((tag) => tag.toLowerCase().includes(q)) ||
+        project.hooksUsed.some((hook) => hook.toLowerCase().includes(q));
 
       const matchesCategory =
         selectedCategory === "All" || project.category === selectedCategory;
