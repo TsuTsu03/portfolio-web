@@ -84,7 +84,7 @@ const projectsData: Project[] = [
     category: "SaaS",
     image: SaasImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
-    liveUrl: "https://employee-system-nine-rosy.vercel.app/",
+    liveUrl: "https://data-analysis-nine.vercel.app/",
     hooksUsed: ["useState", "useCallback", "useMemo"],
     featured: true
   }
