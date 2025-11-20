@@ -9,6 +9,7 @@ import TodoImg from "../assets/projects/Todo.png";
 import WeddingImg from "../assets/projects/Wedding.png";
 import EmployeeImg from "../assets/projects/Employee.png";
 import SaasImg from "../assets/projects/saas.png";
+import CareerPathImg from "../assets/projects/Carpath.png";
 
 interface Project {
   id: number;
@@ -26,45 +27,31 @@ interface Project {
 const projectsData: Project[] = [
   {
     id: 1,
-    title: "Ecommerce Website",
+    title: "Career Path Recommender Platform",
     description:
-      "Luxury watch e-commerce with product browsing and checkout-ready UI.",
-    tags: ["React", "Vite", "Tailwind"],
+      "AI-assisted student assessment system with career track recommendations, admin dashboards, role-based login, and real-time data management.",
+    tags: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Vite"],
     category: "Web App",
-    image: Watch as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/website-ecommerce",
-    liveUrl: "https://luxurywatches-tau.vercel.app/",
+    image: CareerPathImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/career-path",
+    liveUrl: "https://career-path-ecru.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
   },
   {
     id: 2,
-    title: "Todo Application",
-    description:
-      "Clean productivity app with task CRUD and modern UI components.",
-    tags: ["React", "Vite", "Tailwind"],
-    category: "Web App",
-    image: TodoImg as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/todo-app",
-    liveUrl: "https://todothese.vercel.app/",
-    hooksUsed: ["useState", "useReducer", "useRef"],
+    title: "SaaS Data Analysis Platform",
+    description: "Data ingestion + analysis pipeline with modern dashboard UI.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "OpenAI", "Supabase"],
+    category: "SaaS",
+    image: SaasImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
+    liveUrl: "https://data-analysis-nine.vercel.app/",
+    hooksUsed: ["useState", "useCallback", "useMemo"],
     featured: true
   },
   {
     id: 3,
-    title: "Wedding Invitation",
-    description:
-      "Interactive wedding invite site with schedule, RSVP, and gallery.",
-    tags: ["React", "Vite", "Tailwind"],
-    category: "Website",
-    image: WeddingImg as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/JeizKen",
-    liveUrl: "https://jeizwantsthedy.vercel.app/",
-    hooksUsed: ["useState", "useEffect"],
-    featured: false
-  },
-  {
-    id: 4,
     title: "Multi-Tenant Ticketing & Employee Tracking SaaS",
     description:
       "Time/geo tracking, ticketing, and auth-gated dashboards for teams.",
@@ -77,16 +64,43 @@ const projectsData: Project[] = [
     featured: true
   },
   {
-    id: 5,
-    title: "SaaS Data Analysis Platform",
-    description: "Data ingestion + analysis pipeline with modern dashboard UI.",
-    tags: ["Next.js", "TypeScript", "Tailwind", "OpenAI", "Supabase"],
-    category: "SaaS",
-    image: SaasImg as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
-    liveUrl: "https://data-analysis-nine.vercel.app/",
-    hooksUsed: ["useState", "useCallback", "useMemo"],
+    id: 4,
+    title: "Ecommerce Website",
+    description:
+      "Luxury watch e-commerce with product browsing and checkout-ready UI.",
+    tags: ["React", "Vite", "Tailwind"],
+    category: "Web App",
+    image: Watch as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/website-ecommerce",
+    liveUrl: "https://luxurywatches-tau.vercel.app/",
+    hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
+  },
+  {
+    id: 5,
+    title: "Todo Application",
+    description:
+      "Clean productivity app with task CRUD and modern UI components.",
+    tags: ["React", "Vite", "Tailwind"],
+    category: "Web App",
+    image: TodoImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/todo-app",
+    liveUrl: "https://todothese.vercel.app/",
+    hooksUsed: ["useState", "useReducer", "useRef"],
+    featured: true
+  },
+  {
+    id: 6,
+    title: "Wedding Invitation",
+    description:
+      "Interactive wedding invite site with schedule, RSVP, and gallery.",
+    tags: ["React", "Vite", "Tailwind"],
+    category: "Website",
+    image: WeddingImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/JeizKen",
+    liveUrl: "https://jeizwantsthedy.vercel.app/",
+    hooksUsed: ["useState", "useEffect"],
+    featured: false
   }
 ];
 
