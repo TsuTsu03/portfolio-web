@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, Code, Coffee, Award } from "lucide-react";
 
 export function Hero() {
   const [displayText, setDisplayText] = useState("");
-  const fullText = "Full Stack React Developer";
+  const fullText = "Full-Stack Developer & SaaS Builder";
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -57,13 +57,14 @@ export function Hero() {
           </div>
 
           <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Crafting exceptional digital experiences with{" "}
-            <span className="text-purple-400">React</span>,{" "}
-            <span className="text-blue-400">TypeScript</span>, and modern web
-            technologies.
+            I build{" "}
+            <span className="text-purple-400">production-ready web apps</span>{" "}
+            and{" "}
+            <span className="text-blue-400">SaaS platforms</span>{" "}
+            that solve real business problems — from patient management systems to e-commerce and analytics dashboards.
             <br />
             <span className="text-gray-500">
-              Transforming ideas into scalable solutions for 5+ years.
+              Fast delivery. Clean code. Real results.
             </span>
           </p>
 
@@ -89,7 +90,7 @@ export function Hero() {
 
           <div className="flex items-center justify-center gap-4 mb-12">
             <a
-              href="https://github.com"
+              href="https://github.com/TsuTsu03"
               target="_blank"
               rel="noopener noreferrer"
               className="group p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
@@ -97,7 +98,7 @@ export function Hero() {
               <Github className="w-6 h-6 group-hover:rotate-12 transition-transform" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/den-jansen-flores-79b8ba387/"
               target="_blank"
               rel="noopener noreferrer"
               className="group p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
@@ -105,7 +106,7 @@ export function Hero() {
               <Linkedin className="w-6 h-6 group-hover:rotate-12 transition-transform" />
             </a>
             <a
-              href="mailto:john@example.com"
+              href="mailto:floresjansen28@gmail.com"
               className="group p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
             >
               <Mail className="w-6 h-6 group-hover:rotate-12 transition-transform" />

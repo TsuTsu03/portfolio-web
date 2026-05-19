@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { Search, ExternalLink, Github, Filter, Star } from "lucide-react";
+import { Search, ExternalLink, Github, Filter, Star, Activity } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
@@ -15,6 +15,8 @@ interface Project {
   tags: string[];
   category: string;
   image: string;
+  placeholderIcon?: React.ComponentType<{ className?: string }>;
+  placeholderGradient?: string;
   githubUrl: string;
   liveUrl: string;
   hooksUsed: string[];
@@ -24,9 +26,24 @@ interface Project {
 const projectsData: Project[] = [
   {
     id: 1,
+    title: "ClinicFlow — Healthcare Management SaaS",
+    description:
+      "Full-stack clinic operations platform with real-time doctor status monitoring, appointment scheduling, patient records, and role-based portals for admins, doctors, and patients. Built to cut administrative overhead and reduce patient wait times.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
+    category: "SaaS",
+    image: "",
+    placeholderIcon: Activity,
+    placeholderGradient: "from-teal-600 to-cyan-600",
+    githubUrl: "https://github.com/TsuTsu03",
+    liveUrl: "https://clinicflow-beige.vercel.app/",
+    hooksUsed: ["useState", "useEffect", "useCallback"],
+    featured: true
+  },
+  {
+    id: 2,
     title: "Career Path Recommender Platform",
     description:
-      "AI-assisted student assessment system with career track recommendations, admin dashboards, role-based login, and real-time data management.",
+      "AI-assisted student assessment system with career track recommendations, admin dashboards, role-based login, and real-time data management. Helps students and institutions make smarter educational decisions.",
     tags: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Vite"],
     category: "Web App",
     image: CareerPathImg as unknown as string,
@@ -36,9 +53,9 @@ const projectsData: Project[] = [
     featured: true
   },
   {
-    id: 2,
+    id: 3,
     title: "SaaS Data Analysis Platform",
-    description: "Data ingestion + analysis pipeline with modern dashboard UI.",
+    description: "AI-powered data ingestion and analysis pipeline with a modern dashboard UI. Enables businesses to surface insights from raw data without needing a dedicated data team.",
     tags: ["Next.js", "TypeScript", "Tailwind", "OpenAI", "Supabase"],
     category: "SaaS",
     image: SaasImg as unknown as string,
@@ -48,10 +65,10 @@ const projectsData: Project[] = [
     featured: true
   },
   {
-    id: 3,
-    title: "Multi-Tenant Ticketing & Employee Tracking SaaS",
+    id: 4,
+    title: "Employee Ticketing & Tracking SaaS",
     description:
-      "Time/geo tracking, ticketing, and auth-gated dashboards for teams.",
+      "Multi-tenant SaaS with time tracking, geo tracking, IT ticketing, and auth-gated dashboards. Designed for teams that need visibility into employee activities and internal support requests.",
     tags: ["Next.js", "Supabase", "Postgres", "Tailwind"],
     category: "SaaS",
     image: EmployeeImg as unknown as string,
@@ -121,8 +138,7 @@ export function Projects() {
               Featured Projects
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">
-              Showcasing enterprise-level applications with advanced React
-              patterns and state management
+              Real-world apps built for real users — from healthcare SaaS to e-commerce and analytics platforms
             </p>
             <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
           </div>
@@ -249,14 +265,22 @@ function ProjectCard({
       }`}
     >
       <div className="relative h-64 bg-gradient-to-br from-purple-900/20 to-pink-900/20 overflow-hidden">
-        <img
-          src={project.image}
-          alt={project.title}
-          onLoad={() => setImageLoaded(true)}
-          className={`w-full h-full object-cover transition-all duration-700 ${
-            imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110"
-          } ${isHovered ? "scale-110" : ""}`}
-        />
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={project.title}
+            onLoad={() => setImageLoaded(true)}
+            className={`w-full h-full object-cover transition-all duration-700 ${
+              imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110"
+            } ${isHovered ? "scale-110" : ""}`}
+          />
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${project.placeholderGradient ?? "from-purple-700 to-pink-700"} transition-transform duration-700 ${isHovered ? "scale-110" : "scale-100"}`}>
+            {project.placeholderIcon && (
+              <project.placeholderIcon className="w-24 h-24 text-white/30" />
+            )}
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
 
         {project.featured && (

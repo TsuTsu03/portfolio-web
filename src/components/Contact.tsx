@@ -148,8 +148,7 @@ export function Contact() {
               Get In Touch
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">
-              Have a project in mind? Let's create something extraordinary
-              together
+              Have a project in mind or looking to hire? I'm open to freelance work, full-time roles, and collaborations with businesses of all sizes.
             </p>
             <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
           </div>
@@ -217,23 +216,23 @@ export function Contact() {
                 <ul className="space-y-3 text-gray-400">
                   <li className="flex items-start gap-3">
                     <span className="text-purple-400">✓</span>
-                    <span>4+ years of enterprise-level experience</span>
+                    <span>I deliver working software — not just mockups</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-purple-400">✓</span>
-                    <span>Expert in React ecosystem & state management</span>
+                    <span>Built SaaS platforms used by real businesses</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-purple-400">✓</span>
-                    <span>Clean, scalable, and maintainable code</span>
+                    <span>Full-stack: from database to polished UI</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-purple-400">✓</span>
-                    <span>Responsive design & modern UI/UX</span>
+                    <span>Fast turnaround with clear milestones</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-purple-400">✓</span>
-                    <span>Fast delivery & excellent communication</span>
+                    <span>Responsive, communicative, and reliable</span>
                   </li>
                 </ul>
               </div>
