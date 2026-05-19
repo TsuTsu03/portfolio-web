@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, Code, Coffee, Award } from "lucide-react";
 
 export function Hero() {
   const [displayText, setDisplayText] = useState("");
-  const fullText = "Full-Stack Developer & SaaS Builder";
+  const fullText = "Full-Stack Developer | Software Solutions Consultant";
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -59,9 +59,9 @@ export function Hero() {
           <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
             I build{" "}
             <span className="text-purple-400">production-ready web apps</span>{" "}
-            and{" "}
-            <span className="text-blue-400">SaaS platforms</span>{" "}
-            that solve real business problems — from patient management systems to e-commerce and analytics dashboards.
+            and <span className="text-blue-400">SaaS platforms</span> that solve
+            real business problems — from patient management systems to
+            e-commerce and analytics dashboards.
             <br />
             <span className="text-gray-500">
               Fast delivery. Clean code. Real results.
