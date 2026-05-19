@@ -8,41 +8,42 @@ export function About() {
 
   const highlights = [
     {
-      icon: Code2,
-      title: "Clean Architecture",
+      icon: Rocket,
+      title: "Fast Delivery",
       description:
-        "Building scalable applications with best practices and design patterns",
-      color: "from-blue-500 to-cyan-500"
+        "Ship production-ready apps quickly without cutting corners — your time to market matters",
+      color: "from-purple-500 to-pink-500"
     },
     {
       icon: Zap,
-      title: "Performance First",
+      title: "Business-Focused",
       description:
-        "Optimizing every millisecond for lightning-fast user experiences",
+        "Every feature I build ties back to a real business goal — no fluff, just value",
       color: "from-yellow-500 to-orange-500"
     },
     {
       icon: Shield,
-      title: "Robust & Secure",
-      description: "Implementing security best practices and thorough testing",
+      title: "Reliable & Secure",
+      description: "Role-based access, secure auth, and tested code you can trust in production",
       color: "from-green-500 to-emerald-500"
     },
     {
-      icon: Rocket,
-      title: "Modern Stack",
-      description: "Leveraging cutting-edge technologies and frameworks",
-      color: "from-purple-500 to-pink-500"
+      icon: Code2,
+      title: "Scalable Code",
+      description:
+        "Built to grow with your business — clean architecture that's easy to maintain and extend",
+      color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Users,
-      title: "User-Centric",
-      description: "Creating intuitive interfaces that users love",
+      title: "Clear Communication",
+      description: "I keep you in the loop at every stage — no surprises, no ghosting",
       color: "from-pink-500 to-rose-500"
     },
     {
       icon: Sparkles,
-      title: "Pixel Perfect",
-      description: "Attention to detail in every design implementation",
+      title: "Polished UI/UX",
+      description: "Interfaces your customers will actually enjoy using — not just functional, but beautiful",
       color: "from-indigo-500 to-purple-500"
     }
   ];
@@ -76,27 +77,22 @@ export function About() {
           <div className="max-w-4xl mx-auto mb-20">
             <div className="p-8 md:p-12 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10">
               <p className="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed">
-                With{" "}
-                <span className="text-purple-400">years of experience</span> in
-                full-stack development, I specialize in building exceptional web
-                applications using <span className="text-blue-400">React</span>{" "}
-                and modern JavaScript ecosystems.
+                I'm a{" "}
+                <span className="text-purple-400">full-stack developer</span>{" "}
+                who turns business problems into polished digital products. Whether you need a{" "}
+                <span className="text-blue-400">SaaS platform</span>,{" "}
+                an internal tool, or a customer-facing web app — I build it from scratch and ship it fast.
               </p>
               <p className="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed">
-                My expertise spans from crafting pixel-perfect, responsive user
-                interfaces to architecting robust backend systems. I'm
-                passionate about{" "}
-                <span className="text-pink-400">clean code</span>,
-                <span className="text-green-400">
-                  {" "}
-                  performance optimization
-                </span>
-                , and creating seamless user experiences.
+                I've built systems for{" "}
+                <span className="text-pink-400">healthcare clinics</span>,{" "}
+                <span className="text-green-400">e-commerce stores</span>,{" "}
+                HR teams, and student platforms — each one tailored to the client's workflow and designed to scale. My code is clean, my timelines are tight, and I communicate clearly throughout the process.
               </p>
               <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">
-                Whether it's implementing complex state management solutions,
-                optimizing bundle sizes, or mentoring junior developers, I bring
-                a comprehensive approach to every project I work on.
+                If you're a business owner, startup, or hiring manager looking for someone who understands both the technical side and the{" "}
+                <span className="text-purple-400">business impact</span>{" "}
+                of good software — let's talk.
               </p>
             </div>
           </div>
