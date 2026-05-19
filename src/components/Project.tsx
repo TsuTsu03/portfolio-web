@@ -4,9 +4,6 @@ import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 // ⬇️ Local images
-import Watch from "../assets/projects/luxurywatches.png";
-import TodoImg from "../assets/projects/Todo.png";
-import WeddingImg from "../assets/projects/Wedding.png";
 import EmployeeImg from "../assets/projects/Employee.png";
 import SaasImg from "../assets/projects/saas.png";
 import CareerPathImg from "../assets/projects/Carpath.png";
@@ -62,45 +59,6 @@ const projectsData: Project[] = [
     liveUrl: "https://employee-system-sooty.vercel.app/auth/login",
     hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
-  },
-  {
-    id: 4,
-    title: "Ecommerce Website",
-    description:
-      "Luxury watch e-commerce with product browsing and checkout-ready UI.",
-    tags: ["React", "Vite", "Tailwind"],
-    category: "Web App",
-    image: Watch as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/website-ecommerce",
-    liveUrl: "https://luxurywatches-tau.vercel.app/",
-    hooksUsed: ["useState", "useEffect", "useMemo"],
-    featured: true
-  },
-  {
-    id: 5,
-    title: "Todo Application",
-    description:
-      "Clean productivity app with task CRUD and modern UI components.",
-    tags: ["React", "Vite", "Tailwind"],
-    category: "Web App",
-    image: TodoImg as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/todo-app",
-    liveUrl: "https://todothese.vercel.app/",
-    hooksUsed: ["useState", "useReducer", "useRef"],
-    featured: true
-  },
-  {
-    id: 6,
-    title: "Wedding Invitation",
-    description:
-      "Interactive wedding invite site with schedule, RSVP, and gallery.",
-    tags: ["React", "Vite", "Tailwind"],
-    category: "Website",
-    image: WeddingImg as unknown as string,
-    githubUrl: "https://github.com/TsuTsu03/JeizKen",
-    liveUrl: "https://jeizwantsthedy.vercel.app/",
-    hooksUsed: ["useState", "useEffect"],
-    featured: false
   }
 ];
 
