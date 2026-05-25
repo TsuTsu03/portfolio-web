@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { Search, ExternalLink, Github, Filter, Star, Activity } from "lucide-react";
+import { Search, ExternalLink, Github, Filter, Star, Activity, Smile } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
@@ -62,6 +62,21 @@ const projectsData: Project[] = [
     githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
     liveUrl: "https://data-analysis-nine.vercel.app/",
     hooksUsed: ["useState", "useCallback", "useMemo"],
+    featured: true
+  },
+  {
+    id: 5,
+    title: "Smiley — Dental Clinic Management SaaS",
+    description:
+      "Multi-tenant dental clinic platform with full patient records, appointment scheduling by date or dentist, automated SMS & email reminders, and dedicated portals for admins, dentists, and patients. Supports custom branded subdomains per clinic.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
+    category: "SaaS",
+    image: "",
+    placeholderIcon: Smile,
+    placeholderGradient: "from-blue-600 to-indigo-600",
+    githubUrl: "https://github.com/TsuTsu03/smiley-app",
+    liveUrl: "https://smiley-app-tau.vercel.app/",
+    hooksUsed: ["useState", "useEffect", "useCallback"],
     featured: true
   },
   {
