@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { Search, ExternalLink, Github, Filter, Star, Activity, Smile } from "lucide-react";
+import { Search, ExternalLink, Github, Filter, Star } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
@@ -7,6 +7,9 @@ import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import EmployeeImg from "../assets/projects/Employee.png";
 import SaasImg from "../assets/projects/saas.png";
 import CareerPathImg from "../assets/projects/Carpath.png";
+import ClinicFlowImg from "../assets/projects/clinicflow.png";
+import SmileyImg from "../assets/projects/smiley.png";
+import ThriftStoreImg from "../assets/projects/thriftstore.png";
 
 interface Project {
   id: number;
@@ -31,9 +34,7 @@ const projectsData: Project[] = [
       "Full-stack clinic operations platform with real-time doctor status monitoring, appointment scheduling, patient records, and role-based portals for admins, doctors, and patients. Built to cut administrative overhead and reduce patient wait times.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
     category: "SaaS",
-    image: "",
-    placeholderIcon: Activity,
-    placeholderGradient: "from-teal-600 to-cyan-600",
+    image: ClinicFlowImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03",
     liveUrl: "https://clinicflow-beige.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useCallback"],
@@ -71,9 +72,7 @@ const projectsData: Project[] = [
       "Multi-tenant dental clinic platform with full patient records, appointment scheduling by date or dentist, automated SMS & email reminders, and dedicated portals for admins, dentists, and patients. Supports custom branded subdomains per clinic.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
     category: "SaaS",
-    image: "",
-    placeholderIcon: Smile,
-    placeholderGradient: "from-blue-600 to-indigo-600",
+    image: SmileyImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/smiley-app",
     liveUrl: "https://smiley-app-tau.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useCallback"],
@@ -89,6 +88,19 @@ const projectsData: Project[] = [
     image: EmployeeImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/employee-ticketing-system",
     liveUrl: "https://employee-system-sooty.vercel.app/auth/login",
+    hooksUsed: ["useState", "useEffect", "useMemo"],
+    featured: true
+  },
+  {
+    id: 6,
+    title: "The Thrift Store — Curated Pre-Loved E-Commerce",
+    description:
+      "Online thrift storefront for curated, authenticated pre-loved fashion. Features product browsing by category, a shopping flow, and a clean, modern shopping experience aimed at the sustainable-fashion market.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "E-Commerce"],
+    category: "Web App",
+    image: ThriftStoreImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/thrift-store",
+    liveUrl: "https://thrift-store-beige.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
   }
