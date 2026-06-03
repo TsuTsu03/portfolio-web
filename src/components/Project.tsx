@@ -81,14 +81,14 @@ const projectsData: Project[] = [
   },
   {
     id: 4,
-    title: "Employee Ticketing & Tracking SaaS",
+    title: "ShiftDesk — Employee Ticketing & Tracking SaaS",
     description:
-      "Multi-tenant SaaS with time tracking, geo tracking, IT ticketing, and auth-gated dashboards. Designed for teams that need visibility into employee activities and internal support requests.",
+      "Multi-tenant SaaS with GPS shift clock-ins, IT ticketing, chat-first support, and auth-gated dashboards for employees, admins, and managers. Designed for frontline teams that need visibility into employee activities and internal support requests.",
     tags: ["Next.js", "Supabase", "Postgres", "Tailwind"],
     category: "SaaS",
     image: EmployeeImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/employee-ticketing-system",
-    liveUrl: "https://employee-system-sooty.vercel.app/auth/login",
+    liveUrl: "https://employee-system-nine-rosy.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
     featured: true
   },
