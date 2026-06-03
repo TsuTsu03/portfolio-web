@@ -10,6 +10,7 @@ import CareerPathImg from "../assets/projects/Carpath.png";
 import ClinicFlowImg from "../assets/projects/clinicflow.png";
 import SmileyImg from "../assets/projects/smiley.png";
 import ThriftStoreImg from "../assets/projects/thriftstore.png";
+import LogisticsImg from "../assets/projects/logistics.png";
 
 interface Project {
   id: number;
@@ -102,6 +103,19 @@ const projectsData: Project[] = [
     githubUrl: "https://github.com/TsuTsu03/thrift-store",
     liveUrl: "https://thrift-store-beige.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
+    featured: true
+  },
+  {
+    id: 7,
+    title: "Biyahero Express — Logistics OS",
+    description:
+      "End-to-end logistics operations platform for growing businesses: booking management, order tracking, live delivery tracking, route planning, proof of delivery, COD remittance, invoicing, and fleet & driver management — all in one real-time operations dashboard.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
+    category: "SaaS",
+    image: LogisticsImg as unknown as string,
+    githubUrl: "https://github.com/TsuTsu03/logistics-system",
+    liveUrl: "https://logistics-system-five.vercel.app/dashboard",
+    hooksUsed: ["useState", "useEffect", "useCallback"],
     featured: true
   }
 ];
