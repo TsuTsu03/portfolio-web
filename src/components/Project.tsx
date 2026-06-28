@@ -171,17 +171,14 @@ export function Projects() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <div className="text-center mb-16">
-            <span className="text-purple-400 text-sm tracking-widest uppercase mb-4 block">
-              Portfolio
-            </span>
-            <h2 className="text-5xl md:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+          <div className="mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
               Featured Projects
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">
-              Real-world apps built for real users — from healthcare SaaS to e-commerce and analytics platforms
+            <p className="text-xl text-gray-400 mb-6" style={{ maxWidth: "65ch" }}>
+              Real-world apps built for real users — healthcare SaaS, logistics platforms, e-commerce, and AI-powered analytics.
             </p>
-            <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
+            <div className="w-16 h-1 bg-purple-500 rounded-full" />
           </div>
 
           {/* Search and Filter Controls */}
@@ -194,7 +191,7 @@ export function Projects() {
                   placeholder="Search projects, hooks, or technologies..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-6 py-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
+                  className="w-full pl-12 pr-6 py-3.5 rounded-xl border border-slate-700 bg-slate-800 text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all"
                 />
               </div>
               <button
@@ -218,8 +215,8 @@ export function Projects() {
                   onClick={() => handleCategoryChange(category)}
                   className={`px-6 py-3 rounded-xl transition-all ${
                     selectedCategory === category
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50"
-                      : "bg-white/5 backdrop-blur-lg border border-white/10 text-gray-300 hover:bg-white/10"
+                      ? "bg-purple-600 text-white shadow-md"
+                      : "bg-slate-800 border border-slate-700 text-gray-400 hover:text-white hover:border-slate-600"
                   }`}
                 >
                   {category}
@@ -299,7 +296,7 @@ function ProjectCard({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/10 hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 hover:scale-105 delay-${
+      className={`group bg-slate-800/80 rounded-xl overflow-hidden border border-slate-700/60 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 hover:-translate-y-1 delay-${
         index * 100
       } ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -337,7 +334,7 @@ function ProjectCard({
       </div>
 
       <div className="p-8">
-        <h3 className="text-2xl md:text-3xl mb-3 text-white">
+        <h3 className="text-xl font-bold mb-3 text-white leading-snug">
           {project.title}
         </h3>
         <p className="text-gray-400 mb-6 leading-relaxed">
@@ -376,7 +373,7 @@ function ProjectCard({
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all group"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-700/60 border border-slate-600/60 text-white hover:bg-slate-700 transition-all duration-200 group"
           >
             <Github className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             Code
@@ -385,7 +382,7 @@ function ProjectCard({
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg shadow-purple-500/50 group"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white transition-all duration-200 shadow-md shadow-purple-600/20 group"
           >
             <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             Demo

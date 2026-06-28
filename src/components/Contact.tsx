@@ -140,17 +140,14 @@ export function Contact() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <div className="text-center mb-16">
-            <span className="text-purple-400 text-sm tracking-widest uppercase mb-4 block">
-              Let's Connect
-            </span>
-            <h2 className="text-5xl md:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+          <div className="mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
               Get In Touch
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">
+            <p className="text-xl text-gray-400 max-w-2xl mb-6" style={{ maxWidth: "60ch" }}>
               Have a project in mind or looking to hire? I'm open to freelance work, full-time roles, and collaborations with businesses of all sizes.
             </p>
-            <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
+            <div className="w-16 h-1 bg-purple-500 rounded-full" />
           </div>
 
           <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-12">
@@ -161,7 +158,7 @@ export function Contact() {
                 {contactMethods.map((method) => {
                   const Icon = method.icon;
                   const content = (
-                    <div className="group p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                    <div className="group p-6 rounded-xl bg-slate-800/80 border border-slate-700/60 hover:border-slate-600 transition-all duration-200">
                       <div className="flex items-start gap-4">
                         <div
                           className={`w-14 h-14 rounded-xl bg-gradient-to-br ${method.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}
@@ -189,8 +186,8 @@ export function Contact() {
               </div>
 
               {/* Social Links */}
-              <div className="p-8 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10">
-                <h4 className="text-xl text-white mb-6">Follow Me</h4>
+              <div className="p-6 rounded-xl bg-slate-800/80 border border-slate-700/60">
+                <h4 className="text-base font-semibold text-white mb-4">Connect</h4>
                 <div className="flex gap-4">
                   {socialLinks.map((social) => {
                     const Icon = social.icon;
@@ -200,7 +197,7 @@ export function Contact() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`p-4 rounded-xl bg-white/5 border border-white/10 text-gray-400 ${social.color} transition-all hover:scale-110`}
+                        className={`p-3 rounded-xl border border-slate-700 text-gray-400 ${social.color} hover:border-slate-500 transition-all duration-200`}
                         aria-label={social.label}
                       >
                         <Icon className="w-6 h-6" />
@@ -211,37 +208,30 @@ export function Contact() {
               </div>
 
               {/* Why Work With Me */}
-              <div className="p-8 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20">
-                <h4 className="text-xl text-white mb-4">Why Work With Me?</h4>
-                <ul className="space-y-3 text-gray-400">
-                  <li className="flex items-start gap-3">
-                    <span className="text-purple-400">✓</span>
-                    <span>I deliver working software — not just mockups</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-purple-400">✓</span>
-                    <span>Built SaaS platforms used by real businesses</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-purple-400">✓</span>
-                    <span>Full-stack: from database to polished UI</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-purple-400">✓</span>
-                    <span>Fast turnaround with clear milestones</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-purple-400">✓</span>
-                    <span>Responsive, communicative, and reliable</span>
-                  </li>
+              <div className="p-6 rounded-xl bg-slate-800/80 border border-slate-700/60">
+                <h4 className="text-base font-semibold text-white mb-4">Why Work With Me?</h4>
+                <ul className="space-y-3">
+                  {[
+                    "I deliver working software — not mockups or prototypes",
+                    "Built production SaaS used by real businesses",
+                    "Full-stack ownership: database schema to polished UI",
+                    "Agentic AI integrations: Claude API, OpenAI, tool use",
+                    "Fast turnaround with clear milestones and honest timelines",
+                    "Secure by default: RLS, RBAC, tested in production",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-gray-400">
+                      <span className="text-purple-400 mt-0.5 flex-shrink-0">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
 
             {/* Contact Form - Right Side */}
             <div className="lg:col-span-3">
-              <div className="p-8 md:p-10 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10">
-                <h3 className="text-3xl text-white mb-8">Send a Message</h3>
+              <div className="p-8 md:p-10 rounded-xl bg-slate-800/80 border border-slate-700/60">
+                <h3 className="text-2xl font-bold text-white mb-8">Send a Message</h3>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block mb-3 text-gray-300">

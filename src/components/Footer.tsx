@@ -1,80 +1,63 @@
-import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="relative py-16 bg-gradient-to-b from-slate-900 to-black text-white overflow-hidden">
-      {/* Decorative gradient */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
+    <footer className="relative py-16 bg-black text-white overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-8">
           {/* Logo */}
-          <div className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-            Jansen<span className="text-white">.</span>
+          <div className="text-3xl font-bold text-white tracking-tight">
+            Jansen<span className="text-purple-400">.</span>
           </div>
 
           {/* Social Links */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a
-              href="https://github.com"
+              href="https://github.com/TsuTsu03"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-110"
               aria-label="GitHub"
+              className="p-3 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/25 transition-all duration-200"
             >
-              <Github className="w-6 h-6 text-gray-400 group-hover:text-purple-400 transition-colors" />
+              <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/den-jansen-flores-79b8ba387/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-110"
               aria-label="LinkedIn"
+              className="p-3 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/25 transition-all duration-200"
             >
-              <Linkedin className="w-6 h-6 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              <Linkedin className="w-5 h-5" />
             </a>
             <a
-              href="mailto:john@example.com"
-              className="group p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-110"
+              href="mailto:floresjansen28@gmail.com"
               aria-label="Email"
+              className="p-3 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/25 transition-all duration-200"
             >
-              <Mail className="w-6 h-6 text-gray-400 group-hover:text-pink-400 transition-colors" />
+              <Mail className="w-5 h-5" />
             </a>
           </div>
 
-          {/* Tagline */}
-          <div className="flex items-center gap-2 text-gray-400">
-            <span>Crafted with</span>
-            <Heart className="w-5 h-5 text-red-500 fill-current animate-pulse" />
-            <span>using React, TypeScript & Tailwind CSS</span>
-          </div>
-
-          {/* Divider */}
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+          <div className="w-full h-px bg-white/5" />
 
           {/* Copyright */}
-          <div className="text-center">
-            <p className="text-gray-400 mb-2">
-              © {currentYear} Den Jansen Flores. All rights reserved.
-            </p>
-            <p className="text-sm text-gray-500">
-              Full Stack React Developer | 4+ Years Experience
-            </p>
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4 text-sm text-gray-500">
+            <p>© {currentYear} Den Jansen Flores. All rights reserved.</p>
+            <p>Senior Full-Stack Developer · Agentic AI Engineer · Metro Manila, PH</p>
           </div>
 
-          {/* Back to top button */}
+          {/* Back to top */}
           <button
-            onClick={scrollToTop}
-            className="group p-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all hover:scale-110 shadow-lg shadow-purple-500/50"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="Scroll to top"
+            className="p-3 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/25 transition-all duration-200"
           >
-            <ArrowUp className="w-6 h-6 text-white group-hover:translate-y-1 transition-transform" />
+            <ArrowUp className="w-5 h-5" />
           </button>
         </div>
       </div>

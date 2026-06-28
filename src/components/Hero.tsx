@@ -1,138 +1,164 @@
 import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, Code, Coffee, Award } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowDown, Bot } from "lucide-react";
+
+const ROLES = [
+  "Senior Full-Stack Developer",
+  "Agentic AI Engineer",
+  "SaaS Architect",
+  "Software Solutions Consultant",
+];
+
+const TECH_STACK = [
+  "React", "Next.js", "TypeScript", "Supabase", "Node.js",
+  "PostgreSQL", "Tailwind CSS", "Claude API", "OpenAI",
+];
 
 export function Hero() {
+  const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
-  const fullText = "Full-Stack Developer | Software Solutions Consultant";
-  const [index, setIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (index < fullText.length) {
-      const timeout = setTimeout(() => {
-        setDisplayText((prev) => prev + fullText[index]);
-        setIndex((prev) => prev + 1);
-      }, 100);
-      return () => clearTimeout(timeout);
-    }
-  }, [index]);
+    const current = ROLES[roleIndex];
+    let timeout: ReturnType<typeof setTimeout>;
 
-  const stats = [
-    { icon: Code, value: "4+", label: "Years Experience" },
-    { icon: Award, value: "10+", label: "Projects Completed" },
-    { icon: Coffee, value: "10K+", label: "Cups of Coffee" }
-  ];
+    if (!deleting && charIndex < current.length) {
+      timeout = setTimeout(() => {
+        setDisplayText(current.slice(0, charIndex + 1));
+        setCharIndex((i) => i + 1);
+      }, 60);
+    } else if (!deleting && charIndex === current.length) {
+      timeout = setTimeout(() => setDeleting(true), 2200);
+    } else if (deleting && charIndex > 0) {
+      timeout = setTimeout(() => {
+        setDisplayText(current.slice(0, charIndex - 1));
+        setCharIndex((i) => i - 1);
+      }, 35);
+    } else if (deleting && charIndex === 0) {
+      setDeleting(false);
+      setRoleIndex((i) => (i + 1) % ROLES.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [charIndex, deleting, roleIndex]);
 
   return (
     <section
       id="hero"
+      aria-label="Introduction"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
     >
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      {/* Atmospheric background blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 py-20">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="mb-8">
-            <span className="inline-block px-4 py-2 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-sm backdrop-blur-sm">
-              Available for freelance projects
+
+          {/* Availability badge */}
+          <div className="mb-8 flex items-center justify-center gap-3 flex-wrap">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Available for work
+            </span>
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-sm">
+              <Bot className="w-3.5 h-3.5" />
+              Agentic AI Developer
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-8xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-blue-200 leading-tight">
-            Hi, I'm{" "}
-            <span className="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-              Den Jansen Flores
-            </span>
+          {/* Name */}
+          <h1 className="text-6xl md:text-8xl font-extrabold mb-4 text-white leading-tight tracking-tight">
+            Den Jansen
+            <span className="block text-purple-400">Flores</span>
           </h1>
 
-          <div className="h-16 mb-8">
-            <p className="text-3xl md:text-4xl text-gray-300">
+          {/* Typewriter role */}
+          <div className="h-14 mb-8 flex items-center justify-center">
+            <p className="text-2xl md:text-3xl text-gray-300 font-medium">
               {displayText}
-              <span className="animate-pulse text-purple-400">|</span>
+              <span className="animate-pulse text-purple-400 ml-0.5">|</span>
             </p>
           </div>
 
-          <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-            I build{" "}
-            <span className="text-purple-400">production-ready web apps</span>{" "}
-            and <span className="text-blue-400">SaaS platforms</span> that solve
-            real business problems — from patient management systems to
-            e-commerce and analytics dashboards.
-            <br />
-            <span className="text-gray-500">
-              Fast delivery. Clean code. Real results.
-            </span>
+          {/* Value proposition */}
+          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed" style={{ maxWidth: "65ch" }}>
+            I build <span className="text-white font-medium">production-ready SaaS platforms</span> and{" "}
+            <span className="text-white font-medium">AI-powered agentic systems</span> that solve real
+            business problems — from healthcare and logistics to e-commerce and HR.
+            Fast delivery. Clean architecture. Real results.
           </p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 max-w-3xl mx-auto mb-12">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={stat.label}
-                  className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <Icon className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-                  <div className="text-3xl md:text-4xl text-white mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
-                </div>
-              );
-            })}
+          {/* Tech stack pills */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {TECH_STACK.map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1.5 rounded-full text-sm text-gray-300 bg-white/5 border border-white/10"
+              >
+                {tech}
+              </span>
+            ))}
           </div>
 
-          <div className="flex items-center justify-center gap-4 mb-12">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+            <button
+              onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+              className="px-8 py-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-all duration-200 hover:scale-105 shadow-lg shadow-purple-600/30"
+            >
+              View My Work
+            </button>
+            <button
+              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+              className="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/10 font-semibold transition-all duration-200 hover:scale-105"
+            >
+              Get In Touch
+            </button>
+          </div>
+
+          {/* Social links */}
+          <div className="flex items-center justify-center gap-3 mb-16">
             <a
               href="https://github.com/TsuTsu03"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+              aria-label="GitHub profile"
+              className="group p-3 rounded-xl border border-white/15 text-gray-400 hover:text-white hover:border-white/30 transition-all duration-200"
             >
-              <Github className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+              <Github className="w-5 h-5" />
             </a>
             <a
               href="https://www.linkedin.com/in/den-jansen-flores-79b8ba387/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+              aria-label="LinkedIn profile"
+              className="group p-3 rounded-xl border border-white/15 text-gray-400 hover:text-white hover:border-white/30 transition-all duration-200"
             >
-              <Linkedin className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+              <Linkedin className="w-5 h-5" />
             </a>
             <a
               href="mailto:floresjansen28@gmail.com"
-              className="group p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+              aria-label="Send email"
+              className="group p-3 rounded-xl border border-white/15 text-gray-400 hover:text-white hover:border-white/30 transition-all duration-200"
             >
-              <Mail className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+              <Mail className="w-5 h-5" />
             </a>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-            <button
-              onClick={() => {
-                const element = document.getElementById("projects");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/50"
-            >
-              View My Work
-            </button>
-            <button
-              onClick={() => {
-                const element = document.getElementById("contact");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-105"
-            >
-              Get In Touch
-            </button>
-          </div>
+          {/* Scroll indicator */}
+          <button
+            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+            aria-label="Scroll to about section"
+            className="text-gray-500 hover:text-gray-300 transition-colors duration-200 flex flex-col items-center gap-2 mx-auto"
+          >
+            <span className="text-xs tracking-widest uppercase">Scroll</span>
+            <ArrowDown className="w-4 h-4 animate-bounce" />
+          </button>
         </div>
       </div>
     </section>
