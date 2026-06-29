@@ -1,26 +1,25 @@
-import { useState, useMemo, useCallback, useRef } from "react";
-import { Search, ExternalLink, Github, Filter, Star } from "lucide-react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { ChevronDown, ChevronUp, ExternalLink, Filter, Github, Search, Star } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
+import { handleSpotlight } from "../lib/spotlight";
 
-// ⬇️ Local images
-import EmployeeImg from "../assets/projects/Employee.png";
-import SaasImg from "../assets/projects/saas.png";
 import CareerPathImg from "../assets/projects/Carpath.png";
 import ClinicFlowImg from "../assets/projects/clinicflow.png";
+import EmployeeImg from "../assets/projects/Employee.png";
+import LogisticsImg from "../assets/projects/logistics.png";
+import SaasImg from "../assets/projects/saas.png";
 import SmileyImg from "../assets/projects/smiley.png";
 import ThriftStoreImg from "../assets/projects/thriftstore.png";
-import LogisticsImg from "../assets/projects/logistics.png";
 
 interface Project {
   id: number;
   title: string;
   description: string;
+  outcome: string;
   tags: string[];
   category: string;
   image: string;
-  placeholderIcon?: React.ComponentType<{ className?: string }>;
-  placeholderGradient?: string;
   githubUrl: string;
   liveUrl: string;
   hooksUsed: string[];
@@ -32,120 +31,127 @@ const projectsData: Project[] = [
     id: 1,
     title: "ClinicFlow — Healthcare Management SaaS",
     description:
-      "Full-stack clinic operations platform with real-time doctor status monitoring, appointment scheduling, patient records, and role-based portals for admins, doctors, and patients. Built to cut administrative overhead and reduce patient wait times.",
+      "Clinic operations platform with doctor status monitoring, appointment scheduling, patient records, and role-based portals for admins, doctors, and patients.",
+    outcome: "Built the data model, product flows, dashboards, and Supabase-backed workflow for real clinic operations.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
     category: "SaaS",
     image: ClinicFlowImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03",
     liveUrl: "https://clinicflow-beige.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useCallback"],
-    featured: true
+    featured: true,
   },
   {
     id: 2,
     title: "Career Path Recommender Platform",
     description:
-      "AI-assisted student assessment system with career track recommendations, admin dashboards, role-based login, and real-time data management. Helps students and institutions make smarter educational decisions.",
+      "AI-assisted student assessment system with career recommendations, admin dashboards, role-based login, and real-time institutional data management.",
+    outcome: "Turned AI recommendations into a guided decision workflow for students and administrators.",
     tags: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Vite"],
-    category: "Web App",
+    category: "AI App",
     image: CareerPathImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/career-path",
     liveUrl: "https://career-path-ecru.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
-    featured: true
+    featured: true,
   },
   {
     id: 3,
     title: "SaaS Data Analysis Platform",
-    description: "AI-powered data ingestion and analysis pipeline with a modern dashboard UI. Enables businesses to surface insights from raw data without needing a dedicated data team.",
+    description:
+      "AI-powered data ingestion and analysis pipeline with a dashboard UI that helps businesses surface insights from raw data without a dedicated data team.",
+    outcome: "Shipped the full AI insight loop: ingestion, prompting, summaries, and decision-ready UI.",
     tags: ["Next.js", "TypeScript", "Tailwind", "OpenAI", "Supabase"],
-    category: "SaaS",
+    category: "AI App",
     image: SaasImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform",
     liveUrl: "https://data-analysis-nine.vercel.app/",
     hooksUsed: ["useState", "useCallback", "useMemo"],
-    featured: true
+    featured: true,
   },
   {
-    id: 5,
+    id: 4,
     title: "Smiley — Dental Clinic Management SaaS",
     description:
-      "Multi-tenant dental clinic platform with full patient records, appointment scheduling by date or dentist, automated SMS & email reminders, and dedicated portals for admins, dentists, and patients. Supports custom branded subdomains per clinic.",
+      "Multi-tenant dental platform with patient records, appointment scheduling, reminders, clinic portals, and branded subdomain support.",
+    outcome: "Built tenant-aware dental workflows designed for clinic adoption, billing readiness, and patient-facing polish.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
     category: "SaaS",
     image: SmileyImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/smiley-app",
     liveUrl: "https://smiley-app-tau.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useCallback"],
-    featured: true
+    featured: true,
   },
   {
-    id: 4,
+    id: 5,
     title: "ShiftDesk — Employee Ticketing & Tracking SaaS",
     description:
-      "Multi-tenant SaaS with GPS shift clock-ins, IT ticketing, chat-first support, and auth-gated dashboards for employees, admins, and managers. Designed for frontline teams that need visibility into employee activities and internal support requests.",
+      "Workforce SaaS with GPS shift clock-ins, IT ticketing, chat-first support, and auth-gated dashboards for employees, admins, and managers.",
+    outcome: "Connected HR operations, ticket lifecycle, and role-specific dashboards into one maintainable system.",
     tags: ["Next.js", "Supabase", "Postgres", "Tailwind"],
     category: "SaaS",
     image: EmployeeImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/employee-ticketing-system",
     liveUrl: "https://employee-system-nine-rosy.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
-    featured: true
+    featured: true,
   },
   {
     id: 6,
     title: "The Thrift Store — Curated Pre-Loved E-Commerce",
     description:
-      "Online thrift storefront for curated, authenticated pre-loved fashion. Features product browsing by category, a shopping flow, and a clean, modern shopping experience aimed at the sustainable-fashion market.",
+      "Online thrift storefront for curated, authenticated pre-loved fashion with category browsing, shopping flow, and a clean sustainable-commerce experience.",
+    outcome: "Balanced conversion-focused e-commerce patterns with a maintainable front-end architecture.",
     tags: ["Next.js", "TypeScript", "Tailwind", "E-Commerce"],
-    category: "Web App",
+    category: "Commerce",
     image: ThriftStoreImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/thrift-store",
     liveUrl: "https://thrift-store-beige.vercel.app/",
     hooksUsed: ["useState", "useEffect", "useMemo"],
-    featured: true
+    featured: true,
   },
   {
     id: 7,
     title: "Biyahero Express — Logistics OS",
     description:
-      "End-to-end logistics operations platform for growing businesses: booking management, order tracking, live delivery tracking, route planning, proof of delivery, COD remittance, invoicing, and fleet & driver management — all in one real-time operations dashboard.",
+      "Logistics operations platform for booking management, live delivery tracking, route planning, proof of delivery, COD remittance, invoicing, and fleet management.",
+    outcome: "Modeled a real operations workflow as a full-stack system rather than a static dashboard.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Postgres"],
-    category: "SaaS",
+    category: "Operations",
     image: LogisticsImg as unknown as string,
     githubUrl: "https://github.com/TsuTsu03/logistics-system",
     liveUrl: "https://logistics-system-five.vercel.app/dashboard",
     hooksUsed: ["useState", "useEffect", "useCallback"],
-    featured: true
-  }
+    featured: true,
+  },
 ];
 
 export function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const debouncedSearch = useDebounce(searchQuery, 300);
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useIntersectionObserver(ref, { threshold: 0.1 });
 
-  const categories = useMemo(() => {
-    const cats = ["All", ...new Set(projectsData.map((p) => p.category))];
-    return cats;
-  }, []);
+  const INITIAL_COUNT = 4;
+  const isFiltering = debouncedSearch.trim() !== "" || selectedCategory !== "All";
+
+  const categories = useMemo(() => ["All", ...new Set(projectsData.map((project) => project.category))], []);
 
   const filteredProjects = useMemo(() => {
     return projectsData.filter((project) => {
-      const q = debouncedSearch.toLowerCase();
+      const query = debouncedSearch.toLowerCase();
       const matchesSearch =
-        project.title.toLowerCase().includes(q) ||
-        project.description.toLowerCase().includes(q) ||
-        project.tags.some((tag) => tag.toLowerCase().includes(q)) ||
-        project.hooksUsed.some((hook) => hook.toLowerCase().includes(q));
+        project.title.toLowerCase().includes(query) ||
+        project.description.toLowerCase().includes(query) ||
+        project.outcome.toLowerCase().includes(query) ||
+        project.tags.some((tag) => tag.toLowerCase().includes(query)) ||
+        project.hooksUsed.some((hook) => hook.toLowerCase().includes(query));
 
-      const matchesCategory =
-        selectedCategory === "All" || project.category === selectedCategory;
-
-      return matchesSearch && matchesCategory;
+      return matchesSearch && (selectedCategory === "All" || project.category === selectedCategory);
     });
   }, [debouncedSearch, selectedCategory]);
 
@@ -153,70 +159,59 @@ export function Projects() {
     setSelectedCategory(category);
   }, []);
 
-  const featuredProjects = filteredProjects.filter((p) => p.featured);
-  const regularProjects = filteredProjects.filter((p) => !p.featured);
+  const visibleProjects =
+    showAll || isFiltering ? filteredProjects : filteredProjects.slice(0, INITIAL_COUNT);
+  const hasMore = !isFiltering && filteredProjects.length > INITIAL_COUNT;
 
   return (
     <section
       id="projects"
       ref={ref}
-      className="py-32 bg-gradient-to-b from-slate-800 to-slate-900 relative overflow-hidden"
+      className="relative overflow-hidden py-32"
+      aria-label="Featured projects"
     >
-      {/* Decorative background */}
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div
-          className={`transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
+      <div className="container relative z-10 mx-auto px-4">
+        <div className={`transition-all duration-1000 ease-[var(--ease-out)] ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
           <div className="mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-xl text-gray-400 mb-6" style={{ maxWidth: "65ch" }}>
-              Real-world apps built for real users — healthcare SaaS, logistics platforms, e-commerce, and AI-powered analytics.
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">Selected work</p>
+            <h2 className="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl">Featured Projects</h2>
+            <p className="mb-6 max-w-[68ch] text-xl leading-relaxed text-gray-400">
+              Real-world apps built for real users: healthcare SaaS, dental operations, logistics platforms,
+              e-commerce, and AI-powered analytics.
             </p>
-            <div className="w-16 h-1 bg-purple-500 rounded-full" />
+            <div className="h-1 w-16 rounded-full bg-gradient-to-r from-blue-500 to-sky-300" />
           </div>
 
-          {/* Search and Filter Controls */}
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
+          <div className="mx-auto mb-16 max-w-4xl">
+            <div className="mb-6 flex flex-col gap-4 md:flex-row">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
-                  placeholder="Search projects, hooks, or technologies..."
+                  placeholder="Search projects, hooks, outcomes, or technologies..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-6 py-3.5 rounded-xl border border-slate-700 bg-slate-800 text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all"
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  className="focus-ring w-full rounded-xl border border-slate-700 bg-slate-900 px-6 py-3.5 pl-12 text-white outline-none transition-all duration-200 placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
                 />
               </div>
               <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="md:hidden flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 transition-all"
+                onClick={() => setShowFilters((open) => !open)}
+                className="pressable focus-ring flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 text-white transition-colors duration-200 hover:bg-blue-500 md:hidden"
               >
-                <Filter className="w-5 h-5" />
+                <Filter className="h-5 w-5" />
                 Filters
               </button>
             </div>
 
-            {/* Category Filters */}
-            <div
-              className={`${
-                showFilters ? "flex" : "hidden"
-              } md:flex flex-wrap gap-3 justify-center`}
-            >
+            <div className={`${showFilters ? "flex" : "hidden"} flex-wrap justify-center gap-3 md:flex`}>
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => handleCategoryChange(category)}
-                  className={`px-6 py-3 rounded-xl transition-all ${
+                  className={`pressable focus-ring rounded-xl px-6 py-3 transition-colors duration-200 ${
                     selectedCategory === category
-                      ? "bg-purple-600 text-white shadow-md"
-                      : "bg-slate-800 border border-slate-700 text-gray-400 hover:text-white hover:border-slate-600"
+                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
+                      : "border border-slate-700 bg-slate-800 text-gray-400 hover:border-slate-500 hover:text-white"
                   }`}
                 >
                   {category}
@@ -225,52 +220,46 @@ export function Projects() {
             </div>
           </div>
 
-          {/* Results Count */}
-          <p className="text-center text-gray-400 mb-12 text-lg">
-            {filteredProjects.length} project
-            {filteredProjects.length !== 1 ? "s" : ""} found
+          <p className="mb-12 text-center text-lg text-gray-400">
+            {filteredProjects.length} project{filteredProjects.length !== 1 ? "s" : ""} found
           </p>
 
-          {/* Featured Projects */}
-          {featuredProjects.length > 0 && (
+          {filteredProjects.length > 0 ? (
             <div className="mb-20">
-              <div className="flex items-center gap-3 mb-8">
-                <Star className="w-6 h-6 text-yellow-400 fill-current" />
+              <div className="mb-8 flex items-center gap-3">
+                <Star className="h-6 w-6 fill-current text-sky-300" />
                 <h3 className="text-3xl text-white">Featured Work</h3>
               </div>
-              <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto mb-12">
-                {featuredProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                    isVisible={isVisible}
-                    featured
-                  />
+              <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2">
+                {visibleProjects.map((project, index) => (
+                  <ProjectCard key={project.id} project={project} index={index} isVisible={isVisible} />
                 ))}
               </div>
-            </div>
-          )}
 
-          {/* Regular Projects */}
-          {regularProjects.length > 0 && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {regularProjects.map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={index + featuredProjects.length}
-                  isVisible={isVisible}
-                />
-              ))}
+              {hasMore && (
+                <div className="mt-12 flex justify-center">
+                  <button
+                    onClick={() => setShowAll((open) => !open)}
+                    className="pressable focus-ring inline-flex items-center gap-2 rounded-xl border border-slate-400/25 bg-white/[0.04] px-7 py-3.5 font-semibold text-slate-100 transition-colors duration-200 hover:border-blue-400/50 hover:bg-blue-500/10 hover:text-white"
+                  >
+                    {showAll ? (
+                      <>
+                        Show less
+                        <ChevronUp className="h-4 w-4" />
+                      </>
+                    ) : (
+                      <>
+                        Show all projects ({filteredProjects.length})
+                        <ChevronDown className="h-4 w-4" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-
-          {filteredProjects.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-2xl text-gray-500">
-                No projects found matching your criteria.
-              </p>
+          ) : (
+            <div className="rounded-2xl border border-slate-700/60 bg-slate-800/70 py-16 text-center">
+              <p className="text-2xl text-gray-400">No projects found matching your criteria.</p>
             </div>
           )}
         </div>
@@ -279,90 +268,61 @@ export function Projects() {
   );
 }
 
-function ProjectCard({
-  project,
-  index,
-  isVisible
-}: {
-  project: Project;
-  index: number;
-  isVisible: boolean;
-  featured?: boolean;
-}) {
+function ProjectCard({ project, index, isVisible }: { project: Project; index: number; isVisible: boolean }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`group bg-slate-800/80 rounded-xl overflow-hidden border border-slate-700/60 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 hover:-translate-y-1 delay-${
-        index * 100
-      } ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+    <article
+      onMouseMove={handleSpotlight}
+      className={`spotlight-card group edge-silver overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-800/85 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/45 hover:shadow-blue-500/10 ${
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
       }`}
+      style={{ transitionDelay: `${Math.min(index * 70, 420)}ms` }}
     >
-      <div className="relative h-64 bg-gradient-to-br from-purple-900/20 to-pink-900/20 overflow-hidden">
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={project.title}
-            onLoad={() => setImageLoaded(true)}
-            className={`w-full h-full object-cover transition-all duration-700 ${
-              imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110"
-            } ${isHovered ? "scale-110" : ""}`}
-          />
-        ) : (
-          <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${project.placeholderGradient ?? "from-purple-700 to-pink-700"} transition-transform duration-700 ${isHovered ? "scale-110" : "scale-100"}`}>
-            {project.placeholderIcon && (
-              <project.placeholderIcon className="w-24 h-24 text-white/30" />
-            )}
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+      <div className="relative h-64 overflow-hidden bg-slate-900">
+        <img
+          src={project.image}
+          alt={`${project.title} interface screenshot`}
+          onLoad={() => setImageLoaded(true)}
+          className={`h-full w-full object-cover transition-all duration-700 group-hover:scale-105 ${
+            imageLoaded ? "scale-100 opacity-100" : "scale-105 opacity-0"
+          }`}
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
+        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md">
+          {project.category}
+        </div>
         {project.featured && (
-          <div className="absolute top-4 right-4 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 text-sm flex items-center gap-2">
-            <Star className="w-4 h-4 fill-current" />
+          <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-gradient-to-b from-slate-100 to-slate-300 px-4 py-2 text-sm font-semibold text-slate-950">
+            <Star className="h-4 w-4 fill-current" />
             Featured
           </div>
         )}
-
-        <div className="absolute top-4 left-4 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm border border-white/20">
-          {project.category}
-        </div>
       </div>
 
-      <div className="p-8">
-        <h3 className="text-xl font-bold mb-3 text-white leading-snug">
-          {project.title}
-        </h3>
-        <p className="text-gray-400 mb-6 leading-relaxed">
-          {project.description}
+      <div className="relative z-[2] p-7 md:p-8">
+        <h3 className="mb-3 text-xl font-bold leading-snug text-white">{project.title}</h3>
+        <p className="mb-5 leading-relaxed text-gray-400">{project.description}</p>
+        <p className="mb-6 rounded-xl border border-blue-400/20 bg-blue-500/10 p-4 text-sm leading-relaxed text-blue-100">
+          <span className="font-semibold text-white">Outcome:</span> {project.outcome}
         </p>
 
         <div className="mb-6">
-          <p className="text-sm text-purple-400 mb-3">
-            React Hooks & Patterns:
-          </p>
+          <p className="mb-3 text-sm text-blue-300">React Hooks & Patterns:</p>
           <div className="flex flex-wrap gap-2">
             {project.hooksUsed.map((hook) => (
-              <span
-                key={hook}
-                className="px-3 py-1 text-sm rounded-lg bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border border-green-500/30"
-              >
+              <span key={hook} className="rounded-lg border border-slate-400/20 bg-slate-300/[0.06] px-3 py-1 text-sm text-slate-200">
                 {hook}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 text-sm rounded-lg bg-white/5 text-gray-300 border border-white/10"
-            >
+            <span key={tag} className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1 text-sm text-gray-300">
               {tag}
             </span>
           ))}
@@ -373,22 +333,22 @@ function ProjectCard({
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-700/60 border border-slate-600/60 text-white hover:bg-slate-700 transition-all duration-200 group"
+            className="pressable focus-ring flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-600/60 bg-slate-700/60 px-4 py-3 text-white transition-colors duration-200 hover:bg-slate-700"
           >
-            <Github className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+            <Github className="h-5 w-5" />
             Code
           </a>
           <a
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white transition-all duration-200 shadow-md shadow-purple-600/20 group"
+            className="pressable focus-ring flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-white shadow-md shadow-blue-600/20 transition-colors duration-200 hover:bg-blue-500"
           >
-            <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ExternalLink className="h-5 w-5" />
             Demo
           </a>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

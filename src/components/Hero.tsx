@@ -1,16 +1,29 @@
-import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, ArrowDown, Bot } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowDown, Bot, BrainCircuit, CheckCircle2, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 
 const ROLES = [
   "Senior Full-Stack Developer",
   "Agentic AI Engineer",
   "SaaS Architect",
-  "Software Solutions Consultant",
+  "Product-Minded Builder",
 ];
 
 const TECH_STACK = [
-  "React", "Next.js", "TypeScript", "Supabase", "Node.js",
-  "PostgreSQL", "Tailwind CSS", "Claude API", "OpenAI",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Supabase",
+  "PostgreSQL",
+  "Node.js",
+  "Tailwind CSS",
+  "Claude API",
+  "OpenAI",
+];
+
+const PROOF_POINTS = [
+  "4+ years building production software",
+  "7 shipped SaaS and web platforms",
+  "Full-stack ownership from schema to UI",
 ];
 
 export function Hero() {
@@ -19,148 +32,145 @@ export function Hero() {
   const [charIndex, setCharIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
+  const currentRole = useMemo(() => ROLES[roleIndex], [roleIndex]);
+
   useEffect(() => {
-    const current = ROLES[roleIndex];
     let timeout: ReturnType<typeof setTimeout>;
 
-    if (!deleting && charIndex < current.length) {
+    if (!deleting && charIndex < currentRole.length) {
       timeout = setTimeout(() => {
-        setDisplayText(current.slice(0, charIndex + 1));
-        setCharIndex((i) => i + 1);
-      }, 60);
-    } else if (!deleting && charIndex === current.length) {
-      timeout = setTimeout(() => setDeleting(true), 2200);
+        setDisplayText(currentRole.slice(0, charIndex + 1));
+        setCharIndex((index) => index + 1);
+      }, 52);
+    } else if (!deleting && charIndex === currentRole.length) {
+      timeout = setTimeout(() => setDeleting(true), 2100);
     } else if (deleting && charIndex > 0) {
       timeout = setTimeout(() => {
-        setDisplayText(current.slice(0, charIndex - 1));
-        setCharIndex((i) => i - 1);
-      }, 35);
-    } else if (deleting && charIndex === 0) {
+        setDisplayText(currentRole.slice(0, charIndex - 1));
+        setCharIndex((index) => index - 1);
+      }, 28);
+    } else {
       setDeleting(false);
-      setRoleIndex((i) => (i + 1) % ROLES.length);
+      setRoleIndex((index) => (index + 1) % ROLES.length);
     }
 
     return () => clearTimeout(timeout);
-  }, [charIndex, deleting, roleIndex]);
+  }, [charIndex, currentRole, deleting]);
 
   return (
     <section
       id="hero"
       aria-label="Introduction"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
+      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden"
     >
-      {/* Atmospheric background blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
-      </div>
 
-      <div className="container mx-auto px-4 relative z-10 py-20">
-        <div className="max-w-5xl mx-auto text-center">
-
-          {/* Availability badge */}
-          <div className="mb-8 flex items-center justify-center gap-3 flex-wrap">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+      <div className="container relative z-10 mx-auto px-4 py-24">
+        <div className="mx-auto max-w-[calc(100vw-2rem)] overflow-hidden text-center sm:max-w-5xl">
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up">
+            <span className="inline-flex min-h-10 items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200">
+              <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.8)]" />
               Available for work
             </span>
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-sm">
-              <Bot className="w-3.5 h-3.5" />
+            <span className="hidden min-h-10 items-center gap-2 rounded-full border border-blue-400/25 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-100 sm:inline-flex">
+              <Bot className="h-4 w-4" />
               Agentic AI Developer
+            </span>
+            <span className="hidden min-h-10 items-center gap-2 rounded-full border border-slate-400/15 bg-slate-300/5 px-4 py-2 text-sm font-medium text-slate-300 sm:inline-flex">
+              <Sparkles className="h-4 w-4 text-slate-200" />
+              Senior product judgment
             </span>
           </div>
 
-          {/* Name */}
-          <h1 className="text-6xl md:text-8xl font-extrabold mb-4 text-white leading-tight tracking-tight">
-            Den Jansen
-            <span className="block text-purple-400">Flores</span>
+          <p className="animate-fade-up delay-100 mb-3 text-lg font-medium text-blue-300 md:text-xl">
+            Hi, my name is
+          </p>
+
+          <h1 className="animate-fade-up delay-100 mx-auto mb-5 max-w-full text-[clamp(3rem,13vw,7.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-white">
+            <span>Den</span>
+            <span className="block sm:inline"> Jansen</span>
+            <span className="block text-silver text-silver-shine">Flores</span>
           </h1>
 
-          {/* Typewriter role */}
-          <div className="h-14 mb-8 flex items-center justify-center">
-            <p className="text-2xl md:text-3xl text-gray-300 font-medium">
+          <div className="animate-fade-up delay-200 mb-8 flex min-h-14 items-center justify-center">
+            <p className="text-2xl font-semibold text-slate-200 md:text-3xl">
               {displayText}
-              <span className="animate-pulse text-purple-400 ml-0.5">|</span>
+              <span className="ml-0.5 text-blue-400 animate-blink">|</span>
             </p>
           </div>
 
-          {/* Value proposition */}
-          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed" style={{ maxWidth: "65ch" }}>
-            I build <span className="text-white font-medium">production-ready SaaS platforms</span> and{" "}
-            <span className="text-white font-medium">AI-powered agentic systems</span> that solve real
-            business problems — from healthcare and logistics to e-commerce and HR.
-            Fast delivery. Clean architecture. Real results.
+          <p className="animate-fade-up delay-300 mx-auto mb-8 max-w-[30ch] text-lg leading-8 text-gray-300 sm:max-w-[68ch] md:text-xl">
+            I build <span className="font-semibold text-white">production-ready SaaS platforms</span> and{" "}
+            <span className="font-semibold text-white">AI-powered agentic systems</span> for businesses that need clean
+            architecture, secure workflows, and polished user experiences. Real systems, real users, measurable outcomes.
           </p>
 
-          {/* Tech stack pills */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
+          <div className="animate-fade-up delay-400 mx-auto mb-10 grid max-w-full gap-3 sm:max-w-4xl sm:grid-cols-3">
+            {PROOF_POINTS.map((point) => (
+              <div key={point} className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 backdrop-blur-md">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-400" />
+                <span>{point}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="animate-fade-up delay-500 mx-auto mb-10 flex max-w-[calc(100vw-2rem)] flex-wrap justify-center gap-2 sm:max-w-full">
             {TECH_STACK.map((tech) => (
               <span
                 key={tech}
-                className="px-3 py-1.5 rounded-full text-sm text-gray-300 bg-white/5 border border-white/10"
+                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300 transition-colors duration-200 hover:border-blue-400/40 hover:bg-blue-500/10 hover:text-white"
               >
                 {tech}
               </span>
             ))}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+          <div className="animate-fade-up delay-600 mb-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
               onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-              className="px-8 py-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-all duration-200 hover:scale-105 shadow-lg shadow-purple-600/30"
+              className="pressable focus-ring inline-flex min-h-12 items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-600/30 transition-colors duration-200 hover:bg-blue-500"
             >
               View My Work
+              <ArrowDown className="h-4 w-4" />
             </button>
             <button
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-              className="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/10 font-semibold transition-all duration-200 hover:scale-105"
+              className="pressable focus-ring min-h-12 rounded-xl border border-slate-400/25 px-8 py-4 font-semibold text-slate-100 transition-colors duration-200 hover:border-slate-300/40 hover:bg-white/[0.06]"
             >
               Get In Touch
             </button>
           </div>
 
-          {/* Social links */}
-          <div className="flex items-center justify-center gap-3 mb-16">
-            <a
-              href="https://github.com/TsuTsu03"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub profile"
-              className="group p-3 rounded-xl border border-white/15 text-gray-400 hover:text-white hover:border-white/30 transition-all duration-200"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/den-jansen-flores-79b8ba387/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn profile"
-              className="group p-3 rounded-xl border border-white/15 text-gray-400 hover:text-white hover:border-white/30 transition-all duration-200"
-            >
-              <Linkedin className="w-5 h-5" />
-            </a>
-            <a
-              href="mailto:floresjansen28@gmail.com"
-              aria-label="Send email"
-              className="group p-3 rounded-xl border border-white/15 text-gray-400 hover:text-white hover:border-white/30 transition-all duration-200"
-            >
-              <Mail className="w-5 h-5" />
-            </a>
+          <div className="animate-fade-up delay-700 mb-16 flex items-center justify-center gap-3">
+            {[
+              { href: "https://github.com/TsuTsu03", label: "GitHub profile", icon: Github },
+              { href: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/", label: "LinkedIn profile", icon: Linkedin },
+              { href: "mailto:floresjansen28@gmail.com", label: "Send email", icon: Mail },
+            ].map(({ href, label, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("mailto") ? undefined : "_blank"}
+                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                aria-label={label}
+                className="pressable focus-ring rounded-xl border border-white/15 bg-white/[0.04] p-3 text-gray-300 transition-colors duration-200 hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            ))}
           </div>
 
-          {/* Scroll indicator */}
           <button
             onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
             aria-label="Scroll to about section"
-            className="text-gray-500 hover:text-gray-300 transition-colors duration-200 flex flex-col items-center gap-2 mx-auto"
+            className="focus-ring mx-auto flex flex-col items-center gap-2 text-gray-400 transition-colors duration-200 hover:text-gray-200"
           >
-            <span className="text-xs tracking-widest uppercase">Scroll</span>
-            <ArrowDown className="w-4 h-4 animate-bounce" />
+            <span className="text-xs font-semibold uppercase tracking-[0.22em]">Scroll</span>
+            <ArrowDown className="h-4 w-4 animate-float-y" />
           </button>
         </div>
       </div>
+
+      <BrainCircuit className="absolute bottom-10 right-8 hidden h-16 w-16 text-white/[0.035] md:block" aria-hidden="true" />
     </section>
   );
 }
