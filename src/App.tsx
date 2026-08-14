@@ -5,14 +5,14 @@ import { Skills } from "./components/Skills";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { Projects } from "./components/Project";
-import { AuroraBackground } from "./components/AuroraBackground";
+import { GothamBackdrop } from "./components/GothamBackdrop";
 import ThemeProvider from "./context/ThemeProvider";
 
 export default function App() {
   return (
     <ThemeProvider>
-      <div className="min-h-screen transition-colors">
-        <AuroraBackground />
+      <div className="min-h-screen bg-void">
+        <GothamBackdrop />
         <Header />
         <main>
           <Hero />

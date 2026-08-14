@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowDown, Bot, BrainCircuit, CheckCircle2, Github, Linkedin, Mail, Sparkles } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 
 const ROLES = [
   "Senior Full-Stack Developer",
@@ -20,10 +20,20 @@ const TECH_STACK = [
   "OpenAI",
 ];
 
-const PROOF_POINTS = [
-  "4+ years building production software",
-  "7 shipped SaaS and web platforms",
-  "Full-stack ownership from schema to UI",
+const FIELD_READOUT = [
+  { label: "Years active", value: "4+" },
+  { label: "Systems shipped", value: "7" },
+  { label: "Ownership", value: "Schema → UI" },
+];
+
+const SOCIALS = [
+  { href: "https://github.com/TsuTsu03", label: "GitHub profile", icon: Github },
+  {
+    href: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/",
+    label: "LinkedIn profile",
+    icon: Linkedin,
+  },
+  { href: "mailto:floresjansen28@gmail.com", label: "Send email", icon: Mail },
 ];
 
 export function Hero() {
@@ -61,116 +71,110 @@ export function Hero() {
     <section
       id="hero"
       aria-label="Introduction"
-      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden"
+      className="relative flex min-h-[100dvh] items-center overflow-hidden"
     >
-
-      <div className="container relative z-10 mx-auto px-4 py-24">
-        <div className="mx-auto max-w-[calc(100vw-2rem)] overflow-hidden text-center sm:max-w-5xl">
-          <div className="mb-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up">
-            <span className="inline-flex min-h-10 items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200">
-              <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.8)]" />
+      <div className="mx-auto w-full max-w-[1400px] px-4 pt-28 pb-20 sm:px-6">
+        <div className="max-w-5xl">
+          <p className="data-label animate-fade-up mb-8 flex flex-wrap items-center gap-3">
+            <span className="text-signal">01</span>
+            <span aria-hidden="true" className="h-px w-10 bg-steel-bright" />
+            <span>Identity</span>
+            <span aria-hidden="true" className="h-px w-6 bg-steel" />
+            <span className="inline-flex items-center gap-2 text-sodium">
+              <span className="animate-status-pulse h-1.5 w-1.5 bg-sodium" />
               Available for work
             </span>
-            <span className="hidden min-h-10 items-center gap-2 rounded-full border border-blue-400/25 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-100 sm:inline-flex">
-              <Bot className="h-4 w-4" />
-              Agentic AI Developer
-            </span>
-            <span className="hidden min-h-10 items-center gap-2 rounded-full border border-slate-400/15 bg-slate-300/5 px-4 py-2 text-sm font-medium text-slate-300 sm:inline-flex">
-              <Sparkles className="h-4 w-4 text-slate-200" />
-              Senior product judgment
-            </span>
-          </div>
+          </p>
 
-          <p className="animate-fade-up delay-100 mb-3 text-lg font-medium text-blue-300 md:text-xl">
+          <p className="animate-fade-up delay-100 mb-4 font-mono text-sm tracking-[0.12em] text-ash">
             Hi, my name is
           </p>
 
-          <h1 className="animate-fade-up delay-100 mx-auto mb-5 max-w-full text-[clamp(3rem,13vw,7.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-white">
-            <span>Den</span>
-            <span className="block sm:inline"> Jansen</span>
-            <span className="block text-silver text-silver-shine">Flores</span>
+          <h1 className="animate-fade-up delay-100 display-wide mb-8 text-[clamp(2.75rem,11vw,7rem)] leading-[0.88] text-white-hot">
+            <span className="block">Den Jansen</span>
+            <span className="block text-signal">Flores</span>
           </h1>
 
-          <div className="animate-fade-up delay-200 mb-8 flex min-h-14 items-center justify-center">
-            <p className="text-2xl font-semibold text-slate-200 md:text-3xl">
+          <div className="animate-fade-up delay-200 mb-10 flex min-h-9 items-center gap-3 border-l-2 border-signal/60 pl-4">
+            <p className="font-mono text-base tracking-[0.04em] text-bone sm:text-lg">
               {displayText}
-              <span className="ml-0.5 text-blue-400 animate-blink">|</span>
+              <span className="animate-blink ml-0.5 text-signal">_</span>
             </p>
           </div>
 
-          <p className="animate-fade-up delay-300 mx-auto mb-8 max-w-[30ch] text-lg leading-8 text-gray-300 sm:max-w-[68ch] md:text-xl">
-            I build <span className="font-semibold text-white">production-ready SaaS platforms</span> and{" "}
-            <span className="font-semibold text-white">AI-powered agentic systems</span> for businesses that need clean
-            architecture, secure workflows, and polished user experiences. Real systems, real users, measurable outcomes.
+          <p className="animate-fade-up delay-300 mb-12 max-w-[62ch] text-lg leading-8 text-ash">
+            I build{" "}
+            <span className="font-medium text-white-hot">production-ready SaaS platforms</span> and{" "}
+            <span className="font-medium text-white-hot">AI-powered agentic systems</span> for
+            businesses that need clean architecture, secure workflows, and polished user
+            experiences. Real systems, real users, measurable outcomes.
           </p>
 
-          <div className="animate-fade-up delay-400 mx-auto mb-10 grid max-w-full gap-3 sm:max-w-4xl sm:grid-cols-3">
-            {PROOF_POINTS.map((point) => (
-              <div key={point} className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 backdrop-blur-md">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-400" />
-                <span>{point}</span>
+          {/* Field readout — the three numbers that matter, stated flatly */}
+          <dl className="animate-fade-up delay-400 mb-12 grid max-w-2xl grid-cols-1 border-t border-steel sm:grid-cols-3">
+            {FIELD_READOUT.map(({ label, value }) => (
+              <div
+                key={label}
+                className="border-b border-steel px-1 py-4 sm:border-r sm:border-b-0 sm:px-4 sm:first:pl-0 sm:last:border-r-0"
+              >
+                <dt className="data-label mb-2">{label}</dt>
+                <dd className="display-tight text-2xl text-white-hot">{value}</dd>
               </div>
             ))}
-          </div>
+          </dl>
 
-          <div className="animate-fade-up delay-500 mx-auto mb-10 flex max-w-[calc(100vw-2rem)] flex-wrap justify-center gap-2 sm:max-w-full">
+          <div className="animate-fade-up delay-500 mb-12 flex flex-wrap gap-2">
             {TECH_STACK.map((tech) => (
               <span
                 key={tech}
-                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300 transition-colors duration-200 hover:border-blue-400/40 hover:bg-blue-500/10 hover:text-white"
+                className="border border-steel px-2.5 py-1.5 font-mono text-[0.6875rem] tracking-[0.06em] text-ash transition-colors duration-200 hover:border-signal/50 hover:text-signal"
               >
                 {tech}
               </span>
             ))}
           </div>
 
-          <div className="animate-fade-up delay-600 mb-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="animate-fade-up delay-600 mb-12 flex flex-col gap-3 sm:flex-row sm:items-center">
             <button
               onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-              className="pressable focus-ring inline-flex min-h-12 items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-600/30 transition-colors duration-200 hover:bg-blue-500"
+              className="pressable focus-ring chamfer inline-flex min-h-12 items-center justify-center gap-2.5 bg-signal px-7 py-3.5 font-mono text-xs tracking-[0.16em] text-void uppercase transition-colors duration-200 hover:bg-white-hot"
             >
-              View My Work
-              <ArrowDown className="h-4 w-4" />
+              View Case Files
+              <ArrowDown className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-              className="pressable focus-ring min-h-12 rounded-xl border border-slate-400/25 px-8 py-4 font-semibold text-slate-100 transition-colors duration-200 hover:border-slate-300/40 hover:bg-white/[0.06]"
+              className="pressable focus-ring inline-flex min-h-12 items-center justify-center gap-2.5 border border-steel-bright px-7 py-3.5 font-mono text-xs tracking-[0.16em] text-bone uppercase transition-colors duration-200 hover:border-signal hover:text-signal"
             >
-              Get In Touch
+              Light the Signal
             </button>
-          </div>
 
-          <div className="animate-fade-up delay-700 mb-16 flex items-center justify-center gap-3">
-            {[
-              { href: "https://github.com/TsuTsu03", label: "GitHub profile", icon: Github },
-              { href: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/", label: "LinkedIn profile", icon: Linkedin },
-              { href: "mailto:floresjansen28@gmail.com", label: "Send email", icon: Mail },
-            ].map(({ href, label, icon: Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith("mailto") ? undefined : "_blank"}
-                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                aria-label={label}
-                className="pressable focus-ring rounded-xl border border-white/15 bg-white/[0.04] p-3 text-gray-300 transition-colors duration-200 hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
-              >
-                <Icon className="h-5 w-5" />
-              </a>
-            ))}
+            <div className="flex items-center gap-2 sm:ml-3">
+              {SOCIALS.map(({ href, label, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                  aria-label={label}
+                  className="pressable focus-ring border border-steel-bright p-3 text-ash transition-colors duration-200 hover:border-signal/50 hover:text-signal"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
           <button
             onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
             aria-label="Scroll to about section"
-            className="focus-ring mx-auto flex flex-col items-center gap-2 text-gray-400 transition-colors duration-200 hover:text-gray-200"
+            className="focus-ring animate-fade-up delay-700 flex items-center gap-3 text-ash transition-colors duration-200 hover:text-signal"
           >
-            <span className="text-xs font-semibold uppercase tracking-[0.22em]">Scroll</span>
-            <ArrowDown className="h-4 w-4 animate-float-y" />
+            <span className="data-label">Descend</span>
+            <ArrowDown className="animate-float-y h-3.5 w-3.5" />
           </button>
         </div>
       </div>
-
-      <BrainCircuit className="absolute bottom-10 right-8 hidden h-16 w-16 text-white/[0.035] md:block" aria-hidden="true" />
     </section>
   );
 }

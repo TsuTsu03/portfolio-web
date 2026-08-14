@@ -38,26 +38,35 @@ which is a generic surname and carries no mark.
 | `--void` | `#050708` | page base, blue-green-cast black | — |
 | `--concrete` | `#0B0E11` | panel surface | — |
 | `--concrete-raised` | `#131820` | hover / elevated surface | — |
-| `--steel` | `#29323B` | 1px hairlines, borders | — |
-| `--ash` | `#6D7A85` | muted / secondary text | ~6.5:1 |
-| `--bone` | `#DCE4EA` | body text | ~14:1 |
-| `--white-hot` | `#F2F6F9` | headings | ~16:1 |
-| `--signal` | `#A8CBE2` | cold searchlight accent | ~11:1 |
-| `--sodium` | `#E39A4F` | street-lamp amber — status only, rare | ~8.9:1 |
+| `--steel` | `#29323B` | decorative hairlines only | — |
+| `--steel-bright` | `#56626E` | interactive control borders | 3.24:1 |
+| `--ash` | `#86939E` | muted / secondary text | 6.42:1 |
+| `--bone` | `#DCE4EA` | body text | 15.70:1 |
+| `--white-hot` | `#F2F6F9` | headings | 18.58:1 |
+| `--signal` | `#A8CBE2` | cold searchlight accent | 11.83:1 |
+| `--sodium` | `#E39A4F` | street-lamp amber — status only, rare | 8.65:1 |
+
+Contrast ratios are measured in the browser, not estimated. Two tokens were corrected
+after measurement: `--ash` started at `#6D7A85` and measured 4.40:1 against `--concrete`,
+below the 4.5:1 AA floor for the body copy it carries; `--steel-bright` started at `#3C4854`
+and measured 2.16:1, below the 3:1 floor for the control borders it draws.
 
 ### Palette — Day (Wayne)
 
-| Token | Value |
-|---|---|
-| `--void` | `#E7EAEC` |
-| `--concrete` | `#F4F6F7` |
-| `--concrete-raised` | `#FFFFFF` |
-| `--steel` | `#C4CBD1` |
-| `--ash` | `#5A646D` |
-| `--bone` | `#161B20` |
-| `--white-hot` | `#05080A` |
-| `--signal` | `#1F5474` |
-| `--sodium` | `#8A4E12` |
+| Token | Value | Contrast on `--void` |
+|---|---|---|
+| `--void` | `#E7EAEC` | — |
+| `--concrete` | `#F4F6F7` | — |
+| `--concrete-raised` | `#FFFFFF` | — |
+| `--steel` | `#C4CBD1` | — |
+| `--steel-bright` | `#76818B` | 3.29:1 |
+| `--ash` | `#5A646D` | 5.00:1 |
+| `--bone` | `#161B20` | 14.34:1 |
+| `--white-hot` | `#05080A` | — |
+| `--signal` | `#1F5474` | 6.74:1 |
+| `--sodium` | `#8A4E12` | 5.47:1 |
+
+Day's `--steel-bright` was corrected from `#A9B3BB` (1.76:1) for the same reason as Night's.
 
 Two light sources is the Nolan signature: cold searchlight plus sodium practicals. Sodium stays
 scarce — reserved for live status (availability dot, form success, active filter). Scarcity is
@@ -166,6 +175,9 @@ pointers.
 ## 5. Accessibility and SEO
 
 - All body/heading text meets WCAG AA or better (see palette table)
+- `--steel` is decorative only. Anything that draws the boundary of an interactive control —
+  buttons, filter chips, form fields, icon links — uses `--steel-bright` so it clears the 3:1
+  non-text contrast floor (WCAG 1.4.11)
 - Focus rings: 2px `--signal`, 3px offset, never removed
 - Canvas hidden from assistive tech; no content depends on it
 - Heading outline and H1/H2 text unchanged in meaning
@@ -180,10 +192,14 @@ pointers.
 - `src/scene/Rain.tsx`
 - `src/scene/SignalCone.tsx`
 - `src/scene/useScrollDepth.ts`
+- `src/scene/atmosphere.ts` (per-persona scene palette + linear-space colour helper)
 - `src/components/GothamBackdrop.tsx` (CSS fallback)
-- `src/components/ui/Panel.tsx`
-- `src/components/ui/Eyebrow.tsx`
-- `src/components/ui/DataRow.tsx`
+- `src/components/ui/SectionHeading.tsx`
+
+`Panel`, `Eyebrow`, and `DataRow` were planned as components but dropped. Only the section
+header actually repeated across five sections; the rest are a single class each (`.panel`,
+`.chamfer`, `.rim-top`, `.data-label`, `.data-value`), and wrapping those in components would
+have added indirection without removing duplication.
 
 **Modified**
 - `src/index.css` — tokens, texture, utilities
@@ -199,7 +215,23 @@ pointers.
 
 ## 7. Verification
 
-- `npm run build` (tsc -b + vite build) clean
+Done:
+
+- `npm run build` (tsc -b + vite build) clean; main bundle 75.6 KB gzip, three.js isolated in a
+  lazy `GothamScene` chunk at 238 KB gzip
 - `npm run lint` clean
-- Dev server rendered and inspected in-browser: console clean, both personas, mobile viewport
-- Contrast values confirmed against the palette table
+- Browser console clean on load — no errors, no warnings
+- All three shader programs (skyline, rain, signal cone) compile and link on a real WebGL
+  context, checked with three.js's own attribute/uniform prefix
+- Contrast measured in-browser for both personas; every value in the palette tables above is a
+  measurement, and the two failures found were fixed
+- Persona switch verified end to end: `data-persona`, `.dark` class, `localStorage`,
+  `theme-color` meta, body background, and `aria-checked` / `aria-label` all update
+- Mobile 375px: no horizontal overflow, mobile menu and persona switch both reachable
+- Heading outline preserved: one H1 (the name) and the five original H2 strings unchanged
+
+Not verified — the in-app browser pane was not displayed during this session, so the page never
+composited frames. That blocks screenshots, and it also stalls the rAF loop that r3f uses to
+size its canvas, so the scene was never seen rendering. The shader compile/link check and the
+clean console cover correctness; composition, framing, and the look of the descent still need a
+human pass with the pane open.

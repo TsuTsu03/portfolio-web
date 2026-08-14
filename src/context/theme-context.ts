@@ -1,12 +1,15 @@
 import { createContext } from "react";
 
-export type Theme = "light" | "dark";
+/**
+ * Two faces of the same operator:
+ * `gotham` is the night identity (default), `wayne` the daylight one.
+ */
+export type Persona = "gotham" | "wayne";
+
 export type ThemeContextType = {
-  theme: Theme;
-  setTheme: (t: Theme) => void;
-  toggleTheme: () => void; // ✅ add this
+  persona: Persona;
+  setPersona: (persona: Persona) => void;
+  togglePersona: () => void;
 };
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

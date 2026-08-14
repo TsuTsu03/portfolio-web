@@ -1,51 +1,56 @@
 import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
 
+const LINKS = [
+  { icon: Github, href: "https://github.com/TsuTsu03", label: "GitHub" },
+  {
+    icon: Linkedin,
+    href: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/",
+    label: "LinkedIn",
+  },
+  { icon: Mail, href: "mailto:floresjansen28@gmail.com", label: "Email" },
+];
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-black py-16 text-white">
-      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
-
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center gap-8">
-          <div className="text-3xl font-bold tracking-tight text-white">
-            Jansen<span className="text-blue-400">.</span>
+    <footer className="relative border-t border-steel bg-void/85 backdrop-blur-sm">
+      <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="display-wide text-2xl text-white-hot">Den Jansen Flores</p>
+            <p className="data-label mt-3">
+              Metro Manila, PH · UTC+8 ·{" "}
+              <span className="text-sodium">Available</span>
+            </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            {[
-              { icon: Github, href: "https://github.com/TsuTsu03", label: "GitHub" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/", label: "LinkedIn" },
-              { icon: Mail, href: "mailto:floresjansen28@gmail.com", label: "Email" },
-            ].map(({ icon: Icon, href, label }) => (
+          <div className="flex items-center gap-2">
+            {LINKS.map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                 aria-label={label}
-                className="focus-ring pressable rounded-xl border border-white/10 p-3 text-gray-400 transition-colors duration-200 hover:border-white/25 hover:text-white"
+                className="focus-ring pressable border border-steel-bright p-2.5 text-ash transition-colors duration-200 hover:border-signal/50 hover:text-signal"
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-4 w-4" />
               </a>
             ))}
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Scroll to top"
+              className="focus-ring pressable border border-steel-bright p-2.5 text-ash transition-colors duration-200 hover:border-signal/50 hover:text-signal"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </button>
           </div>
+        </div>
 
-          <div className="h-px w-full bg-white/5" />
-
-          <div className="flex w-full flex-col items-center justify-between gap-4 text-sm text-gray-500 sm:flex-row">
-            <p>© {currentYear} Den Jansen Flores. All rights reserved.</p>
-            <p>Senior Full-Stack Developer · Agentic AI Engineer · Metro Manila, PH</p>
-          </div>
-
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Scroll to top"
-            className="focus-ring pressable rounded-xl border border-white/10 p-3 text-gray-400 transition-colors duration-200 hover:border-white/25 hover:text-white"
-          >
-            <ArrowUp className="h-5 w-5" />
-          </button>
+        <div className="mt-10 flex flex-col gap-2 border-t border-steel pt-6 font-mono text-[0.6875rem] tracking-[0.08em] text-ash sm:flex-row sm:items-center sm:justify-between">
+          <p>© {currentYear} Den Jansen Flores</p>
+          <p>Senior Full-Stack Developer · Agentic AI Engineer</p>
         </div>
       </div>
     </footer>

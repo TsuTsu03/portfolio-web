@@ -24,10 +24,30 @@
     <meta name="twitter:title" content="Den Jansen Flores — Senior Full-Stack & Agentic AI Developer" />
     <meta name="twitter:description" content="Senior Full-Stack Developer and Agentic AI Engineer. I build production-ready SaaS platforms and AI-powered systems." />
 
-    <!-- Fonts: Geist (display) + Hanken Grotesk (body) + JetBrains Mono (code) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet" />
+    <!-- Fonts are self-hosted via @fontsource-variable (see src/main.tsx):
+         Archivo (display) + Inter (body) + JetBrains Mono (data). -->
+
+    <meta name="theme-color" content="#050708" />
+
+    <!-- Resolve the persona before first paint so a stored Wayne preference
+         never flashes through the default Gotham palette. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-persona");
+          var persona =
+            stored === "gotham" || stored === "wayne"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "wayne"
+                : "gotham";
+          document.documentElement.dataset.persona = persona;
+          document.documentElement.classList.toggle("dark", persona === "gotham");
+        } catch (e) {
+          document.documentElement.dataset.persona = "gotham";
+        }
+      })();
+    </script>
 
     <!-- Structured Data: Person + WebSite schema -->
     <script type="application/ld+json">

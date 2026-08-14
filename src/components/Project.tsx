@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { ChevronDown, ChevronUp, ExternalLink, Filter, Github, Search, Star } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink, Github, Search } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import { handleSpotlight } from "../lib/spotlight";
+import { SectionHeading } from "./ui/SectionHeading";
 
 import CareerPathImg from "../assets/projects/Carpath.png";
 import ClinicFlowImg from "../assets/projects/clinicflow.png";
@@ -127,19 +128,22 @@ const projectsData: Project[] = [
   },
 ];
 
+const INITIAL_COUNT = 4;
+
 export function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [showFilters, setShowFilters] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const debouncedSearch = useDebounce(searchQuery, 300);
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useIntersectionObserver(ref, { threshold: 0.1 });
 
-  const INITIAL_COUNT = 4;
   const isFiltering = debouncedSearch.trim() !== "" || selectedCategory !== "All";
 
-  const categories = useMemo(() => ["All", ...new Set(projectsData.map((project) => project.category))], []);
+  const categories = useMemo(
+    () => ["All", ...new Set(projectsData.map((project) => project.category))],
+    []
+  );
 
   const filteredProjects = useMemo(() => {
     return projectsData.filter((project) => {
@@ -164,75 +168,63 @@ export function Projects() {
   const hasMore = !isFiltering && filteredProjects.length > INITIAL_COUNT;
 
   return (
-    <section
-      id="projects"
-      ref={ref}
-      className="relative overflow-hidden py-32"
-      aria-label="Featured projects"
-    >
-      <div className="container relative z-10 mx-auto px-4">
-        <div className={`transition-all duration-1000 ease-[var(--ease-out)] ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
-          <div className="mb-16">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">Selected work</p>
-            <h2 className="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl">Featured Projects</h2>
-            <p className="mb-6 max-w-[68ch] text-xl leading-relaxed text-gray-400">
-              Real-world apps built for real users: healthcare SaaS, dental operations, logistics platforms,
-              e-commerce, and AI-powered analytics.
-            </p>
-            <div className="h-1 w-16 rounded-full bg-gradient-to-r from-blue-500 to-sky-300" />
-          </div>
+    <section id="projects" ref={ref} className="relative py-28 md:py-36" aria-label="Featured projects">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+        <div
+          className={`transition-all duration-1000 ease-[var(--ease-out)] ${
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+          }`}
+        >
+          <SectionHeading
+            index="03"
+            eyebrow="Case Files"
+            title="Featured Projects"
+            intro="Real-world apps built for real users: healthcare SaaS, dental operations, logistics platforms, e-commerce, and AI-powered analytics."
+          />
 
-          <div className="mx-auto mb-16 max-w-4xl">
-            <div className="mb-6 flex flex-col gap-4 md:flex-row">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Search projects, hooks, outcomes, or technologies..."
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  className="focus-ring w-full rounded-xl border border-slate-700 bg-slate-900 px-6 py-3.5 pl-12 text-white outline-none transition-all duration-200 placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                />
-              </div>
-              <button
-                onClick={() => setShowFilters((open) => !open)}
-                className="pressable focus-ring flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 text-white transition-colors duration-200 hover:bg-blue-500 md:hidden"
-              >
-                <Filter className="h-5 w-5" />
-                Filters
-              </button>
+          {/* Console: search + category filter */}
+          <div className="mb-12 flex flex-col gap-4 border-y border-steel py-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="relative w-full lg:max-w-md">
+              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-ash" />
+              <label htmlFor="project-search" className="sr-only">
+                Search projects
+              </label>
+              <input
+                id="project-search"
+                type="text"
+                placeholder="Search case files, stack, or outcomes..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                className="focus-ring w-full border border-steel-bright bg-concrete py-2.5 pr-3 pl-9 font-mono text-sm text-bone outline-none transition-colors duration-200 placeholder:text-ash focus:border-signal/60"
+              />
             </div>
 
-            <div className={`${showFilters ? "flex" : "hidden"} flex-wrap justify-center gap-3 md:flex`}>
+            <div className="flex flex-wrap items-center gap-2">
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => handleCategoryChange(category)}
-                  className={`pressable focus-ring rounded-xl px-6 py-3 transition-colors duration-200 ${
+                  aria-pressed={selectedCategory === category}
+                  className={`focus-ring pressable border px-3 py-2 font-mono text-[0.6875rem] tracking-[0.12em] uppercase transition-colors duration-200 ${
                     selectedCategory === category
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
-                      : "border border-slate-700 bg-slate-800 text-gray-400 hover:border-slate-500 hover:text-white"
+                      ? "border-signal bg-signal/15 text-signal"
+                      : "border-steel-bright text-ash hover:border-signal/60 hover:text-bone"
                   }`}
                 >
                   {category}
                 </button>
               ))}
+              <span className="data-label ml-1">
+                {filteredProjects.length} file{filteredProjects.length !== 1 ? "s" : ""}
+              </span>
             </div>
           </div>
 
-          <p className="mb-12 text-center text-lg text-gray-400">
-            {filteredProjects.length} project{filteredProjects.length !== 1 ? "s" : ""} found
-          </p>
-
           {filteredProjects.length > 0 ? (
-            <div className="mb-20">
-              <div className="mb-8 flex items-center gap-3">
-                <Star className="h-6 w-6 fill-current text-sky-300" />
-                <h3 className="text-3xl text-white">Featured Work</h3>
-              </div>
-              <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2">
+            <>
+              <div className="grid gap-6 lg:grid-cols-2">
                 {visibleProjects.map((project, index) => (
-                  <ProjectCard key={project.id} project={project} index={index} isVisible={isVisible} />
+                  <CaseFile key={project.id} project={project} index={index} isVisible={isVisible} />
                 ))}
               </div>
 
@@ -240,26 +232,27 @@ export function Projects() {
                 <div className="mt-12 flex justify-center">
                   <button
                     onClick={() => setShowAll((open) => !open)}
-                    className="pressable focus-ring inline-flex items-center gap-2 rounded-xl border border-slate-400/25 bg-white/[0.04] px-7 py-3.5 font-semibold text-slate-100 transition-colors duration-200 hover:border-blue-400/50 hover:bg-blue-500/10 hover:text-white"
+                    className="pressable focus-ring inline-flex items-center gap-2.5 border border-steel-bright px-6 py-3 font-mono text-xs tracking-[0.16em] text-bone uppercase transition-colors duration-200 hover:border-signal hover:text-signal"
                   >
                     {showAll ? (
                       <>
-                        Show less
-                        <ChevronUp className="h-4 w-4" />
+                        Close files
+                        <ChevronUp className="h-3.5 w-3.5" />
                       </>
                     ) : (
                       <>
-                        Show all projects ({filteredProjects.length})
-                        <ChevronDown className="h-4 w-4" />
+                        Open all {filteredProjects.length} files
+                        <ChevronDown className="h-3.5 w-3.5" />
                       </>
                     )}
                   </button>
                 </div>
               )}
-            </div>
+            </>
           ) : (
-            <div className="rounded-2xl border border-slate-700/60 bg-slate-800/70 py-16 text-center">
-              <p className="text-2xl text-gray-400">No projects found matching your criteria.</p>
+            <div className="panel chamfer px-6 py-16 text-center">
+              <p className="data-label mb-2">No match</p>
+              <p className="text-lg text-ash">No case files match that query.</p>
             </div>
           )}
         </div>
@@ -268,84 +261,113 @@ export function Projects() {
   );
 }
 
-function ProjectCard({ project, index, isVisible }: { project: Project; index: number; isVisible: boolean }) {
+function CaseFile({
+  project,
+  index,
+  isVisible,
+}: {
+  project: Project;
+  index: number;
+  isVisible: boolean;
+}) {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const caseNumber = String(project.id).padStart(3, "0");
 
   return (
     <article
       onMouseMove={handleSpotlight}
-      className={`spotlight-card group edge-silver overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-800/85 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/45 hover:shadow-blue-500/10 ${
+      className={`spotlight-card panel chamfer rim-top group flex flex-col transition-all duration-300 hover:border-signal/40 ${
         isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
       }`}
       style={{ transitionDelay: `${Math.min(index * 70, 420)}ms` }}
     >
-      <div className="relative h-64 overflow-hidden bg-slate-900">
+      {/* File header strip */}
+      <div className="relative z-[2] flex items-center justify-between border-b border-steel px-5 py-3">
+        <p className="font-mono text-[0.625rem] tracking-[0.18em] text-signal uppercase">
+          Case {caseNumber}
+        </p>
+        <div className="flex items-center gap-3">
+          <span className="data-label">{project.category}</span>
+          <span className="flex items-center gap-1.5 font-mono text-[0.625rem] tracking-[0.14em] text-sodium uppercase">
+            <span className="h-1.5 w-1.5 bg-sodium" />
+            Shipped
+          </span>
+        </div>
+      </div>
+
+      <div className="relative z-[2] aspect-[16/9] overflow-hidden border-b border-steel bg-void">
         <img
           src={project.image}
           alt={`${project.title} interface screenshot`}
           onLoad={() => setImageLoaded(true)}
-          className={`h-full w-full object-cover transition-all duration-700 group-hover:scale-105 ${
-            imageLoaded ? "scale-100 opacity-100" : "scale-105 opacity-0"
+          className={`h-full w-full object-cover object-top transition-all duration-700 group-hover:scale-[1.03] ${
+            imageLoaded ? "opacity-100" : "opacity-0"
           }`}
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-
-        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md">
-          {project.category}
-        </div>
-        {project.featured && (
-          <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-gradient-to-b from-slate-100 to-slate-300 px-4 py-2 text-sm font-semibold text-slate-950">
-            <Star className="h-4 w-4 fill-current" />
-            Featured
-          </div>
-        )}
+        {/* Cold rim light raking the screenshot */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, var(--void) 4%, transparent 58%), linear-gradient(105deg, transparent 55%, var(--signal-wash) 100%)",
+          }}
+        />
       </div>
 
-      <div className="relative z-[2] p-7 md:p-8">
-        <h3 className="mb-3 text-xl font-bold leading-snug text-white">{project.title}</h3>
-        <p className="mb-5 leading-relaxed text-gray-400">{project.description}</p>
-        <p className="mb-6 rounded-xl border border-blue-400/20 bg-blue-500/10 p-4 text-sm leading-relaxed text-blue-100">
-          <span className="font-semibold text-white">Outcome:</span> {project.outcome}
-        </p>
+      <div className="relative z-[2] flex flex-1 flex-col p-5 sm:p-6">
+        <h3 className="display-tight mb-3 text-xl leading-snug text-white-hot">{project.title}</h3>
+        <p className="mb-5 text-sm leading-relaxed text-ash">{project.description}</p>
+
+        <div className="mb-5 border-l-2 border-signal/50 pl-4">
+          <p className="data-label mb-1.5">Outcome</p>
+          <p className="text-sm leading-relaxed text-bone">{project.outcome}</p>
+        </div>
+
+        <div className="mb-5 flex flex-wrap gap-1.5">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="border border-steel px-2 py-1 font-mono text-[0.625rem] tracking-[0.06em] text-ash"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
         <div className="mb-6">
-          <p className="mb-3 text-sm text-blue-300">React Hooks & Patterns:</p>
-          <div className="flex flex-wrap gap-2">
+          <p className="data-label mb-2">Hooks &amp; patterns</p>
+          <div className="flex flex-wrap gap-1.5">
             {project.hooksUsed.map((hook) => (
-              <span key={hook} className="rounded-lg border border-slate-400/20 bg-slate-300/[0.06] px-3 py-1 text-sm text-slate-200">
+              <span
+                key={hook}
+                className="font-mono text-[0.625rem] tracking-[0.06em] text-ash"
+              >
                 {hook}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <span key={tag} className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1 text-sm text-gray-300">
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex gap-3">
+        <div className="mt-auto flex gap-2">
           <a
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="pressable focus-ring flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-600/60 bg-slate-700/60 px-4 py-3 text-white transition-colors duration-200 hover:bg-slate-700"
+            className="pressable focus-ring flex flex-1 items-center justify-center gap-2 border border-steel-bright px-4 py-2.5 font-mono text-[0.6875rem] tracking-[0.14em] text-bone uppercase transition-colors duration-200 hover:border-steel-bright"
           >
-            <Github className="h-5 w-5" />
+            <Github className="h-3.5 w-3.5" />
             Code
           </a>
           <a
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="pressable focus-ring flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-white shadow-md shadow-blue-600/20 transition-colors duration-200 hover:bg-blue-500"
+            className="pressable focus-ring flex flex-1 items-center justify-center gap-2 border border-signal/50 bg-signal/12 px-4 py-2.5 font-mono text-[0.6875rem] tracking-[0.14em] text-signal uppercase transition-colors duration-200 hover:bg-signal/22"
           >
-            <ExternalLink className="h-5 w-5" />
-            Demo
+            <ExternalLink className="h-3.5 w-3.5" />
+            Live
           </a>
         </div>
       </div>

@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Atom, Bot, Database, Layers, Monitor, type LucideIcon } from "lucide-react";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import { handleSpotlight } from "../lib/spotlight";
+import { SectionHeading } from "./ui/SectionHeading";
 
 type RealCategory = "ai" | "frontend" | "backend" | "state" | "hooks";
 type Category = "all" | RealCategory;
+type Tier = "Primary" | "Operational" | "Supporting";
 
 interface Skill {
   name: string;
@@ -12,13 +14,6 @@ interface Skill {
   category: RealCategory;
   proof: string;
 }
-
-type CategoryInfoItem = {
-  title: string;
-  label: string;
-  icon: LucideIcon;
-  color: string;
-};
 
 const skillsData: Skill[] = [
   { name: "Claude API & Agentic Workflows", level: 92, category: "ai", proof: "Tool use, structured output, workflow automation" },
@@ -50,106 +45,126 @@ const skillsData: Skill[] = [
   { name: "MongoDB", level: 84, category: "backend", proof: "Document data for flexible app features" },
 ];
 
-const CATEGORY_INFO: Record<Category, CategoryInfoItem> = {
-  all: { title: "All Skills", label: "All", icon: Layers, color: "from-slate-300 to-slate-400" },
-  ai: { title: "AI & Agentic", label: "AI & Agentic", icon: Bot, color: "from-blue-500 to-sky-300" },
-  frontend: { title: "Frontend", label: "Frontend", icon: Monitor, color: "from-sky-500 to-blue-300" },
-  state: { title: "State Management", label: "State Mgmt", icon: Layers, color: "from-blue-400 to-cyan-300" },
-  hooks: { title: "React Hooks", label: "React Hooks", icon: Atom, color: "from-indigo-400 to-blue-300" },
-  backend: { title: "Backend & Database", label: "Backend", icon: Database, color: "from-blue-600 to-sky-400" },
+const CATEGORY_INFO: Record<Category, { label: string; icon: LucideIcon }> = {
+  all: { label: "All", icon: Layers },
+  ai: { label: "AI & Agentic", icon: Bot },
+  frontend: { label: "Frontend", icon: Monitor },
+  state: { label: "State Mgmt", icon: Layers },
+  hooks: { label: "React Hooks", icon: Atom },
+  backend: { label: "Backend", icon: Database },
 };
+
+/**
+ * Reach, expressed as a loadout tier rather than a self-scored percentage.
+ * Percentages imply a precision nobody can actually justify.
+ */
+function tierOf(level: number): Tier {
+  if (level >= 90) return "Primary";
+  if (level >= 80) return "Operational";
+  return "Supporting";
+}
+
+const TIER_STYLE: Record<Tier, string> = {
+  Primary: "border-signal/55 bg-signal/12 text-signal",
+  Operational: "border-steel-bright/70 text-bone",
+  Supporting: "border-steel text-ash",
+};
+
+const TIER_ORDER: Tier[] = ["Primary", "Operational", "Supporting"];
 
 export function Skills() {
   const ref = useRef<HTMLDivElement>(null);
   const visible = useIntersectionObserver(ref, { threshold: 0.1 });
   const [selectedCategory, setSelectedCategory] = useState<Category>("all");
 
-  const filteredSkills = useMemo(
-    () => (selectedCategory === "all" ? skillsData : skillsData.filter((skill) => skill.category === selectedCategory)),
-    [selectedCategory]
-  );
+  const filteredSkills = useMemo(() => {
+    const pool =
+      selectedCategory === "all"
+        ? skillsData
+        : skillsData.filter((skill) => skill.category === selectedCategory);
+
+    // Heaviest kit first.
+    return [...pool].sort((a, b) => b.level - a.level);
+  }, [selectedCategory]);
 
   return (
-    <section
-      id="skills"
-      ref={ref}
-      aria-label="Skills and Technologies"
-      className="relative overflow-hidden py-32"
-    >
-      <div className="container relative z-10 mx-auto px-4">
-        <div className={`transition-all duration-700 ease-[var(--ease-out)] ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-          <div className="mb-16">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">Capabilities</p>
-            <h2 className="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl">Skills & Technologies</h2>
-            <p className="mb-4 max-w-[72ch] text-lg leading-relaxed text-gray-400">
-              4+ years mastering the full stack, with explicit strength in React state management,
-              custom hooks, backend data boundaries, and agentic AI development.
-            </p>
-            <div className="h-1 w-16 rounded-full bg-gradient-to-r from-blue-500 to-sky-300" />
+    <section id="skills" ref={ref} aria-label="Skills and Technologies" className="relative py-28 md:py-36">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+        <div
+          className={`transition-all duration-700 ease-[var(--ease-out)] ${
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
+        >
+          <SectionHeading
+            index="04"
+            eyebrow="Arsenal"
+            title="Skills & Technologies"
+            intro="4+ years mastering the full stack, with explicit strength in React state management, custom hooks, backend data boundaries, and agentic AI development."
+          />
+
+          <div className="mb-8 flex flex-col gap-4 border-y border-steel py-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap gap-2">
+              {(Object.keys(CATEGORY_INFO) as Category[]).map((key) => {
+                const info = CATEGORY_INFO[key];
+                const Icon = info.icon;
+                const active = selectedCategory === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedCategory(key)}
+                    aria-pressed={active}
+                    className={`focus-ring pressable flex items-center gap-2 border px-3 py-2 font-mono text-[0.6875rem] tracking-[0.12em] uppercase transition-colors duration-200 ${
+                      active
+                        ? "border-signal bg-signal/15 text-signal"
+                        : "border-steel-bright text-ash hover:border-signal/60 hover:text-bone"
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {info.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Tier legend */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="data-label mr-1">Loadout</span>
+              {TIER_ORDER.map((tier) => (
+                <span
+                  key={tier}
+                  className={`border px-2 py-1 font-mono text-[0.625rem] tracking-[0.12em] uppercase ${TIER_STYLE[tier]}`}
+                >
+                  {tier}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="mb-12 flex flex-wrap gap-2">
-            {(Object.keys(CATEGORY_INFO) as Category[]).map((key) => {
-              const info = CATEGORY_INFO[key];
-              const Icon = info.icon;
-              const active = selectedCategory === key;
+          <div className="grid border-t border-steel md:grid-cols-2 xl:grid-cols-3">
+            {filteredSkills.map((skill, index) => {
+              const tier = tierOf(skill.level);
               return (
-                <button
-                  key={key}
-                  onClick={() => setSelectedCategory(key)}
-                  className={`pressable focus-ring flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors duration-200 ${
-                    active
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
-                      : "border border-slate-700 bg-slate-800 text-gray-400 hover:border-slate-500 hover:text-white"
-                  }`}
+                <div
+                  key={skill.name}
+                  onMouseMove={handleSpotlight}
+                  className="spotlight-card relative border-r-0 border-b border-steel px-1 py-4 transition-colors duration-200 hover:bg-concrete/70 md:px-4 md:[&:nth-child(2n+1)]:pl-0 xl:border-r xl:last:border-r-0 xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-child(3n+1)]:pl-0"
+                  style={{ transitionDelay: visible ? `${Math.min(index * 25, 320)}ms` : "0ms" }}
                 >
-                  <Icon className="h-4 w-4" />
-                  {info.label}
-                </button>
+                  <div className="relative z-[2] mb-2 flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-sm font-medium text-white-hot">{skill.name}</span>
+                    <span
+                      className={`border px-2 py-0.5 font-mono text-[0.5938rem] tracking-[0.14em] uppercase ${TIER_STYLE[tier]}`}
+                    >
+                      {tier}
+                    </span>
+                  </div>
+                  <p className="relative z-[2] text-sm leading-relaxed text-ash">{skill.proof}</p>
+                </div>
               );
             })}
-          </div>
-
-          <div className="grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredSkills.map((skill, index) => (
-              <SkillBar key={skill.name} skill={skill} index={index} visible={visible} />
-            ))}
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function SkillBar({ skill, index, visible }: { skill: Skill; index: number; visible: boolean }) {
-  const [progress, setProgress] = useState(0);
-  const category = CATEGORY_INFO[skill.category];
-
-  useEffect(() => {
-    if (!visible) {
-      setProgress(0);
-      return;
-    }
-    const timeout = setTimeout(() => setProgress(skill.level), index * 45);
-    return () => clearTimeout(timeout);
-  }, [index, skill.level, visible]);
-
-  return (
-    <div
-      onMouseMove={handleSpotlight}
-      className="spotlight-card rounded-xl border border-slate-700/60 bg-slate-800/80 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-slate-500/80 hover:bg-slate-800"
-    >
-      <div className="relative z-[2] mb-3 flex items-center justify-between gap-4">
-        <span className="text-sm font-medium text-white">{skill.name}</span>
-        <span className="tabular-nums text-sm text-gray-400">{skill.level}%</span>
-      </div>
-      <div className="relative z-[2] mb-3 h-1.5 overflow-hidden rounded-full bg-slate-700">
-        <div
-          className={`h-full rounded-full bg-gradient-to-r ${category.color} transition-[width] duration-1000 ease-[var(--ease-out)]`}
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-      <p className="relative z-[2] text-sm leading-relaxed text-gray-500">{skill.proof}</p>
-    </div>
   );
 }
