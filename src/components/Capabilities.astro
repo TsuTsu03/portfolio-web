@@ -1,0 +1,88 @@
+---
+import { capabilityGroups, isProven } from "../data/capabilities";
+import { services } from "../data/site";
+---
+
+<section id="capabilities" class="section rule-top" aria-labelledby="capabilities-heading">
+  <div class="shell">
+    <span aria-hidden="true" class="section-tick reveal"></span>
+    <h2 id="capabilities-heading" class="display max-w-[17ch] text-[clamp(2rem,5vw,3.75rem)]">
+      Full-stack and agentic AI capabilities, proven in the work
+    </h2>
+    <p class="mt-7 max-w-[66ch] text-lg leading-relaxed text-text-dim">
+      A stack list says what someone has touched. It does not say what they can carry. Every
+      capability below points to a shipped project or to this portfolio. If the evidence is not
+      here, the claim is marked that way.
+    </p>
+
+    <section id="services" class="reveal mt-12 border-y border-line py-8" aria-labelledby="services-heading">
+      <h3 id="services-heading" class="meta mb-5">What I can be hired to own</h3>
+      <ul class="grid gap-7 md:grid-cols-2 xl:grid-cols-4 xl:gap-10">
+        {
+          services.map((service) => (
+            <li>
+              <h4 class="display-tight text-lg">{service.name}</h4>
+              <p class="mt-3 text-sm leading-relaxed text-text-dim">{service.description}</p>
+              <a
+                href={service.path}
+                class="meta mt-4 inline-flex border-b border-line-control pb-1 transition-colors hover:border-accent hover:text-accent"
+              >
+                Review this service
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <div class="capability-map mt-14">
+      {
+        capabilityGroups.map((group) => (
+          <section
+            aria-labelledby={`cap-${group.id}`}
+            class:list={[
+              "reveal capability-group border-t border-line-strong pt-6",
+              `capability-${group.id}`,
+            ]}
+          >
+            <h3 id={`cap-${group.id}`} class="display-tight text-xl">
+              {group.title}
+            </h3>
+            <p class="mt-2 max-w-[46ch] text-sm text-text-dim">{group.role}</p>
+
+            <ul class:list={["mt-6", group.id === "delivery" && "lg:grid lg:grid-cols-2 lg:gap-x-12"]}>
+              {group.items.map((item) => (
+                <li class="border-t border-line py-4">
+                  <div class="flex items-baseline gap-3">
+                    <span
+                      aria-hidden="true"
+                      class:list={[
+                        "mt-2 h-1.5 w-1.5 shrink-0",
+                        isProven(item) ? "bg-accent" : "border border-line-control",
+                      ]}
+                    />
+                    <div>
+                      <p class="font-medium text-text">
+                        {item.name}
+                        {!isProven(item) && (
+                          <span class="meta ml-2 align-middle">Evidence outside this portfolio</span>
+                        )}
+                      </p>
+                      <p class="mt-1 text-sm leading-relaxed text-text-dim">{item.proof}</p>
+                      {item.provenBy.length > 0 && (
+                        <p class="meta mt-2">{item.provenBy.join(", ")}</p>
+                      )}
+                      {item.provenBy.length === 0 && item.thisSite && (
+                        <p class="meta mt-2">This site</p>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,121 @@
+---
+import { Picture } from "astro:assets";
+import portrait from "../assets/portrait/den-jansen-flores.png";
+import manga from "../assets/portrait/den-manga-vigilante.png";
+import { person } from "../data/site";
+---
+
+<section id="about" class="section rule-top relative overflow-hidden" aria-labelledby="about-heading">
+  <div aria-hidden="true" class="wash-cool left-[-12%] top-[14%] h-[40rem] w-[40rem]"></div>
+
+  <div class="shell about-layout grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="reveal about-portrait lg:col-span-7">
+      <button
+        type="button"
+        class="identity frame group/id w-full"
+        aria-label="Switch between the color portrait and black-and-white manga panel"
+        aria-pressed="false"
+        data-identity
+      >
+        <span class="identity-state identity-state-base">
+          <Picture
+            src={portrait}
+            alt={`${person.name} in a black polo shirt, cap and sunglasses, seated inside a dark architectural frame.`}
+            widths={[420, 640, 900, 1086]}
+            sizes="(min-width: 1024px) 46vw, 100vw"
+            formats={["avif", "webp"]}
+            fallbackFormat="webp"
+            quality={95}
+            loading="lazy"
+          />
+        </span>
+
+        <span class="identity-state identity-state-manga" aria-hidden="true">
+          <Picture
+            src={manga}
+            alt=""
+            widths={[420, 640, 900, 1086]}
+            sizes="(min-width: 1024px) 46vw, 100vw"
+            formats={["avif", "webp"]}
+            fallbackFormat="webp"
+            quality={92}
+            loading="lazy"
+          />
+        </span>
+
+        <span class="identity-ink" aria-hidden="true"></span>
+        <span class="identity-scan" aria-hidden="true"></span>
+      </button>
+
+      <p class="meta mt-3">{person.locality}, {person.region}, {person.timezone}</p>
+    </div>
+
+    <div class="reveal about-copy lg:col-span-5">
+      <p class="meta mb-5">About Den Jansen Flores</p>
+      <h2 id="about-heading" class="display-tight text-[clamp(1.9rem,4vw,3.1rem)]">
+        Full-stack engineering for systems that cannot afford to lose control.
+      </h2>
+
+      <div class="prose-body mt-8 text-[1.0625rem] leading-relaxed text-text-dim">
+        <p>
+          I am a senior full-stack developer and agentic AI engineer based in Muntinlupa City,
+          Metro Manila. I build operational SaaS, secure web platforms and agentic AI workflows
+          for teams here and abroad. The work covers <a class="link" href="/work/clinicflow">healthcare operations</a>,
+          <a class="link" href="/work/biyahero-express">courier logistics</a> and
+          <a class="link" href="/work/data-analysis-platform">AI-assisted analysis</a>. I own the
+          schema, access rules, server logic and interface. A weak seam is enough to compromise
+          the whole system.
+        </p>
+        <p>
+          Requirements rarely arrive complete. I trace the job from one end to the other: who
+          touches the record, which decision follows, and where the truth lives today. Often it
+          is split between a wall calendar, a group chat and one person's memory. The point where
+          that chain breaks is where the product begins.
+        </p>
+        <p>
+          I assume every shortcut will eventually be found, usually at the worst possible hour.
+          Access rules stay close to the data. Every state has a name. Recovery paths are designed
+          before the demo because a system reveals its quality when the ordinary path is gone.
+        </p>
+        <p>
+          Working with me is straightforward. We agree on the boundaries before the build starts.
+          Updates come directly from me. If a feature has no business value, I say so before it
+          reaches the invoice.
+        </p>
+      </div>
+
+      <div class="mt-8 border-l-2 border-accent-deep pl-5">
+        <p class="text-text">
+          The visible half is easy to recognize: a clear interface, a direct explanation and a
+          client who knows what the system will do.
+        </p>
+        <p class="mt-4 text-sm leading-relaxed text-text-dim">
+          The other half stays out of sight. I read the logs, test the case nobody raised and put
+          the system under the conditions it will meet outside the demo. When that work is done
+          properly, the silence is the evidence.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-identity]").forEach((identity) => {
+    identity.addEventListener("click", () => {
+      const next = identity.getAttribute("aria-pressed") !== "true";
+      identity.setAttribute("aria-pressed", String(next));
+    });
+
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    identity.addEventListener(
+      "pointermove",
+      (event) => {
+        const rect = identity.getBoundingClientRect();
+        identity.style.setProperty("--ix", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+        identity.style.setProperty("--iy", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+      },
+      { passive: true }
+    );
+  });
+</script>

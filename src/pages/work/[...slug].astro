@@ -1,0 +1,335 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { Picture, getImage } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BrandIcon from "../../components/BrandIcon.astro";
+import Icon from "../../components/Icon.astro";
+import {
+  breadcrumbNode,
+  caseStudyArticleNode,
+  projectNode,
+  personNode,
+  websiteNode,
+} from "../../lib/schema";
+import { person, SITE_UPDATED, SITE_URL } from "../../data/site";
+
+export async function getStaticPaths() {
+  const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+
+  return entries.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      previous: index > 0 ? entries[index - 1] : null,
+      next: index < entries.length - 1 ? entries[index + 1] : null,
+    },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"work">;
+  previous: CollectionEntry<"work"> | null;
+  next: CollectionEntry<"work"> | null;
+}
+
+const { entry, previous, next } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const path = `/work/${entry.id}`;
+const deployed = data.status === "Deployed";
+const verified = data.lastVerified.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+/* Search snippets are cut near 160 characters, so a long summary is trimmed
+   at a word boundary rather than mid-word by the search engine. */
+const metaDescription =
+  data.metaDescription ??
+  (data.summary.length <= 158
+    ? data.summary
+    : `${data.summary.slice(0, 152).replace(/[\s,;:.]+\S*$/, "")}.`);
+
+const social = await getImage({
+  src: data.screenshot,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  format: "png",
+});
+const socialUrl = new URL(social.src, SITE_URL).href;
+const articleTags = [...new Set([...data.technologies, ...data.capabilities])];
+
+const jsonLd = [
+  personNode([...data.technologies, ...data.capabilities]),
+  websiteNode(),
+  projectNode(entry, socialUrl),
+  caseStudyArticleNode(entry, socialUrl),
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/#work" },
+    { name: data.shortTitle, path },
+  ]),
+];
+
+const facts = [
+  { label: "Sector", value: data.sector },
+  { label: "Role", value: data.role },
+  { label: "Category", value: data.category },
+  { label: "Status", value: data.status, accent: deployed },
+  { label: "Last verified", value: verified, dateTime: data.lastVerified.toISOString().slice(0, 10) },
+];
+---
+
+<BaseLayout
+  path={path}
+  title={`${data.shortTitle} ${data.category} Case Study | ${person.name}`}
+  description={metaDescription}
+  ogType="article"
+  ogImagePath={social.src}
+  ogImageWidth={1200}
+  ogImageHeight={630}
+  ogImageAlt={`${data.shortTitle} interface from the ${person.name} software case study`}
+  dateModified={SITE_UPDATED}
+  articleSection={`${data.sector} ${data.category}`}
+  articleTags={articleTags}
+  jsonLd={jsonLd}
+>
+  <article class="case-study pb-8 pt-28">
+    <header class="case-hero shell">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="meta flex flex-wrap items-center gap-2">
+          <li><a href="/" class="transition-colors hover:text-accent">Home</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li><a href="/#work" class="transition-colors hover:text-accent">Projects</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li class="text-text" aria-current="page">{data.shortTitle}</li>
+        </ol>
+      </nav>
+
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-8">
+          <p class="meta mb-5">Case file {data.caseNumber}</p>
+          <h1 class="display text-[clamp(2rem,5.5vw,4rem)]">{data.title}</h1>
+          <p class="lede mt-6 max-w-[60ch]">{data.summary}</p>
+
+          <div class="mt-9 flex flex-wrap gap-3">
+            {
+              data.liveUrl && (
+                <a
+                  href={data.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary"
+                >
+                  Inspect the live build
+                  <span class="sr-only"> for {data.shortTitle}, opens in a new tab</span>
+                  <Icon name="arrow-up-right" class="h-4 w-4" />
+                </a>
+              )
+            }
+            {
+              data.repositoryUrl ? (
+                <a
+                  href={data.repositoryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-ghost"
+                >
+                  <BrandIcon name="github" class="h-4 w-4" />
+                  Inspect the source
+                  <span class="sr-only"> repository for {data.shortTitle}, opens in a new tab</span>
+                </a>
+              ) : (
+                <p class="btn border-line text-text-dim">
+                  <Icon name="lock" class="h-4 w-4" />
+                  Source is private
+                </p>
+              )
+            }
+          </div>
+        </div>
+
+        <dl class="case-facts lg:col-span-4 lg:pt-8">
+          {
+            facts.map(({ label, value, accent, dateTime }) => (
+              <div class="flex flex-wrap items-baseline justify-between gap-4 border-t border-line py-3 last:border-b">
+                <dt class="meta">{label}</dt>
+                <dd class:list={["text-sm", accent ? "text-accent" : "text-text"]}>
+                  {dateTime ? <time datetime={dateTime}>{value}</time> : value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </header>
+
+    <div class="case-media shell-wide mt-12">
+      <figure class="frame bracket">
+        <Picture
+          src={data.screenshot}
+          alt={data.screenshotAlt}
+          widths={[640, 1024, 1600]}
+          sizes="(min-width: 1680px) 1600px, 100vw"
+          formats={["avif", "webp"]}
+          fallbackFormat="webp"
+          loading="eager"
+          fetchpriority="high"
+          class="w-full object-cover object-top"
+        />
+      </figure>
+      <figcaption class="mt-3 text-sm text-text-dim">{data.screenshotAlt}</figcaption>
+    </div>
+
+    <div class="case-body shell mt-16 grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <section aria-labelledby="problem-heading" class="mb-12">
+          <p class="meta mb-3">The pressure point</p>
+          <h2 id="problem-heading" class="display-tight mb-4 text-2xl">
+            What problem does {data.shortTitle} solve?
+          </h2>
+          <p class="max-w-[64ch] text-lg leading-relaxed text-text-dim">{data.businessProblem}</p>
+        </section>
+
+        <section aria-labelledby="solution-heading" class="mb-12">
+          <p class="meta mb-3">The response</p>
+          <h2 id="solution-heading" class="display-tight mb-4 text-2xl">
+            How does {data.shortTitle} work?
+          </h2>
+          <p class="max-w-[64ch] text-lg leading-relaxed text-text-dim">{data.solution}</p>
+        </section>
+
+        {
+          data.architecture.length > 0 && (
+            <section aria-labelledby="architecture-heading" class="mb-12">
+              <h2 id="architecture-heading" class="display-tight mb-6 text-2xl">
+                Which architecture decisions shaped the build?
+              </h2>
+              <dl>
+                {data.architecture.map((item) => (
+                  <div class="border-t border-line py-5 last:border-b">
+                    <dt class="text-base font-medium text-text">{item.decision}</dt>
+                    <dd class="mt-2 max-w-[62ch] text-sm leading-relaxed text-text-dim">
+                      {item.rationale}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )
+        }
+
+        <section aria-labelledby="notes-heading" class="prose-notes">
+          <h2 id="notes-heading" class="display-tight mb-4 text-2xl">Field notes from the build</h2>
+          <Content />
+        </section>
+      </div>
+
+      <aside class="case-summary lg:col-span-5">
+        <section aria-labelledby="ownership-heading" class="plate p-6 lg:p-8">
+          <h2 id="ownership-heading" class="display-tight mb-5 text-xl">What did Den build?</h2>
+          <ul class="space-y-3">
+            {
+              data.ownership.map((item) => (
+                <li class="flex items-start gap-3 text-sm leading-relaxed text-text">
+                  <span aria-hidden="true" class="mt-2 h-1 w-1 shrink-0 bg-accent" />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <section aria-labelledby="stack-heading" class="mt-6">
+          <h2 id="stack-heading" class="meta mb-3">Stack</h2>
+          <ul class="flex flex-wrap gap-1.5">
+            {
+              data.technologies.map((tech) => (
+                <li class="border border-line px-2.5 py-1 text-sm text-text-dim">{tech}</li>
+              ))
+            }
+          </ul>
+        </section>
+
+        {
+          data.capabilities.length > 0 && (
+            <section aria-labelledby="capabilities-heading" class="mt-6">
+              <h2 id="capabilities-heading" class="meta mb-3">
+                Verified in the build
+              </h2>
+              <ul class="space-y-2.5">
+                {data.capabilities.map((capability) => (
+                  <li class="flex items-start gap-3 text-sm text-text-dim">
+                    <span aria-hidden="true" class="mt-2 h-1 w-1 shrink-0 bg-line-control" />
+                    <span>{capability}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </aside>
+    </div>
+
+    <nav aria-label="More projects" class="shell mt-20">
+      <div class="grid gap-px border border-line bg-line sm:grid-cols-2">
+        {
+          previous ? (
+            <a href={`/work/${previous.id}`} class="group bg-ink p-6 transition-colors hover:bg-surface">
+              <p class="meta mb-3 flex items-center gap-2">
+                <Icon name="arrow-left" class="h-3.5 w-3.5" />
+                Previous file
+              </p>
+              <p class="display-tight text-lg transition-colors group-hover:text-accent">
+                {previous.data.shortTitle}
+              </p>
+            </a>
+          ) : (
+            <a href="/#work" class="group bg-ink p-6 transition-colors hover:bg-surface">
+              <p class="meta mb-3 flex items-center gap-2">
+                <Icon name="arrow-left" class="h-3.5 w-3.5" />
+                Back
+              </p>
+              <p class="display-tight text-lg transition-colors group-hover:text-accent">
+                All projects
+              </p>
+            </a>
+          )
+        }
+
+        {
+          next ? (
+            <a
+              href={`/work/${next.id}`}
+              class="group bg-ink p-6 text-right transition-colors hover:bg-surface"
+            >
+              <p class="meta mb-3 flex items-center justify-end gap-2">
+                Next file
+                <Icon name="arrow-right" class="h-3.5 w-3.5" />
+              </p>
+              <p class="display-tight text-lg transition-colors group-hover:text-accent">
+                {next.data.shortTitle}
+              </p>
+            </a>
+          ) : (
+            <a
+              href="/#contact"
+              class="group bg-ink p-6 text-right transition-colors hover:bg-surface"
+            >
+              <p class="meta mb-3 flex items-center justify-end gap-2">
+                Final route
+                <Icon name="arrow-right" class="h-3.5 w-3.5" />
+              </p>
+              <p class="display-tight text-lg transition-colors group-hover:text-accent">
+                Open the contact line
+              </p>
+            </a>
+          )
+        }
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+import { principles } from "../data/principles";
+---
+
+<section id="approach" class="section rule-top" aria-labelledby="approach-heading">
+  <div class="shell">
+    <div class="grid gap-8 lg:grid-cols-12 lg:gap-12">
+      <div class="approach-intro lg:col-span-4">
+        <span aria-hidden="true" class="section-tick reveal"></span>
+        <h2 id="approach-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">
+          How I build software that survives pressure
+        </h2>
+        <p class="mt-6 max-w-[38ch] leading-relaxed text-text-dim">
+          I map the real operation, keep authority close to the data and name the failure states
+          before launch. AI remains one controlled stage inside a larger system. Each rule below
+          points to the work that tested it.
+        </p>
+      </div>
+
+      {/*
+        Typographic, not cards. Each principle is a hanging heading with its
+        cost underneath and its evidence set apart in the right column, so the
+        page can be scanned three different ways.
+      */}
+      <div class="approach-list lg:col-span-8">
+        {
+          principles.map((principle) => (
+            <article class="reveal approach-principle grid gap-4 border-t border-line py-8 lg:grid-cols-12 lg:gap-8 lg:py-10">
+              <div class="lg:col-span-7">
+                <h3 class="display-tight text-[clamp(1.25rem,2.2vw,1.6rem)]">
+                  {principle.title}
+                </h3>
+                <p class="mt-2 text-accent">{principle.claim}</p>
+                <p class="mt-4 max-w-[58ch] text-text-dim">{principle.body}</p>
+              </div>
+
+              <div class="lg:col-span-5 lg:pt-1">
+                <p class="meta mb-2">Evidence</p>
+                <p class="text-sm leading-relaxed text-text-dim">{principle.evidence}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

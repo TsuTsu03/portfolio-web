@@ -1,0 +1,69 @@
+---
+import Icon from "./Icon.astro";
+import { person, resumeUrl } from "../data/site";
+
+const bats = Array.from({ length: 7 });
+---
+
+<section id="identity" class="stage hero-stage relative min-h-[100dvh] overflow-hidden pt-24">
+  <div aria-hidden="true" class="light-shaft"></div>
+  <div aria-hidden="true" class="wash-cool left-[-18%] top-[42%] h-[46rem] w-[46rem]"></div>
+  <div aria-hidden="true" class="wash-warm right-[-12%] top-[-8%] h-[52rem] w-[52rem]"></div>
+  <div aria-hidden="true" class="rules"></div>
+  <div aria-hidden="true" class="vignette"></div>
+
+  <div class="shell hero-atlas relative">
+    <div class="hero-copy hero-copy-centered">
+      <p class="hero-role stagger text-sm text-text-dim" style="--i: 0">
+        {person.role} <span aria-hidden="true" class="mx-2 text-line-control">/</span>
+        {person.secondRole}
+      </p>
+
+      <div class="hero-name-wrap stagger" style="--i: 1">
+        <div class="hero-bat-field" aria-hidden="true">
+          {
+            bats.map(() => (
+              <span class="hero-bat">
+                <svg viewBox="0 0 32 20" focusable="false">
+                  <path d="M1 11.8C5.2 5.8 9.1 7.1 12.2 9.1C12.4 5.3 13.7 2.5 16 0.8C18.3 2.5 19.6 5.3 19.8 9.1C22.9 7.1 26.8 5.8 31 11.8C26.7 11 23.8 12.6 21.1 16.1C19 14.4 17.5 13.7 16 19.2C14.5 13.7 13 14.4 10.9 16.1C8.2 12.6 5.3 11 1 11.8Z" />
+                </svg>
+              </span>
+            ))
+          }
+        </div>
+
+        <h1 class="display hero-name text-[clamp(3.1rem,11vw,9.5rem)]">
+          <span class="block">Den Jansen</span>
+          <span class="block text-outline">Flores</span>
+        </h1>
+      </div>
+
+      <span aria-hidden="true" class="hero-rule rule-draw stagger mt-8 block h-px w-24 bg-accent" style="--i: 2"></span>
+
+      <p class="lede stagger mx-auto mt-8 max-w-[54ch] text-balance" style="--i: 3">
+        I build systems for the hours when assumptions fail: operational SaaS, full-stack
+        platforms and agentic AI workflows engineered to keep their answers straight under pressure.
+      </p>
+
+      <div class="hero-actions stagger mt-9 flex flex-wrap justify-center gap-3" style="--i: 4">
+        <a href="#work" class="btn btn-primary">
+          Review the case studies
+          <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+        {
+          resumeUrl ? (
+            <a href={resumeUrl} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+              Download résumé
+              <Icon name="arrow-up-right" class="h-4 w-4" />
+            </a>
+          ) : (
+            <a href={`mailto:${person.email}`} class="btn btn-ghost">
+              <Icon name="mail" class="h-4 w-4" />
+              Email {person.shortName}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+---
+import Icon from "./Icon.astro";
+import { faqs } from "../data/site";
+---
+
+<section id="questions" class="section rule-top" aria-labelledby="questions-heading">
+  <div class="shell grid gap-8 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-4">
+      <span aria-hidden="true" class="section-tick reveal"></span>
+      <h2 id="questions-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">
+        Direct answers for recruiters and clients
+      </h2>
+      <p class="mt-6 max-w-[36ch] text-text-dim">
+        Location, availability, role fit, scope and the line between full-stack and agentic AI
+        work. The answers are written plainly and remain readable without JavaScript.
+      </p>
+    </div>
+
+    <div class="reveal lg:col-span-8">
+      {
+        faqs.map((faq, i) => (
+          <details class="disclosure border-t border-line last:border-b" open={i === 0}>
+            <summary class="flex min-h-[56px] items-center justify-between gap-6 py-4 text-left">
+              <span class="display-tight text-[1.0625rem] text-text sm:text-lg">
+                {faq.question}
+              </span>
+              <Icon name="plus" class="chev h-4 w-4 shrink-0 text-accent" />
+            </summary>
+            <p class="max-w-[64ch] pb-6 pr-8 leading-relaxed text-text-dim">{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

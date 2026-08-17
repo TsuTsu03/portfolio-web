@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { person } from "../data/site";
+
+const entries = (await getCollection("work"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+---
+
+<BaseLayout
+  path="/404"
+  title={`Page not found | ${person.name}`}
+  description="This page does not exist. Return to Den Jansen Flores' portfolio, review the project case studies or make direct contact."
+  noindex
+>
+  <section class="flex min-h-[80dvh] items-center pb-20 pt-28">
+    <div class="shell w-full">
+      <p class="meta mb-6 flex items-center gap-3">
+        <span class="text-accent">404</span>
+        <span aria-hidden="true" class="h-px w-10 bg-line-control"></span>
+        <span>Page not found</span>
+      </p>
+
+      <h1 class="display max-w-3xl text-[clamp(2rem,7vw,4.5rem)]">This trail ends here.</h1>
+
+      <p class="lede mt-6">
+        This address does not match anything on the site. The case files below lead back to the
+        work. The contact line remains open.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-primary">Back to the start</a>
+        <a href="/#work" class="btn btn-ghost">All projects</a>
+        <a href={`mailto:${person.email}`} class="btn btn-ghost">Email {person.shortName}</a>
+      </div>
+
+      <ul class="mt-16 grid gap-px border border-line bg-line sm:grid-cols-2">
+        {
+          entries.map((entry) => (
+            <li>
+              <a
+                href={`/work/${entry.id}`}
+                class="group flex h-full flex-col justify-between gap-6 bg-ink p-6 transition-colors hover:bg-surface"
+              >
+                <p class="meta">{entry.data.sector}</p>
+                <p class="display-tight flex items-center gap-2 text-lg transition-colors group-hover:text-accent">
+                  {entry.data.shortTitle}
+                  <Icon name="arrow-up-right" class="h-4 w-4" />
+                </p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

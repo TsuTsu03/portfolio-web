@@ -1,0 +1,72 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Work from "../components/Work.astro";
+import Approach from "../components/Approach.astro";
+import Capabilities from "../components/Capabilities.astro";
+import Proof from "../components/Proof.astro";
+import Questions from "../components/Questions.astro";
+import Contact from "../components/Contact.astro";
+import {
+  faqNode,
+  personNode,
+  portfolioItemListNode,
+  profilePageNode,
+  servicesNode,
+  websiteNode,
+} from "../lib/schema";
+
+const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+
+const liveCount = entries.filter((entry) => entry.data.status === "Deployed").length;
+const repoCount = entries.filter((entry) => entry.data.repositoryUrl !== null).length;
+
+/** The most recent verification date across the collection, stated once. */
+const verifiedDate = new Date(
+  Math.max(...entries.map((entry) => entry.data.lastVerified.getTime()))
+);
+const verified = verifiedDate.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const verifiedIso = verifiedDate.toISOString().slice(0, 10);
+
+/** knowsAbout is derived from what the projects actually used. */
+const knowsAbout = [
+  ...new Set(entries.flatMap((entry) => [...entry.data.technologies, ...entry.data.capabilities])),
+].sort();
+
+const jsonLd = [
+  personNode(knowsAbout),
+  websiteNode(),
+  profilePageNode(entries),
+  portfolioItemListNode(entries),
+  servicesNode(),
+  faqNode(),
+];
+---
+
+{/*
+  Identity, the person, verifiable projects, capabilities, approach, proof,
+  questions, contact. A recruiter can stop after the projects and still know
+  whether to keep reading.
+*/}
+<BaseLayout path="/" jsonLd={jsonLd}>
+  <Hero />
+  <About />
+  <Work entries={entries} />
+  <Capabilities />
+  <Approach />
+  <Proof
+    projectCount={entries.length}
+    liveCount={liveCount}
+    repoCount={repoCount}
+    verified={verified}
+    verifiedIso={verifiedIso}
+  />
+  <Questions />
+  <Contact />
+</BaseLayout>

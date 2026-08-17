@@ -1,0 +1,241 @@
+---
+import { Picture } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+
+interface Props {
+  entries: CollectionEntry<"work">[];
+}
+
+const { entries } = Astro.props;
+
+/*
+  Five compositions, one per weight class:
+
+    lead      one full-bleed build, image and type in the same frame
+    feature   image-led, caption block set into the grid beneath it
+    counter   text-led, photograph carried to the right and held higher
+    pair      two builds side by side, screenshots first
+    index     the rest, as a readable list rather than more cards
+*/
+const [lead, feature, counter, pairA, pairB, ...index] = entries;
+
+const stack = (entry: CollectionEntry<"work">) => entry.data.technologies.slice(0, 4);
+---
+
+<section id="work" class="section rule-top" aria-labelledby="work-heading">
+  <div class="shell">
+    <span aria-hidden="true" class="section-tick reveal"></span>
+    <h2 id="work-heading" class="display max-w-[18ch] text-[clamp(2rem,5vw,3.75rem)]">
+      Projects
+    </h2>
+    <p class="work-lead mt-7 max-w-[66ch] text-lg leading-relaxed text-text-dim">
+      Seven case studies cover healthcare, logistics, workforce operations, commerce and
+      AI-assisted analysis. Each file names the business problem, the architecture, the work I
+      owned and the current state of the deployment and source. The evidence is there to inspect.
+    </p>
+  </div>
+
+  {/* ---- Lead ------------------------------------------------------- */}
+  <article class="reveal shell-wide mt-12 lg:mt-16">
+    <a href={`/work/${lead.id}`} class="group block">
+      <div class="frame zoom bracket project-light aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]" data-project-light>
+        <Picture
+          src={lead.data.screenshot}
+          alt={lead.data.screenshotAlt}
+          widths={[640, 1024, 1600]}
+          sizes="(min-width: 1680px) 1600px, 100vw"
+          formats={["avif", "webp"]}
+          fallbackFormat="webp"
+          loading="lazy"
+          class="h-full w-full object-cover object-top"
+        />
+        <span class="project-glow" aria-hidden="true"></span>
+      </div>
+
+      {/*
+        The caption plate overlaps the photograph instead of sitting on top of
+        it. Screenshots are the evidence here, so nothing is allowed to sit
+        over the interface itself.
+      */}
+      <div class="relative z-10 -mt-px sm:-mt-16 sm:ml-[var(--gutter)] sm:max-w-[46rem]">
+        <div class="plate p-6 sm:p-8 lg:p-10">
+          <p class="meta mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span class="text-accent">{lead.data.sector}</span>
+            <span aria-hidden="true" class="h-px w-8 bg-line-control"></span>
+            <span>{lead.data.category}</span>
+          </p>
+          <h3
+            class="display text-[clamp(1.75rem,4.5vw,3.25rem)] transition-colors group-hover:text-accent"
+          >
+            {lead.data.shortTitle}
+          </h3>
+          <p class="mt-4 max-w-[60ch] text-text-dim lg:text-lg">{lead.data.summary}</p>
+          <p class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-text">
+            Open the case file
+            <Icon name="arrow-right" class="h-4 w-4" />
+          </p>
+        </div>
+      </div>
+    </a>
+
+    <dl class="mt-8 grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
+      <div>
+        <dt class="meta mb-1.5">Status</dt>
+        <dd class="text-sm text-accent">{lead.data.status}</dd>
+      </div>
+      <div>
+        <dt class="meta mb-1.5">Category</dt>
+        <dd class="text-sm text-text">{lead.data.category}</dd>
+      </div>
+      <div class="col-span-2">
+        <dt class="meta mb-1.5">Stack</dt>
+        <dd class="text-sm text-text">{stack(lead).join(", ")}</dd>
+      </div>
+    </dl>
+  </article>
+
+  {/* ---- Feature: image-led ----------------------------------------- */}
+  <article class="reveal shell mt-20 lg:mt-28">
+    <a href={`/work/${feature.id}`} class="group block">
+      <div class="frame zoom bracket project-light aspect-[16/10] lg:aspect-[2/1]" data-project-light>
+        <Picture
+          src={feature.data.screenshot}
+          alt={feature.data.screenshotAlt}
+          widths={[640, 1024, 1440]}
+          sizes="(min-width: 1360px) 1280px, 100vw"
+          formats={["avif", "webp"]}
+          fallbackFormat="webp"
+          loading="lazy"
+          class="h-full w-full object-cover object-top"
+        />
+        <span class="project-glow" aria-hidden="true"></span>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-12 lg:gap-12">
+        <div class="mt-7 lg:col-span-5 lg:col-start-2">
+          <h3
+            class="display-tight text-[clamp(1.5rem,3vw,2.25rem)] transition-colors group-hover:text-accent"
+          >
+            {feature.data.shortTitle}
+          </h3>
+          <p class="mt-4 text-text-dim">{feature.data.businessProblem}</p>
+        </div>
+
+        <div class="lg:col-span-4 lg:col-start-8 lg:mt-7">
+          <p class="text-text">{feature.data.solution}</p>
+          <p class="meta mt-5">{stack(feature).join(", ")}</p>
+          <p class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-text">
+            Open the case file
+            <Icon name="arrow-right" class="h-4 w-4" />
+          </p>
+        </div>
+      </div>
+    </a>
+  </article>
+
+  {/* ---- Counter: text-led, photograph held higher ------------------- */}
+  <article class="reveal shell mt-20 lg:mt-28">
+    <a href={`/work/${counter.id}`} class="group grid gap-8 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="meta mb-4">{counter.data.sector}</p>
+        <h3
+          class="display-tight text-[clamp(1.5rem,3vw,2.25rem)] transition-colors group-hover:text-accent"
+        >
+          {counter.data.shortTitle}
+        </h3>
+        <p class="mt-4 text-text-dim">{counter.data.summary}</p>
+
+        {
+          counter.data.architecture[0] && (
+            <div class="mt-6 border-l-2 border-accent-deep pl-5">
+              <p class="text-text">{counter.data.architecture[0].decision}</p>
+              <p class="mt-2 text-sm text-text-dim">{counter.data.architecture[0].rationale}</p>
+            </div>
+          )
+        }
+
+        <p class="meta mt-6">{stack(counter).join(", ")}</p>
+        <p class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-text">
+          Open the case file
+          <Icon name="arrow-right" class="h-4 w-4" />
+        </p>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="frame zoom bracket project-light aspect-[16/10]" data-project-light>
+          <Picture
+            src={counter.data.screenshot}
+            alt={counter.data.screenshotAlt}
+            widths={[640, 1024, 1280]}
+            sizes="(min-width: 1024px) 56vw, 100vw"
+            formats={["avif", "webp"]}
+            fallbackFormat="webp"
+            loading="lazy"
+            class="h-full w-full object-cover object-top"
+          />
+          <span class="project-glow" aria-hidden="true"></span>
+        </div>
+      </div>
+    </a>
+  </article>
+
+  {/* ---- Pair -------------------------------------------------------- */}
+  <div class="reveal shell mt-20 grid gap-10 md:grid-cols-2 md:gap-8 lg:mt-28 lg:gap-12">
+    {
+      [pairA, pairB].map((entry) => (
+        <article>
+          <a href={`/work/${entry.id}`} class="group block">
+            <div class="frame zoom bracket project-light aspect-[16/10]" data-project-light>
+              <Picture
+                src={entry.data.screenshot}
+                alt={entry.data.screenshotAlt}
+                widths={[480, 720, 960]}
+                sizes="(min-width: 768px) 44vw, 100vw"
+                formats={["avif", "webp"]}
+                fallbackFormat="webp"
+                loading="lazy"
+                class="h-full w-full object-cover object-top"
+              />
+              <span class="project-glow" aria-hidden="true"></span>
+            </div>
+            <h3 class="display-tight mt-6 text-xl transition-colors group-hover:text-accent">
+              {entry.data.shortTitle}
+            </h3>
+            <p class="mt-3 text-text-dim">{entry.data.summary}</p>
+            <p class="meta mt-4">{stack(entry).join(", ")}</p>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+
+  {/* ---- Index ------------------------------------------------------- */}
+  <div class="reveal shell mt-20 lg:mt-28">
+    <h3 class="meta mb-4">Further case files</h3>
+    <div class="border-b border-line">
+      {
+        index.map((entry) => (
+          <a href={`/work/${entry.id}`} class="index-row group">
+            <span class="meta-value text-text-faint">{entry.data.caseNumber}</span>
+            <span>
+              <span class="index-title display-tight block text-lg">{entry.data.shortTitle}</span>
+              <span class="mt-1 block text-sm text-text-dim">{entry.data.summary}</span>
+            </span>
+            <span class="flex items-center gap-3 whitespace-nowrap">
+              <span
+                class:list={[
+                  "meta",
+                  entry.data.status === "Deployed" ? "text-accent" : "text-text-faint",
+                ]}
+              >
+                {entry.data.status}
+              </span>
+              <Icon name="arrow-right" class="index-arrow h-4 w-4 text-text-faint" />
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

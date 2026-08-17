@@ -12,6 +12,44 @@ dist
 dist-ssr
 *.local
 
+# Astro
+.astro/
+.vercel/
+
+# Local QA and agent state
+artifacts/
+.claude/settings.local.json
+.claude/worktrees/
+
+# Superseded local design experiments
+docs/superpowers/cinematic/
+docs/superpowers/plans/2026-08-17-batman-dark-knight-portfolio-enhancement.md
+scripts/_copy_pass.mjs
+scripts/generate-costume-composite.mjs
+src/assets/portrait/batman-dark-knight-reference.png
+src/assets/portrait/den-armor-base.png
+src/assets/portrait/den-armored-colored-manga.jpg
+src/assets/portrait/den-batman.png
+src/assets/portrait/den-manga-panel.png
+src/assets/portrait/den-mono.webp
+
+# Local QA and agent state
+artifacts/
+.claude/settings.local.json
+.claude/worktrees/
+
+# Superseded local design experiments
+docs/superpowers/cinematic/
+docs/superpowers/plans/2026-08-17-batman-dark-knight-portfolio-enhancement.md
+scripts/_copy_pass.mjs
+scripts/generate-costume-composite.mjs
+src/assets/portrait/batman-dark-knight-reference.png
+src/assets/portrait/den-armor-base.png
+src/assets/portrait/den-armored-colored-manga.jpg
+src/assets/portrait/den-batman.png
+src/assets/portrait/den-manga-panel.png
+src/assets/portrait/den-mono.webp
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

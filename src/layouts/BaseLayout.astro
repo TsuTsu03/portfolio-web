@@ -1,0 +1,235 @@
+---
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/instrument-sans";
+import "../styles/global.css";
+
+import archivoLatin from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
+import instrumentLatin from "@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url";
+
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import Atmosphere from "../components/Atmosphere.astro";
+import { person, seo, SITE_URL } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path only, e.g. "/work/clinicflow". Canonical is built from the site URL. */
+  path: string;
+  ogType?: "website" | "article";
+  ogImagePath?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  ogImageAlt?: string;
+  dateModified?: string;
+  articleSection?: string;
+  articleTags?: string[];
+  /** Any JSON-LD graph nodes this page contributes. */
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  title = seo.title,
+  description = seo.description,
+  path,
+  ogType = "website",
+  ogImagePath = seo.ogImage,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+  ogImageAlt = seo.ogImageAlt,
+  dateModified,
+  articleSection,
+  articleTags = [],
+  jsonLd = [],
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(path, SITE_URL).href;
+const ogImage = new URL(ogImagePath, SITE_URL).href;
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
+---
+
+<!doctype html>
+<html lang="en-PH">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en-PH" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {
+      !noindex && (
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+      )
+    }
+    <meta name="author" content={person.name} />
+    {/* Regional signals for local and answer-engine surfaces. Place names only:
+        no coordinates are claimed, because none have been verified. */}
+    <meta name="geo.region" content="PH-00" />
+    <meta name="geo.placename" content={`${person.locality}, ${person.region}`} />
+    <meta name="geo.country" content={person.countryCode} />
+    <meta name="language" content="en-PH" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=yes" />
+    {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
+    {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0c0e10" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="AI-readable portfolio summary" />
+    <link rel="alternate" type="text/plain" href="/llms-full.txt" title="AI-readable portfolio details" />
+    <link rel="alternate" type="application/json" href="/portfolio.json" title="Portfolio data" />
+    <link rel="author" href="/#about" />
+    <link rel="me" href={person.github} />
+    <link rel="me" href={person.linkedin} />
+    <link rel="me" href={person.instagram} />
+
+    <link rel="preload" as="font" type="font/woff2" href={archivoLatin} crossorigin="anonymous" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={instrumentLatin}
+      crossorigin="anonymous"
+    />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Den Jansen Flores" />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(ogImageWidth)} />
+    <meta property="og:image:height" content={String(ogImageHeight)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {dateModified && <meta property="article:modified_time" content={dateModified} />}
+    {articleSection && <meta property="article:section" content={articleSection} />}
+    {articleTags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    {
+      jsonLd.length > 0 && (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": jsonLd })}
+        />
+      )
+    }
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {/* Fixed grain. Never animated. */}
+    <div class="grain" aria-hidden="true"></div>
+    <Atmosphere />
+
+    <span class="top-sentinel" aria-hidden="true"></span>
+    <SiteHeader path={path} />
+
+    <main id="main" class="relative">
+      <slot />
+    </main>
+
+    <SiteFooter />
+
+    <script>
+      // Everything below is enhancement. The `js` class is what arms the
+      // reveal styles, so a script failure leaves the page fully visible.
+      const root = document.documentElement;
+      root.classList.add("js");
+
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const targets = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+      const showAll = () => targets.forEach((el) => el.classList.add("is-in"));
+
+      if (reduced || !("IntersectionObserver" in window)) {
+        showAll();
+      } else {
+        // Anything already on screen is shown immediately rather than waiting
+        // for the observer's first callback.
+        targets.forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.9) el.classList.add("is-in");
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-in");
+              observer.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
+        );
+        targets.forEach((el) => observer.observe(el));
+
+        // Safety net: a reveal must never be the reason content stays unread.
+        window.setTimeout(() => {
+          showAll();
+          observer.disconnect();
+        }, 5000);
+      }
+
+      // Header state is observer-driven. Reading progress is handled by a CSS
+      // scroll timeline where supported, so there is no hot-path scroll work.
+      const header = document.querySelector<HTMLElement>(".site-header");
+      const sentinel = document.querySelector<HTMLElement>(".top-sentinel");
+      if (header && sentinel && "IntersectionObserver" in window) {
+        const headerObserver = new IntersectionObserver(([entry]) => {
+          header.classList.toggle("is-scrolled", !entry.isIntersecting);
+        });
+        headerObserver.observe(sentinel);
+      }
+
+      // Cold light that follows the pointer across the hero and the closing
+      // section. Pointer-fine only, and it writes two custom properties.
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        document.querySelectorAll<HTMLElement>(".stage").forEach((stage) => {
+          stage.addEventListener(
+            "pointermove",
+            (event) => {
+              const rect = stage.getBoundingClientRect();
+              stage.style.setProperty("--px", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+              stage.style.setProperty("--py", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+            },
+            { passive: true }
+          );
+        });
+
+        document.querySelectorAll<HTMLElement>("[data-project-light]").forEach((frame) => {
+          frame.addEventListener(
+            "pointermove",
+            (event) => {
+              const rect = frame.getBoundingClientRect();
+              frame.style.setProperty("--lx", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+              frame.style.setProperty("--ly", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+            },
+            { passive: true }
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

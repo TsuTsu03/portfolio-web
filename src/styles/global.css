@@ -1,0 +1,1557 @@
+@import "tailwindcss";
+
+/* ============================================================
+   TOKENS
+
+   One locked dark theme. Deep charcoal ground, graphite surfaces,
+   gunmetal rules, ivory text, one tungsten accent. Every colour on
+   the site resolves through these; nothing is hard-coded in markup.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* Ground and surfaces */
+  --ink: #0c0e10;
+  --ink-deep: #08090a;
+  --surface: #16191c;
+  --surface-raised: #1c2125;
+
+  /* Structure. --line is decorative hairline, --line-strong is a real
+     edge, --line-control carries interactive boundaries and is held
+     above 3:1 against the ground. */
+  --line: #23282d;
+  --line-strong: #394046;
+  --line-control: #5c656d;
+
+  /* Text. --text-faint is the floor: 5:1 on ink, so it can still carry
+     small metadata without dropping below AA. */
+  --text: #eceae4;
+  --text-dim: #9ba6ae;
+  --text-faint: #79838c;
+
+  /* One accent. Warmth, attention, action — used sparingly. */
+  --accent: #e0a05c;
+  --accent-deep: #b9773a;
+  --accent-wash: rgb(224 160 92 / 0.1);
+  --accent-edge: rgb(224 160 92 / 0.4);
+
+  /* Practical light: the warm pool a tungsten source leaves on a wall. */
+  --glow-warm: rgb(224 160 92 / 0.07);
+  --glow-cool: rgb(126 158 178 / 0.06);
+
+  --radius: 2px;
+  --shell: 1320px;
+  --gutter: 1.25rem;
+
+  --dur: 160ms;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 2.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --gutter: 3.5rem;
+  }
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-control: var(--line-control);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-text-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+
+  --color-background: var(--ink);
+  --color-foreground: var(--text);
+  --color-border: var(--line);
+  --color-ring: var(--accent);
+
+  --font-display: "Archivo Variable", "Archivo", system-ui, sans-serif;
+  --font-sans: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
+
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+@layer base {
+  html {
+    background-color: var(--ink);
+    scroll-behavior: smooth;
+    /* Clears the fixed header when jumping to a section. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    /*
+      Must stay transparent. A block-level descendant's background paints after
+      negative-z-index children, so an opaque body sits on top of the light
+      shaft, the architectural rules and the vignette and hides all three.
+      <html> carries the base colour instead.
+    */
+    background-color: transparent;
+    color: var(--text-dim);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 420;
+    line-height: 1.68;
+    letter-spacing: -0.004em;
+    font-optical-sizing: auto;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body > main,
+  body > footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-synthesis: none;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  img {
+    display: block;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  @media (forced-colors: active) {
+    .grain,
+    .atmosphere,
+    .wash-warm,
+    .wash-cool,
+    .project-glow,
+    .hero-bat-field,
+    .identity-state-manga,
+    .identity-ink,
+    .identity-scan {
+      display: none;
+    }
+  }
+}
+
+/* ============================================================
+   COMPONENTS
+
+   Layered so Tailwind utilities in the markup still win.
+   ============================================================ */
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Wider measure for compositions that need to breathe past the shell. */
+  .shell-wide {
+    width: 100%;
+    max-width: 1680px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* ---- Typography -------------------------------------------------- */
+
+  /* A controlled, slightly condensed display cut. The weight carries the
+     authority; the page does not need decorative shouting. */
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 94;
+    font-weight: 700;
+    letter-spacing: -0.042em;
+    line-height: 0.9;
+    color: var(--text);
+  }
+
+  /* Long headings use an even narrower cut and a calmer line height. */
+  .display-tight {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 88;
+    font-weight: 650;
+    letter-spacing: -0.027em;
+    line-height: 0.98;
+    color: var(--text);
+  }
+
+  .lede {
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    font-weight: 440;
+    letter-spacing: -0.012em;
+    line-height: 1.58;
+    color: var(--text-dim);
+    max-width: 58ch;
+  }
+
+  .prose-body p {
+    max-width: 60ch;
+    margin-bottom: 1.3em;
+    line-height: 1.72;
+  }
+
+  .prose-body p:first-child {
+    color: var(--text);
+    font-size: 1.04em;
+  }
+
+  .prose-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Technical metadata only: status, stack, dates, counts. Never used as a
+     decorative label above a heading. */
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 650;
+    line-height: 1.45;
+    letter-spacing: 0.095em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .meta-value {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--text);
+  }
+
+  /* ---- Section scaffolding ----------------------------------------- */
+
+  .section {
+    position: relative;
+    padding-block: clamp(4.5rem, 9vw, 8.5rem);
+  }
+
+  /* Static lighting zones stop the long page reading as one flat black plane.
+     They change temperature by chapter without adding DOM or moving layers. */
+  main > section:nth-of-type(3n + 1) {
+    background-image: radial-gradient(
+      52rem 34rem at 88% 22%,
+      rgb(108 149 174 / 0.035),
+      transparent 72%
+    );
+  }
+
+  main > section:nth-of-type(3n + 2) {
+    background-image: radial-gradient(
+      48rem 32rem at 12% 54%,
+      rgb(224 160 92 / 0.026),
+      transparent 74%
+    );
+  }
+
+  main > section:nth-of-type(3n) {
+    background-image: linear-gradient(
+      105deg,
+      transparent 0 42%,
+      rgb(104 130 146 / 0.022) 56%,
+      transparent 76%
+    );
+  }
+
+  /* A hairline that starts at the gutter rather than the viewport edge,
+     so the page reads as a set of plates rather than banded stripes. */
+  .rule-top::before {
+    content: "";
+    position: absolute;
+    inset-inline: var(--gutter);
+    top: 0;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ---- Controls ---------------------------------------------------- */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding-inline: 1.35rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    font-weight: 550;
+    letter-spacing: 0.005em;
+    text-decoration: none;
+    transition:
+      background-color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: #efb273;
+    border-color: #efb273;
+  }
+
+  .btn-ghost {
+    color: var(--text);
+    border-color: var(--line-control);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--text-dim);
+    background: var(--surface);
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Text link that keeps its underline honest and reads as a link without
+     relying on colour alone. */
+  .link {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--line-control);
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+    transition:
+      color var(--dur) var(--ease),
+      text-decoration-color var(--dur) var(--ease);
+  }
+
+  .link:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  /* ---- Surfaces ---------------------------------------------------- */
+
+  .plate {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  /* Photographic frame. Borrowed from the black architectural posts in the
+     portrait: a hard edge, a little inset shadow, no rounding to speak of. */
+  .frame {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--ink-deep);
+  }
+
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---- Atmosphere --------------------------------------------------- */
+
+  /* A practical light falling across the frame from the upper left, the way a
+     street lamp reaches a wall. Drifts slowly; stopped entirely under reduced
+     motion by the block at the end of this file. */
+  .light-shaft {
+    position: absolute;
+    top: -30%;
+    left: -10%;
+    width: 62%;
+    height: 150%;
+    pointer-events: none;
+    z-index: -1;
+    transform: rotate(14deg);
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgb(224 160 92 / 0.07) 42%,
+      rgb(224 160 92 / 0.12) 50%,
+      rgb(224 160 92 / 0.06) 58%,
+      transparent 100%
+    );
+    filter: blur(26px);
+    animation: shaft 26s ease-in-out infinite alternate;
+  }
+
+  @keyframes shaft {
+    from {
+      transform: rotate(14deg) translateX(-3%);
+      opacity: 0.72;
+    }
+    to {
+      transform: rotate(11deg) translateX(4%);
+      opacity: 1;
+    }
+  }
+
+  /* Architectural verticals. Static, barely there, and the reason the empty
+     space reads as a room rather than a gap. */
+  .rules {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgb(150 165 178 / 0.22), rgb(150 165 178 / 0.22)),
+      linear-gradient(rgb(150 165 178 / 0.16), rgb(150 165 178 / 0.16)),
+      linear-gradient(rgb(150 165 178 / 0.1), rgb(150 165 178 / 0.1)),
+      linear-gradient(rgb(150 165 178 / 0.14), rgb(150 165 178 / 0.14));
+    background-size:
+      1px 100%,
+      1px 100%,
+      1px 100%,
+      100% 1px;
+    background-position:
+      16% 0,
+      84% 0,
+      50% 0,
+      0 76%;
+    background-repeat: no-repeat;
+    mask-image: linear-gradient(to bottom, transparent, black 14%, black 80%, transparent);
+  }
+
+  /* Corner falloff. The frame edge of a night shot, nothing more. */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(120% 90% at 50% 42%, transparent 40%, rgb(4 6 8 / 0.55) 100%);
+  }
+
+  /* Pointer-tracked cold wash. Set by the layout script on pointer-fine
+     devices; the fallback position keeps it harmless everywhere else. */
+  .stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(
+      30rem 30rem at var(--px, 50%) var(--py, 38%),
+      rgb(159 196 222 / 0.055),
+      transparent 70%
+    );
+    transition: opacity 400ms var(--ease);
+  }
+
+  /* ---- Entrance and reveal ------------------------------------------ */
+
+  /* Page-entry stagger. Runs on load only, ordered by --i. */
+  .stagger {
+    animation: rise 720ms var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Scroll reveal. Only armed once the script has run, so a JavaScript failure
+     leaves every section fully visible. */
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 620ms var(--ease),
+      transform 620ms var(--ease);
+    transition-delay: var(--d, 0ms);
+  }
+
+  html.js .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The amber tick that opens every section. Draws itself in from the left
+     when the section arrives, which is the only motion most sections get. */
+  .section-tick {
+    display: block;
+    width: 2.75rem;
+    height: 2px;
+    margin-bottom: 1.15rem;
+    background: var(--accent);
+    transform-origin: left center;
+  }
+
+  html.js .reveal.section-tick {
+    opacity: 1;
+    transform: scaleX(0);
+    transition: transform 620ms var(--ease);
+  }
+
+  html.js .reveal.section-tick.is-in {
+    transform: scaleX(1);
+  }
+
+  /* A rule that draws itself in rather than appearing. */
+  .rule-draw {
+    transform-origin: left center;
+    animation: draw 900ms var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 220ms);
+  }
+
+  @keyframes draw {
+    from {
+      transform: scaleX(0);
+      opacity: 0;
+    }
+    to {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  /* ---- The night identity ------------------------------------------- */
+
+  .identity {
+    position: relative;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--ink-deep);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .identity-state {
+    display: block;
+    width: 100%;
+  }
+
+  .identity-state picture,
+  .identity-state img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .identity-state-base {
+    position: relative;
+    filter: none;
+    transform: scale(1.001);
+    transition:
+      filter 760ms var(--ease),
+      transform 900ms var(--ease);
+  }
+
+  /* The composition-matched manga panel follows the pointer as one cohesive
+     black-and-white scene without fitting separate pieces over the portrait. */
+  .identity-state-manga {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    clip-path: circle(0% at var(--ix, 52%) var(--iy, 44%));
+    filter: grayscale(1) contrast(1.16) brightness(0.98);
+    transform: scale(1.008);
+    transition:
+      clip-path 760ms cubic-bezier(0.2, 0.72, 0.12, 1),
+      filter 760ms var(--ease),
+      transform 840ms var(--ease);
+  }
+
+  .identity-ink {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow:
+      inset 0 0 0 1px rgb(244 241 232 / 0.5),
+      inset 0 0 0 8px rgb(4 5 6 / 0.28);
+    transition: opacity 420ms var(--ease) 180ms;
+  }
+
+  .identity-ink::before,
+  .identity-ink::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .identity-ink::before {
+    background: radial-gradient(
+      ellipse at 56% 38%,
+      transparent 0 24%,
+      rgb(0 0 0 / 0.08) 54%,
+      rgb(0 0 0 / 0.48) 100%
+    );
+  }
+
+  .identity-ink::after {
+    background:
+      radial-gradient(circle, rgb(238 238 234 / 0.14) 0 0.6px, transparent 0.9px),
+      repeating-linear-gradient(
+        108deg,
+        transparent 0 34px,
+        rgb(214 218 220 / 0.14) 35px,
+        transparent 37px
+      );
+    background-size: 5px 5px, auto;
+    mask-image: linear-gradient(to bottom, black, transparent 38%);
+  }
+
+  .identity:hover .identity-state-manga,
+  .identity:focus-visible .identity-state-manga,
+  .identity[aria-pressed="true"] .identity-state-manga {
+    clip-path: circle(145% at var(--ix, 52%) var(--iy, 44%));
+    filter: grayscale(1) contrast(1.2) brightness(1.04);
+    transform: scale(1);
+  }
+
+  .identity:hover .identity-state-base,
+  .identity:focus-visible .identity-state-base,
+  .identity[aria-pressed="true"] .identity-state-base {
+    filter: saturate(0.55) contrast(1.08) brightness(0.72);
+    transform: scale(1.008);
+  }
+
+  .identity:hover .identity-ink,
+  .identity:focus-visible .identity-ink,
+  .identity[aria-pressed="true"] .identity-ink {
+    opacity: 0.44;
+  }
+
+  /* One pale page-turn sweep marks the transition into ink. */
+  .identity-scan {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 3;
+    width: 24%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgb(244 241 232 / 0.1),
+      rgb(244 241 232 / 0.24),
+      transparent
+    );
+    mix-blend-mode: screen;
+    opacity: 0.72;
+    transform: translateX(-130%) skewX(-8deg);
+    transition: transform 900ms var(--ease);
+  }
+
+  .identity:hover .identity-scan,
+  .identity:focus-visible .identity-scan,
+  .identity[aria-pressed="true"] .identity-scan {
+    transform: translateX(480%) skewX(-8deg);
+  }
+
+  /* ---- Static atmosphere ------------------------------------------- */
+
+  /* Fixed grain. Static, cheap, and skipped entirely in forced colours. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.5'/></svg>");
+  }
+
+  /* Fixed city weather: one rain plane, two drifting fog banks and a static
+     skyline. Content stays in the semantic document above this layer. */
+  .atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(55rem 42rem at 78% 18%, rgb(60 91 111 / 0.1), transparent 72%),
+      linear-gradient(to bottom, rgb(5 8 12 / 0.2), transparent 48%);
+  }
+
+  .atmosphere-rain {
+    position: absolute;
+    inset: -24% -12%;
+    opacity: 0.085;
+    background-image: repeating-linear-gradient(
+      106deg,
+      transparent 0 28px,
+      rgb(170 205 224 / 0.46) 29px 30px,
+      transparent 31px 58px
+    );
+    background-size: 220px 340px;
+    transform: translate3d(0, -10%, 0);
+    animation: rain-fall 9s linear infinite;
+    will-change: transform;
+  }
+
+  .atmosphere-fog {
+    position: absolute;
+    width: min(68rem, 88vw);
+    height: 18rem;
+    border-radius: 50%;
+    filter: blur(56px);
+    background: rgb(108 137 153 / 0.055);
+    will-change: transform, opacity;
+  }
+
+  .atmosphere-fog-a {
+    left: -20rem;
+    top: 26%;
+    animation: fog-drift-a 24s ease-in-out infinite alternate;
+  }
+
+  .atmosphere-fog-b {
+    right: -24rem;
+    top: 63%;
+    opacity: 0.7;
+    animation: fog-drift-b 31s ease-in-out infinite alternate;
+  }
+
+  .atmosphere-skyline {
+    position: absolute;
+    inset: auto 0 0;
+    height: min(18rem, 28vh);
+    opacity: 0.26;
+    background:
+      linear-gradient(to top, #040608 0 30%, transparent 30%) 0 100% / 100% 100% no-repeat,
+      repeating-linear-gradient(90deg, #05080a 0 5vw, transparent 5vw 7vw) 0 100% / 100% 55% no-repeat,
+      repeating-linear-gradient(90deg, transparent 0 3vw, #070a0d 3vw 8vw, transparent 8vw 12vw) 0 100% / 100% 78% no-repeat;
+    mask-image: linear-gradient(to top, black 0 36%, transparent 100%);
+  }
+
+  @keyframes rain-fall {
+    to {
+      transform: translate3d(7%, 12%, 0);
+    }
+  }
+
+  @keyframes fog-drift-a {
+    to {
+      transform: translate3d(18vw, -2rem, 0) scale(1.08);
+      opacity: 0.78;
+    }
+  }
+
+  @keyframes fog-drift-b {
+    to {
+      transform: translate3d(-16vw, 2rem, 0) scale(0.94);
+      opacity: 0.5;
+    }
+  }
+
+  /* Practical light. One warm pool and one cold one, placed per section
+     rather than everywhere. */
+  .wash-warm,
+  .wash-cool {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    border-radius: 50%;
+  }
+
+  .wash-warm {
+    background: radial-gradient(circle, var(--glow-warm) 0%, transparent 70%);
+  }
+
+  .wash-cool {
+    background: radial-gradient(circle, var(--glow-cool) 0%, transparent 70%);
+  }
+
+  /* ---- Header ------------------------------------------------------ */
+
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    background: rgb(12 14 16 / 0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 560;
+    letter-spacing: 0.012em;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--text);
+  }
+
+  .nav-link[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0.55rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ---- Disclosure (mobile menu, questions) -------------------------- */
+
+  /* Native <details>, so both work with no JavaScript at all. */
+  .disclosure summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .disclosure summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disclosure summary .chev {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .disclosure[open] summary .chev {
+    transform: rotate(45deg);
+  }
+
+  /* ---- Work index -------------------------------------------------- */
+
+  .index-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 1rem 1.25rem;
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .index-row:hover {
+    background: var(--surface);
+  }
+
+  .index-row:hover .index-title {
+    color: var(--accent);
+  }
+
+  .index-title {
+    transition: color var(--dur) var(--ease);
+  }
+
+  .index-row .index-arrow {
+    transition: transform 220ms var(--ease);
+  }
+
+  .index-row:hover .index-arrow {
+    transform: translateX(5px);
+  }
+
+  /* ---- Photographic hover ------------------------------------------- */
+
+  /* Screenshots and photographs lift slightly and cool down at the edges when
+     the card they belong to is hovered. Transform and opacity only. */
+  .zoom img {
+    transition: transform 800ms var(--ease);
+  }
+
+  .group:hover .zoom img {
+    transform: scale(1.028);
+  }
+
+  /* Project images pick up a cold inspection light at the pointer while the
+     frame edge catches a thin tungsten line. */
+  .zoom {
+    box-shadow: inset 0 2px transparent;
+    transition: box-shadow 420ms var(--ease);
+  }
+
+  .group:hover .zoom {
+    box-shadow: inset 0 2px var(--accent);
+  }
+
+  .project-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      18rem 15rem at var(--lx, 50%) var(--ly, 42%),
+      rgb(154 197 222 / 0.16),
+      transparent 72%
+    );
+    mix-blend-mode: screen;
+    transition: opacity 300ms var(--ease);
+  }
+
+  .group:hover .project-glow {
+    opacity: 1;
+  }
+
+  /* Corner ticks. The architectural detail that keeps a plain rectangle from
+     reading as a stock card. */
+  .bracket::before,
+  .bracket::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--line-control);
+    pointer-events: none;
+    z-index: 2;
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .bracket::before {
+    top: 10px;
+    left: 10px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+
+  .bracket::after {
+    right: 10px;
+    bottom: 10px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+  }
+
+  .group:hover .bracket::before,
+  .group:hover .bracket::after {
+    border-color: var(--accent);
+  }
+
+  /* ---- Header states ------------------------------------------------ */
+
+  .site-header {
+    transition:
+      background-color 260ms var(--ease),
+      border-color 260ms var(--ease);
+  }
+
+  .site-header.is-scrolled {
+    background: rgb(10 12 14 / 0.94);
+    border-bottom-color: var(--line-strong);
+  }
+
+  /* Reading progress, drawn on the header's bottom edge. */
+  .scroll-line {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background: var(--accent);
+    opacity: 0.85;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+    animation-duration: auto;
+    animation-range: 0% 100%;
+  }
+
+  @keyframes scroll-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .top-sentinel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 24px;
+    pointer-events: none;
+  }
+
+  /* ---- Case-study prose -------------------------------------------- */
+
+  .prose-notes {
+    color: var(--text-dim);
+  }
+
+  .prose-notes p {
+    max-width: 62ch;
+    margin-bottom: 1.3em;
+    line-height: 1.72;
+  }
+
+  .prose-notes h3 {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 88;
+    font-weight: 650;
+    font-size: 1.18rem;
+    letter-spacing: -0.018em;
+    color: var(--text);
+    margin-top: 2rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .prose-notes a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* ---- Nocturne systems atlas ------------------------------------ */
+
+  .hero-stage {
+    display: grid;
+    place-items: center;
+  }
+
+  .hero-atlas {
+    display: grid;
+    width: 100%;
+    min-height: calc(100dvh - 6rem);
+    place-items: center;
+    padding-block: clamp(2rem, 7vh, 5rem);
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 3;
+  }
+
+  .hero-copy-centered {
+    width: min(100%, 78rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero-role {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-name-wrap {
+    position: relative;
+    isolation: isolate;
+    display: inline-grid;
+    max-width: 100%;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .hero-name {
+    position: relative;
+    z-index: 2;
+    line-height: 0.84;
+    letter-spacing: -0.06em;
+    text-shadow: 0 1.5rem 5rem rgb(0 0 0 / 0.52);
+  }
+
+  .hero-name > span {
+    white-space: nowrap;
+  }
+
+  .hero-rule {
+    margin-inline: auto;
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-dim);
+    text-shadow: 0 0 3rem rgb(126 158 178 / 0.08);
+  }
+
+  .hero-bat-field {
+    position: absolute;
+    inset: -12% -8%;
+    z-index: 1;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .hero-bat {
+    --bat-x: 0.8rem;
+    --bat-y: -0.55rem;
+    --bat-rotate: 7deg;
+    position: absolute;
+    display: block;
+    width: clamp(1.35rem, 2.2vw, 2.4rem);
+    color: var(--text-dim);
+    opacity: 0.42;
+    filter: drop-shadow(0 0.35rem 0.6rem rgb(0 0 0 / 0.72));
+    transform-origin: 50% 50%;
+    animation: hero-bat-drift 7.5s ease-in-out infinite;
+    transition:
+      color 320ms var(--ease),
+      opacity 320ms var(--ease);
+  }
+
+  .hero-bat svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    fill: currentColor;
+    transform-origin: 50% 55%;
+    animation: hero-bat-flap 680ms ease-in-out infinite alternate;
+  }
+
+  .hero-bat:nth-child(1) {
+    left: -2%;
+    top: 26%;
+    --bat-x: 1.2rem;
+    --bat-y: -0.8rem;
+    animation-delay: -1.4s;
+  }
+
+  .hero-bat:nth-child(2) {
+    left: 13%;
+    top: -5%;
+    width: clamp(1.05rem, 1.5vw, 1.65rem);
+    --bat-x: -0.7rem;
+    --bat-y: 0.65rem;
+    --bat-rotate: -9deg;
+    animation-delay: -4.2s;
+  }
+
+  .hero-bat:nth-child(3) {
+    left: 32%;
+    top: 8%;
+    width: clamp(0.95rem, 1.2vw, 1.35rem);
+    --bat-x: 0.55rem;
+    --bat-y: -0.85rem;
+    animation-delay: -2.6s;
+  }
+
+  .hero-bat:nth-child(4) {
+    right: 26%;
+    top: -8%;
+    --bat-x: 0.8rem;
+    --bat-y: 0.7rem;
+    --bat-rotate: -5deg;
+    animation-delay: -5.7s;
+  }
+
+  .hero-bat:nth-child(5) {
+    right: -3%;
+    top: 22%;
+    width: clamp(1.6rem, 2.6vw, 2.8rem);
+    --bat-x: -1.25rem;
+    --bat-y: -0.45rem;
+    --bat-rotate: -11deg;
+    animation-delay: -3.1s;
+  }
+
+  .hero-bat:nth-child(6) {
+    right: 10%;
+    bottom: 0;
+    width: clamp(1.05rem, 1.35vw, 1.55rem);
+    --bat-x: 0.7rem;
+    --bat-y: 0.8rem;
+    animation-delay: -6.5s;
+  }
+
+  .hero-bat:nth-child(7) {
+    left: 19%;
+    bottom: -7%;
+    width: clamp(1.2rem, 1.6vw, 1.8rem);
+    --bat-x: -0.9rem;
+    --bat-y: -0.55rem;
+    --bat-rotate: -7deg;
+    animation-delay: -0.8s;
+  }
+
+  .hero-name-wrap:hover .hero-bat {
+    color: var(--accent);
+    opacity: 0.72;
+  }
+
+  @keyframes hero-bat-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(var(--bat-x), var(--bat-y), 0) rotate(var(--bat-rotate));
+    }
+  }
+
+  @keyframes hero-bat-flap {
+    from {
+      transform: scaleY(0.68);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  .work-lead {
+    position: relative;
+  }
+
+  .work-lead::before {
+    content: "";
+    position: absolute;
+    left: -4.5rem;
+    top: 0.85em;
+    width: 3rem;
+    height: 1px;
+    background: var(--line-control);
+  }
+
+  .about-portrait {
+    position: relative;
+  }
+
+  .about-portrait::before {
+    content: "";
+    position: absolute;
+    inset: -1.25rem auto auto -1.25rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-top: 1px solid var(--accent-edge);
+    border-left: 1px solid var(--accent-edge);
+    pointer-events: none;
+  }
+
+  .capability-map {
+    display: grid;
+    gap: 3.5rem 4rem;
+  }
+
+  .capability-group {
+    position: relative;
+  }
+
+  .capability-group::after {
+    content: attr(aria-labelledby);
+    position: absolute;
+    top: -1.2rem;
+    right: 0;
+    z-index: -1;
+    color: rgb(155 166 174 / 0.04);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .approach-principle {
+    position: relative;
+  }
+
+  .approach-principle::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 520ms var(--ease);
+  }
+
+  .approach-principle:hover::before {
+    width: min(10rem, 36%);
+  }
+
+  .contact-email {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 88;
+    font-size: clamp(1.15rem, 3.2vw, 2.35rem);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---- Case-study editorial system ------------------------------- */
+
+  .case-study {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .case-study::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+    height: min(54rem, 82vh);
+    background:
+      linear-gradient(108deg, transparent 36%, rgb(126 158 178 / 0.035) 36.1% 36.2%, transparent 36.3%),
+      radial-gradient(54rem 42rem at 88% 12%, rgb(126 158 178 / 0.07), transparent 72%);
+  }
+
+  .case-hero {
+    position: relative;
+  }
+
+  .case-hero::after {
+    content: "";
+    position: absolute;
+    right: var(--gutter);
+    bottom: -2rem;
+    width: 8rem;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.65;
+  }
+
+  .case-media {
+    position: relative;
+  }
+
+  .case-media::before {
+    content: "";
+    position: absolute;
+    inset: 1.5rem calc(var(--gutter) + 1.5rem) -1.5rem calc(var(--gutter) - 1.5rem);
+    z-index: -1;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .case-body section > h2 {
+    max-width: 24ch;
+  }
+
+  .case-summary .plate {
+    background:
+      linear-gradient(135deg, rgb(224 160 92 / 0.055), transparent 42%),
+      var(--surface);
+  }
+
+  @media (min-width: 1024px) {
+    .hero-atlas {
+      min-height: calc(100dvh - 6rem);
+    }
+
+    .work-lead {
+      margin-left: 18%;
+    }
+
+    .about-copy {
+      position: sticky;
+      top: 8rem;
+      align-self: start;
+    }
+
+    .capability-map {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .capability-systems {
+      grid-column: 1 / span 6;
+    }
+
+    .capability-backend {
+      grid-column: 8 / span 5;
+      margin-top: 5rem;
+    }
+
+    .capability-frontend {
+      grid-column: 2 / span 7;
+    }
+
+    .capability-ai {
+      grid-column: 9 / span 4;
+      margin-top: 4rem;
+    }
+
+    .capability-delivery {
+      grid-column: 3 / span 8;
+    }
+
+    .approach-intro {
+      position: sticky;
+      top: 8rem;
+      align-self: start;
+    }
+
+    .approach-principle:nth-child(even) {
+      margin-left: clamp(1rem, 4vw, 4rem);
+    }
+
+    .case-facts,
+    .case-summary {
+      position: sticky;
+      top: 7.5rem;
+      align-self: start;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-bat:nth-child(3),
+    .hero-bat:nth-child(6),
+    .hero-bat:nth-child(7) {
+      display: none;
+    }
+
+    .hero-bat-field {
+      inset: -10% -2%;
+    }
+
+    .work-lead::before,
+    .case-hero::after {
+      display: none;
+    }
+
+    .case-media::before {
+      inset: 0.75rem calc(var(--gutter) + 0.75rem) -0.75rem calc(var(--gutter) - 0.5rem);
+    }
+  }
+
+  /* ---- Utility ----------------------------------------------------- */
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    left: var(--gutter);
+    top: 0.75rem;
+    padding: 0.75rem 1.1rem;
+    background: var(--accent);
+    color: var(--ink);
+    font-weight: 600;
+    border-radius: var(--radius);
+  }
+}
+
+@supports not (animation-timeline: scroll(root)) {
+  .scroll-line {
+    display: none;
+  }
+}
+
+/* Unlayered on purpose: must outrank component display rules in Windows High
+   Contrast so the unchanged source portrait is always the fallback. */
+@media (forced-colors: active) {
+  main > section {
+    background-image: none;
+  }
+
+  .identity-state-manga,
+  .identity-ink,
+  .identity-scan,
+  .hero-bat-field {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .atmosphere-fog-b,
+  .atmosphere-skyline {
+    display: none;
+  }
+
+  .atmosphere-rain {
+    opacity: 0.055;
+  }
+}
+
+/* Reduced motion: nothing moves, and nothing is hidden as a result. The
+   identity overlay, the reveals and the entry stagger all resolve instantly to
+   their finished state; the drifting light shaft is parked. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .light-shaft {
+    animation: none;
+  }
+
+  .atmosphere-rain,
+  .atmosphere-fog {
+    animation: none;
+    will-change: auto;
+  }
+
+  .hero-bat,
+  .hero-bat svg {
+    animation: none;
+  }
+
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

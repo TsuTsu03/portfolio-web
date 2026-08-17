@@ -1,0 +1,94 @@
+---
+import Icon from "./Icon.astro";
+import { navItems, person } from "../data/site";
+
+interface Props {
+  /** Current path, so the header can mark the home link when it applies. */
+  path: string;
+}
+
+const { path } = Astro.props;
+const onHome = path === "/";
+---
+
+<header class="site-header">
+  <span class="scroll-line" aria-hidden="true"></span>
+  <div class="shell flex h-16 items-center justify-between gap-4">
+    {/* No aria-label here: the visible name is the accessible name, which keeps
+        WCAG 2.5.3 satisfied. On narrow screens it stays in the accessibility
+        tree as screen-reader-only text rather than being removed. */}
+    <a href="/" class="group flex items-center gap-3 py-2">
+      <span
+        aria-hidden="true"
+        class="flex h-8 w-8 items-center justify-center border border-line-control text-[0.6875rem] font-semibold tracking-[0.02em] text-text transition-colors group-hover:border-accent group-hover:text-accent"
+        style="font-family: var(--font-display); font-variation-settings: 'wdth' 92;"
+      >
+        DJF
+      </span>
+      <span class="sr-only whitespace-nowrap text-sm font-medium text-text sm:not-sr-only">{person.name}</span>
+    </a>
+
+    <nav aria-label="Sections" class="hidden items-center lg:flex">
+      {
+        navItems.map((item) => (
+          <a
+            class="nav-link"
+            href={onHome ? `#${item.id}` : `/#${item.id}`}
+            aria-label={`${item.label}: ${item.accessibleName}`}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={`mailto:${person.email}`} class="btn btn-ghost ml-3 h-10 min-h-[44px] text-sm">
+        <Icon name="mail" class="h-4 w-4" />
+        Email
+      </a>
+    </nav>
+
+    {/* Mobile: a native disclosure, so the menu opens with no JavaScript. */}
+    <details class="disclosure lg:hidden" id="menu">
+      <summary
+        class="flex h-11 min-w-[44px] items-center justify-center gap-2 border border-line-control px-3 text-sm text-text"
+      >
+        Menu
+        <Icon name="plus" class="chev h-4 w-4" />
+      </summary>
+
+      <nav
+        aria-label="Sections"
+        class="fixed inset-x-0 top-16 border-y border-line bg-ink px-[var(--gutter)] pb-6 pt-2"
+      >
+        <ul>
+          {
+            navItems.map((item) => (
+              <li class="border-b border-line last:border-b-0">
+                <a
+                  href={onHome ? `#${item.id}` : `/#${item.id}`}
+                  class="flex min-h-[52px] items-center text-base text-text"
+                  aria-label={`${item.label}: ${item.accessibleName}`}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a href={`mailto:${person.email}`} class="btn btn-primary mt-5 w-full">
+          <Icon name="mail" class="h-4 w-4" />
+          Email {person.shortName}
+        </a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Progressive enhancement only: the menu already opens and closes without
+  // this. It just stops an anchor jump from leaving the panel covering the
+  // section the visitor asked for.
+  const menu = document.getElementById("menu") as HTMLDetailsElement | null;
+  menu?.addEventListener("click", (event) => {
+    if ((event.target as HTMLElement).closest("a")) menu.open = false;
+  });
+</script>

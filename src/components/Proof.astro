@@ -1,0 +1,122 @@
+---
+import BrandIcon from "./BrandIcon.astro";
+import Icon from "./Icon.astro";
+import { person, resumeUrl } from "../data/site";
+
+interface Props {
+  projectCount: number;
+  liveCount: number;
+  repoCount: number;
+  /** Date every deployment link was last checked. */
+  verified: string;
+  verifiedIso: string;
+}
+
+const { projectCount, liveCount, repoCount, verified, verifiedIso } = Astro.props;
+
+const figures = [
+  { value: person.yearsActive, label: "Years building web systems" },
+  { value: String(projectCount), label: "Builds documented here" },
+  { value: String(liveCount), label: "Live deployments, linked" },
+  { value: String(repoCount), label: "Public source repositories" },
+];
+---
+
+<section id="proof" class="section rule-top" aria-labelledby="proof-heading">
+  <div class="shell">
+    <span aria-hidden="true" class="section-tick reveal"></span>
+    <h2 id="proof-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">Reputation is useful. Evidence is better.</h2>
+    <p class="mt-7 max-w-[66ch] text-lg leading-relaxed text-text-dim">
+      Four years of project-based engineering are documented through complete case studies,
+      public repositories and dated deployment checks. Employer timelines, client counts and
+      performance figures stay off the page unless published evidence can carry them.
+    </p>
+
+    <dl class="reveal mt-10 grid grid-cols-2 gap-x-8 gap-y-10 border-y border-line py-10 lg:grid-cols-4">
+      {
+        figures.map((figure) => (
+          <div class="flex flex-col">
+            <dt class="order-2 mt-2 max-w-[22ch] text-sm text-text-dim">{figure.label}</dt>
+            <dd class="display order-1 block text-[clamp(2.5rem,6vw,4rem)] text-text">
+              {figure.value}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="reveal mt-10 grid gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-7">
+        <p class="text-lg leading-relaxed text-text">
+          My experience comes from four years of independent and client work on complete systems.
+          The record is project-based, and every case study states which parts were mine.
+        </p>
+        <p class="mt-5 max-w-[62ch] text-text-dim">
+          Deployment links were opened and checked on <time datetime={verifiedIso}>{verified}</time>. One build, Career Path, is no
+          longer hosted, so its page carries no live link. The record should be accurate even when
+          the answer is less flattering.
+        </p>
+      </div>
+
+      <div class="lg:col-span-5">
+        <dl class="border-t border-line">
+          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-line py-4">
+            <dt class="meta">Open to</dt>
+            <dd class="text-sm text-text">{person.engagements}</dd>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-line py-4">
+            <dt class="meta">Working hours</dt>
+            <dd class="text-sm text-text">{person.timezone}, remote worldwide</dd>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-line py-4">
+            <dt class="meta">Résumé</dt>
+            <dd class="text-sm text-text">
+              {
+                resumeUrl ? (
+                  <a href={resumeUrl} class="link" target="_blank" rel="noopener noreferrer">
+                    Download PDF
+                  </a>
+                ) : (
+                  "Sent on request by email"
+                )
+              }
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href={person.github}
+            class="btn btn-ghost"
+            target="_blank"
+            rel="noopener noreferrer me"
+          >
+            <BrandIcon name="github" class="h-4 w-4" />
+            GitHub
+            <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+          </a>
+          <a
+            href={person.linkedin}
+            class="btn btn-ghost"
+            target="_blank"
+            rel="noopener noreferrer me"
+          >
+            <BrandIcon name="linkedin" class="h-4 w-4" />
+            LinkedIn
+            <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+          </a>
+          <a
+            href={person.instagram}
+            class="btn btn-ghost"
+            target="_blank"
+            rel="noopener noreferrer me"
+          >
+            <BrandIcon name="instagram" class="h-4 w-4" />
+            Instagram
+            <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

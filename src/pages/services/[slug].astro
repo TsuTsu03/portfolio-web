@@ -1,0 +1,218 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
+import { servicePages, type ServicePage } from "../../data/service-pages";
+import { person, SITE_UPDATED } from "../../data/site";
+import {
+  breadcrumbNode,
+  personNode,
+  servicePageNode,
+  serviceFaqNode,
+  serviceWebPageNode,
+  websiteNode,
+} from "../../lib/schema";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("work");
+
+  return servicePages.map((service) => ({
+    params: { slug: service.slug },
+    props: {
+      service,
+      evidence: service.evidenceIds
+        .map((id) => entries.find((entry) => entry.id === id))
+        .filter((entry): entry is CollectionEntry<"work"> => Boolean(entry)),
+    },
+  }));
+}
+
+interface Props {
+  service: ServicePage;
+  evidence: CollectionEntry<"work">[];
+}
+
+const { service, evidence } = Astro.props;
+const path = `/services/${service.slug}`;
+const jsonLd = [
+  personNode(service.keywords),
+  websiteNode(),
+  servicePageNode(service),
+  serviceWebPageNode(service),
+  serviceFaqNode(service),
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/#services" },
+    { name: service.shortTitle, path },
+  ]),
+];
+---
+
+<BaseLayout
+  path={path}
+  title={service.metaTitle}
+  description={service.metaDescription}
+  dateModified={SITE_UPDATED}
+  articleSection="Engineering services"
+  articleTags={service.keywords}
+  jsonLd={jsonLd}
+>
+  <article class="pb-16 pt-28">
+    <header class="shell">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="meta flex flex-wrap items-center gap-2">
+          <li><a href="/" class="transition-colors hover:text-accent">Home</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li><a href="/#services" class="transition-colors hover:text-accent">Services</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li class="text-text" aria-current="page">{service.shortTitle}</li>
+        </ol>
+      </nav>
+
+      <p class="meta mb-5">{service.eyebrow}</p>
+      <h1 class="display max-w-[18ch] text-[clamp(2.5rem,7vw,5.5rem)]">{service.title}</h1>
+      <p class="lede mt-7 max-w-[68ch]">{service.answer}</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href={`mailto:${person.email}?subject=${encodeURIComponent(service.shortTitle)}`}>
+          Discuss the work
+          <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+        <a class="btn btn-ghost" href="#evidence">Inspect related projects</a>
+      </div>
+    </header>
+
+    <section class="section mt-16 border-t border-line" aria-labelledby="scope-heading">
+      <div class="shell grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="meta mb-4">Scope</p>
+          <h2 id="scope-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">
+            {service.scopeHeading}
+          </h2>
+          <p class="mt-6 max-w-[54ch] text-lg leading-relaxed text-text-dim">{service.scopeIntro}</p>
+        </div>
+        <div class="lg:col-span-7">
+          <ol class="grid gap-px border border-line bg-line sm:grid-cols-2">
+            {
+              service.scope.map((item, index) => (
+                <li id={item.id} class="bg-ink p-6 lg:p-8">
+                  <p class="meta mb-4">{String(index + 1).padStart(2, "0")}</p>
+                  <h3 class="display-tight text-xl">{item.title}</h3>
+                  <p class="mt-3 text-sm leading-relaxed text-text-dim">{item.description}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section border-t border-line" aria-labelledby="fit-heading">
+      <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="meta mb-4">Fit</p>
+          <h2 id="fit-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">
+            {service.fitHeading}
+          </h2>
+        </div>
+        <ul class="lg:col-span-7">
+          {
+            service.fit.map((item) => (
+              <li class="flex gap-4 border-t border-line py-5 last:border-b">
+                <span aria-hidden="true" class="mt-2 h-1.5 w-1.5 shrink-0 bg-accent"></span>
+                <span class="max-w-[62ch] leading-relaxed text-text-dim">{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section id="evidence" class="section scroll-mt-28 border-t border-line" aria-labelledby="evidence-heading">
+      <div class="shell">
+        <p class="meta mb-4">Published evidence</p>
+        <h2 id="evidence-heading" class="display max-w-[18ch] text-[clamp(2rem,5vw,3.75rem)]">
+          Projects connected to this service
+        </h2>
+        <p class="mt-6 max-w-[68ch] text-lg leading-relaxed text-text-dim">{service.proofIntro}</p>
+
+        <div class="mt-10 grid gap-px border border-line bg-line md:grid-cols-2">
+          {
+            evidence.map((entry) => (
+              <a
+                href={`/work/${entry.id}`}
+                class="group bg-ink p-6 transition-colors hover:bg-surface lg:p-8"
+              >
+                <p class="meta mb-4">Case {entry.data.caseNumber} · {entry.data.sector}</p>
+                <h3 class="display-tight text-2xl transition-colors group-hover:text-accent">
+                  {entry.data.shortTitle}
+                </h3>
+                <p class="mt-4 text-sm leading-relaxed text-text-dim">{entry.data.metaDescription ?? entry.data.summary}</p>
+                <span class="meta mt-5 inline-flex items-center gap-2">
+                  Open the case study
+                  <Icon name="arrow-right" class="h-3.5 w-3.5" />
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section border-t border-line" aria-labelledby="process-heading">
+      <div class="shell">
+        <p class="meta mb-4">Working sequence</p>
+        <h2 id="process-heading" class="display max-w-[16ch] text-[clamp(2rem,5vw,3.75rem)]">
+          How the engagement moves
+        </h2>
+        <ol class="mt-10 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+          {
+            service.process.map((step, index) => (
+              <li class="border-t border-line-strong pt-5">
+                <p class="meta mb-4">{String(index + 1).padStart(2, "0")}</p>
+                <h3 class="display-tight text-xl">{step.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-text-dim">{step.description}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="section border-t border-line" aria-labelledby="service-questions-heading">
+      <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-4">
+          <p class="meta mb-4">Direct answers</p>
+          <h2 id="service-questions-heading" class="display text-[clamp(2rem,5vw,3.5rem)]">
+            Questions before contact
+          </h2>
+        </div>
+        <div class="lg:col-span-8">
+          {
+            service.faqs.map((faq) => (
+              <details class="group border-t border-line py-5 last:border-b">
+                <summary class="display-tight cursor-pointer list-none pr-8 text-lg marker:hidden">
+                  {faq.question}
+                </summary>
+                <p class="mt-4 max-w-[68ch] leading-relaxed text-text-dim">{faq.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="shell border-t border-line pt-12" aria-labelledby="service-contact-heading">
+      <p class="meta mb-4">Contact</p>
+      <h2 id="service-contact-heading" class="display max-w-[18ch] text-[clamp(2rem,5vw,4rem)]">
+        Bring the workflow that needs an owner.
+      </h2>
+      <p class="mt-5 max-w-[62ch] text-lg leading-relaxed text-text-dim">
+        Send the current process, the failure it creates and the deadline that matters. You will get a direct response from Den, usually within one business day on UTC+8.
+      </p>
+      <a class="btn btn-primary mt-8" href={`mailto:${person.email}?subject=${encodeURIComponent(service.shortTitle)}`}>
+        Email {person.shortName}
+        <Icon name="arrow-right" class="h-4 w-4" />
+      </a>
+    </section>
+  </article>
+</BaseLayout>

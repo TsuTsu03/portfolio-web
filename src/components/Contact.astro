@@ -1,0 +1,77 @@
+---
+import BrandIcon from "./BrandIcon.astro";
+import Icon from "./Icon.astro";
+import { person } from "../data/site";
+---
+
+<section id="contact" class="stage section rule-top relative overflow-hidden" aria-labelledby="contact-heading">
+  <div aria-hidden="true" class="wash-warm left-1/2 top-0 h-[34rem] w-[34rem] -translate-x-1/2"></div>
+  <div aria-hidden="true" class="rules"></div>
+  <div aria-hidden="true" class="vignette"></div>
+
+  <div class="shell">
+    <span aria-hidden="true" class="section-tick reveal"></span>
+    <p class="meta mb-5">Open a line</p>
+    <h2 id="contact-heading" class="display max-w-[15ch] text-[clamp(2.25rem,6vw,4.5rem)]">
+      Bring me the system that fails after hours.
+    </h2>
+
+    <p class="lede mt-8">
+      Tell me what breaks, who carries the cost and when you need it standing. If the problem is
+      outside my range, I will say so before either of us wastes time.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-3">
+      <a href={`mailto:${person.email}`} class="contact-email link inline-flex items-center gap-3">
+        <Icon name="mail" class="h-4 w-4" />
+        {person.email}
+      </a>
+      <a href={`tel:${person.phoneE164}`} class="btn btn-ghost">{person.phone}</a>
+    </div>
+
+    <dl class="mt-14 grid gap-8 border-t border-line pt-8 sm:grid-cols-3">
+      <div>
+        <dt class="meta mb-2">Reply time</dt>
+        <dd class="text-sm text-text">Usually within one business day ({person.timezone})</dd>
+      </div>
+      <div>
+        <dt class="meta mb-2">Location</dt>
+        <dd class="text-sm text-text">
+          {person.locality}, {person.region}, remote worldwide
+        </dd>
+      </div>
+      <div>
+        <dt class="meta mb-2">Elsewhere</dt>
+        <dd class="flex flex-wrap gap-4 text-sm">
+          <a
+            href={person.github}
+            class="link inline-flex items-center gap-2"
+            target="_blank"
+            rel="noopener noreferrer me"
+          >
+            <BrandIcon name="github" class="h-4 w-4" />
+            GitHub
+          </a>
+          <a
+            href={person.linkedin}
+            class="link inline-flex items-center gap-2"
+            target="_blank"
+            rel="noopener noreferrer me"
+          >
+            <BrandIcon name="linkedin" class="h-4 w-4" />
+            LinkedIn
+          </a>
+          <a
+            href={person.instagram}
+            class="link inline-flex items-center gap-2"
+            target="_blank"
+            rel="noopener noreferrer me"
+          >
+            <BrandIcon name="instagram" class="h-4 w-4" />
+            Instagram
+          </a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</section>
