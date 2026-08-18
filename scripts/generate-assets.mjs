@@ -47,7 +47,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
     <rect x="0" y="0" width="34" height="34" fill="none" stroke="${LINE_CONTROL}" stroke-width="1.5"/>
     <text x="17" y="23" text-anchor="middle" font-family="${SANS}" font-size="13" font-weight="700" letter-spacing="0.4" fill="${TEXT}">DJF</text>
   </g>
-  <text x="122" y="43" font-family="${SANS}" font-size="19" font-weight="600" fill="${TEXT_DIM}">jansen-dev.vercel.app</text>
+  <text x="122" y="43" font-family="${SANS}" font-size="19" font-weight="600" fill="${TEXT_DIM}">denforge.it.com</text>
 
   <text x="72" y="290" font-family="${SANS}" font-size="110" font-weight="800" letter-spacing="-5" fill="${TEXT}">Den Jansen</text>
   <text x="72" y="392" font-family="${SANS}" font-size="110" font-weight="800" letter-spacing="-5" fill="${TEXT}">Flores</text>

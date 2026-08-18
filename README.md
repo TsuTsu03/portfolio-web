@@ -4,7 +4,7 @@ Personal portfolio of Den Jansen Flores, Senior Full-Stack Developer and Agentic
 Engineer. A static Astro site: no client-side framework, no hydration, one small
 progressive-enhancement script.
 
-Live: https://jansen-dev.vercel.app
+Live: https://denforge.it.com
 
 ## Stack
 

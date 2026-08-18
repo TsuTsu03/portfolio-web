@@ -11,6 +11,20 @@ const assert = (condition, message) => {
 };
 const read = (path) => readFile(new URL(path, dist), "utf8");
 
+/**
+ * The site constants are the source of truth, so the QA gate reads them rather
+ * than restating them. A domain or date change then cannot pass a check that is
+ * quietly asserting the previous value.
+ */
+const siteSource = await readFile(new URL("src/data/site.ts", root), "utf8");
+const constant = (name) => {
+  const match = siteSource.match(new RegExp(`export const ${name} = "([^"]+)"`));
+  if (!match) fail(`site.ts: ${name} not found`);
+  return match[1];
+};
+const SITE_URL = constant("SITE_URL");
+const SITE_UPDATED = constant("SITE_UPDATED");
+
 const projectDirs = (await readdir(new URL("work/", dist), { withFileTypes: true }))
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
@@ -33,8 +47,8 @@ for (const [path, html] of htmlDocuments) {
   const title = html.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
   const description = html.match(/<meta name="description" content="([^"]+)"/i)?.[1] || "";
   const expectedCanonical = path === "index.html"
-    ? "https://jansen-dev.vercel.app/"
-    : `https://jansen-dev.vercel.app/${path.replace(/\/index\.html$/, "")}`;
+    ? `${SITE_URL}/`
+    : `${SITE_URL}/${path.replace(/\/index\.html$/, "")}`;
 
   assert((html.match(/<h1\b/gi) || []).length === 1, `${path}: expected exactly one h1`);
   assert(/<html[^>]+lang="en-PH"/i.test(html), `${path}: missing en-PH language`);
@@ -64,7 +78,7 @@ for (const [path, html] of htmlDocuments) {
     }
     const profile = graph.find((node) => node["@type"] === "ProfilePage");
     const itemList = graph.find((node) => node["@type"] === "ItemList");
-    assert(profile.dateModified === "2026-08-18", `${path}: stale profile dateModified`);
+    assert(profile.dateModified === SITE_UPDATED, `${path}: stale profile dateModified`);
     assert(profile.hasPart.length === projectDirs.length, `${path}: profile/project relationship mismatch`);
     assert(itemList.numberOfItems === projectDirs.length, `${path}: ItemList count mismatch`);
     assert(html.includes('id="services"'), `${path}: visible services section missing`);
@@ -74,7 +88,7 @@ for (const [path, html] of htmlDocuments) {
     assert(types.has("SoftwareApplication") || types.has("CreativeWork"), `${path}: missing project schema`);
     const article = graph.find((node) => node["@type"] === "Article");
     const project = graph.find((node) => ["SoftwareApplication", "CreativeWork"].includes(node["@type"]));
-    assert(article.dateModified === "2026-08-18", `${path}: stale Article dateModified`);
+    assert(article.dateModified === SITE_UPDATED, `${path}: stale Article dateModified`);
     assert(article.about?.["@id"] === project["@id"], `${path}: Article does not reference project`);
     assert(project.mainEntityOfPage?.["@id"] === article["@id"], `${path}: project does not reference Article`);
   } else {
@@ -83,7 +97,7 @@ for (const [path, html] of htmlDocuments) {
     }
     const page = graph.find((node) => node["@type"] === "WebPage");
     const service = graph.find((node) => node["@type"] === "Service");
-    assert(page.dateModified === "2026-08-18", `${path}: stale WebPage dateModified`);
+    assert(page.dateModified === SITE_UPDATED, `${path}: stale WebPage dateModified`);
     assert(page.mainEntity?.["@id"] === service["@id"], `${path}: WebPage does not reference Service`);
     const faq = graph.find((node) => node["@type"] === "FAQPage");
     assert(faq.mainEntity.length === 4, `${path}: service FAQ count mismatch`);
@@ -93,12 +107,12 @@ for (const [path, html] of htmlDocuments) {
 const sitemap = await read("sitemap.xml");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 assert(sitemapUrls.length === htmlPaths.length, "sitemap: URL count does not match indexable HTML pages");
-assert(sitemapUrls.includes("https://jansen-dev.vercel.app/"), "sitemap: homepage missing");
+assert(sitemapUrls.includes(`${SITE_URL}/`), "sitemap: homepage missing");
 for (const slug of projectDirs) {
-  assert(sitemapUrls.includes(`https://jansen-dev.vercel.app/work/${slug}`), `sitemap: ${slug} missing`);
+  assert(sitemapUrls.includes(`${SITE_URL}/work/${slug}`), `sitemap: ${slug} missing`);
 }
 for (const slug of serviceDirs) {
-  assert(sitemapUrls.includes(`https://jansen-dev.vercel.app/services/${slug}`), `sitemap: ${slug} missing`);
+  assert(sitemapUrls.includes(`${SITE_URL}/services/${slug}`), `sitemap: ${slug} missing`);
 }
 assert((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g) || []).length === htmlPaths.length, "sitemap: lastmod missing");
 
@@ -106,7 +120,7 @@ const robots = await read("robots.txt");
 for (const crawler of ["OAI-SearchBot", "Claude-SearchBot", "PerplexityBot", "Bingbot"]) {
   assert(robots.includes(`User-agent: ${crawler}`), `robots.txt: ${crawler} missing`);
 }
-assert(robots.includes("Sitemap: https://jansen-dev.vercel.app/sitemap.xml"), "robots.txt: sitemap declaration missing");
+assert(robots.includes(`Sitemap: ${SITE_URL}/sitemap.xml`), "robots.txt: sitemap declaration missing");
 
 for (const endpoint of ["llms.txt", "llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml"]) {
   await access(new URL(endpoint, dist));
@@ -114,11 +128,11 @@ for (const endpoint of ["llms.txt", "llms-full.txt", "portfolio.json", "humans.t
 const portfolio = JSON.parse(await read("portfolio.json"));
 assert(portfolio.projects.length === projectDirs.length, "portfolio.json: project count mismatch");
 assert(portfolio.expertise.length >= 8, "portfolio.json: expertise list is too thin");
-assert(portfolio.lastUpdated === "2026-08-18", "portfolio.json: stale lastUpdated value");
+assert(portfolio.lastUpdated === SITE_UPDATED, "portfolio.json: stale lastUpdated value");
 assert(portfolio.site?.language === "en-PH", "portfolio.json: language missing");
 for (const endpoint of ["llms.txt", "llms-full.txt", "sitemap.xml", "humans.txt"]) {
   assert(
-    Object.values(portfolio.site.machineReadable).includes(`https://jansen-dev.vercel.app/${endpoint}`),
+    Object.values(portfolio.site.machineReadable).includes(`${SITE_URL}/${endpoint}`),
     `portfolio.json: ${endpoint} machine-readable link missing`
   );
 }
@@ -142,7 +156,7 @@ for (const offer of personSchema.makesOffer) {
 }
 const llms = await read("llms.txt");
 for (const endpoint of ["llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml"]) {
-  assert(llms.includes(`https://jansen-dev.vercel.app/${endpoint}`), `llms.txt: ${endpoint} link missing`);
+  assert(llms.includes(`${SITE_URL}/${endpoint}`), `llms.txt: ${endpoint} link missing`);
 }
 
 for (const [path, html] of htmlDocuments) {

@@ -36,4 +36,4 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://jansen-dev.vercel.app/sitemap.xml
+Sitemap: https://denforge.it.com/sitemap.xml

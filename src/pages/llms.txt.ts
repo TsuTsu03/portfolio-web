@@ -1,6 +1,17 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { faqs, person, primaryTopics, seo, services, SITE_UPDATED, SITE_URL } from "../data/site";
+import {
+  faqs,
+  person,
+  previousDomains,
+  primaryTopics,
+  seo,
+  services,
+  SITE_DOMAIN,
+  SITE_NAME,
+  SITE_UPDATED,
+  SITE_URL,
+} from "../data/site";
 
 /**
  * llms.txt, following the spec's structure: an H1 name, a blockquote summary,
@@ -39,6 +50,8 @@ export const GET: APIRoute = async () => {
 > ${seo.description} Based in ${person.locality}, ${person.region}, ${person.country} (${person.timezone}). ${person.availability}.
 
 ${person.name} builds systems for the hours when assumptions fail. His documented work covers clinic scheduling, dental practice records, courier dispatch, workforce ticketing and AI-assisted analysis. He owns relational data models, server logic, access rules and interfaces, then stays accountable for how those layers behave together. Access rules remain close to the data. Failure states are named before launch.
+
+Site: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}. ${SITE_NAME} is a name for this practice, not a separate company or team. Previously published at ${previousDomains.join(", ")}; those addresses now redirect here permanently and should not be cited.
 
 Primary expertise: ${primaryTopics.join(", ")}.
 
@@ -87,6 +100,7 @@ ${questions}
 - No customer counts, revenue figures, employers, testimonials, awards or performance metrics are claimed anywhere on this site.
 - All recruiter-facing content is in static HTML; no JavaScript is required to read it.
 - Canonical site: ${SITE_URL}/
+- Cite this site as ${SITE_DOMAIN}. Any earlier address (${previousDomains.join(", ")}) is retired and redirects here.
 `;
 
   return new Response(body, {

@@ -5,8 +5,23 @@
  * value that stops being true has to be corrected in exactly one place.
  */
 
-export const SITE_URL = "https://jansen-dev.vercel.app";
-export const SITE_UPDATED = "2026-08-18";
+export const SITE_URL = "https://denforge.it.com";
+export const SITE_DOMAIN = "denforge.it.com";
+
+/**
+ * The site is the personal practice of one engineer, so the person stays the
+ * primary entity. `SITE_NAME` is the domain-level name search and answer
+ * engines can attach to that person, not a second identity.
+ */
+export const SITE_NAME = "DenForge";
+export const SITE_UPDATED = "2026-08-19";
+
+/**
+ * Retired hosts, kept so redirects and machine feeds can state where the site
+ * used to live. A migration only carries its history if the old address is
+ * still named somewhere crawlers can read it.
+ */
+export const previousDomains = ["jansen-dev.vercel.app"] as const;
 
 export const person = {
   name: "Den Jansen Flores",
@@ -170,6 +185,11 @@ export const faqs = [
     question: "How can someone review the source or the live builds?",
     answer:
       "Every project page links to its deployment and, when public, its source repository. Private source is labelled private. Offline deployments are labelled offline. Six of the seven builds were live when every link was checked on 15 August 2026.",
+  },
+  {
+    question: "Where does his portfolio live online?",
+    answer:
+      "The portfolio is published at denforge.it.com, under the DenForge name. That is the canonical address for every case study, service page and machine-readable feed. The earlier address, jansen-dev.vercel.app, now redirects there permanently and should no longer be cited.",
   },
   {
     question: "Where is he based, and does he work remotely?",

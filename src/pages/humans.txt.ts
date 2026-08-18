@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { person, SITE_UPDATED, SITE_URL } from "../data/site";
+import { person, previousDomains, SITE_NAME, SITE_UPDATED, SITE_URL } from "../data/site";
 
 export const GET: APIRoute = () => {
   const body = `/* PERSON */
@@ -12,7 +12,9 @@ LinkedIn: ${person.linkedin}
 Instagram: ${person.instagram}
 
 /* SITE */
+Name: ${SITE_NAME}
 Canonical: ${SITE_URL}/
+Previous addresses: ${previousDomains.join(", ")} (redirected)
 Language: English (Philippines)
 Technology: Astro, TypeScript, Tailwind CSS
 Design direction: restrained noir, editorial typography, static-first delivery

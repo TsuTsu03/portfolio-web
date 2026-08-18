@@ -1,6 +1,17 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { faqs, person, primaryTopics, seo, services, SITE_UPDATED, SITE_URL } from "../data/site";
+import {
+  faqs,
+  person,
+  previousDomains,
+  primaryTopics,
+  seo,
+  services,
+  SITE_DOMAIN,
+  SITE_NAME,
+  SITE_UPDATED,
+  SITE_URL,
+} from "../data/site";
 import { principles } from "../data/principles";
 
 export const GET: APIRoute = async () => {
@@ -47,6 +58,8 @@ ${data.repositoryUrl ? `Repository: ${data.repositoryUrl}` : "Repository: privat
 
 Last updated: ${SITE_UPDATED}
 Canonical profile: ${SITE_URL}/
+Site name: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}, not a separate company.
+Retired addresses: ${previousDomains.join(", ")}, now permanently redirected here.
 
 ${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He has ${person.yearsActive} years of project-based experience and is open to ${person.engagements.toLowerCase()}. His work is documented through case studies, public repositories and dated deployment checks.
 

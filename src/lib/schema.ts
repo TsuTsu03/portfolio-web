@@ -5,6 +5,8 @@ import {
   person,
   services,
   primaryTopics,
+  SITE_DOMAIN,
+  SITE_NAME,
   SITE_UPDATED,
   SITE_URL,
   seo,
@@ -43,6 +45,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
       caption: `${person.name}, ${person.role} and ${person.secondRole}`,
     },
     sameAs: [person.github, person.linkedin, person.instagram],
+    brand: { "@type": "Brand", name: SITE_NAME, url: `${SITE_URL}/` },
     address: {
       "@type": "PostalAddress",
       addressLocality: person.locality,
@@ -87,8 +90,12 @@ export function websiteNode(): Record<string, unknown> {
     "@id": WEBSITE_ID,
     url: `${SITE_URL}/`,
     name: `${person.name} | Portfolio`,
+    /* The domain name and the person are the same entity to a reader; this is
+       how an answer engine is told the same thing. */
+    alternateName: [SITE_NAME, SITE_DOMAIN, `${SITE_NAME} portfolio`],
     description: seo.description,
     inLanguage: "en-PH",
+    copyrightHolder: { "@id": PERSON_ID },
     publisher: { "@id": PERSON_ID },
   };
 }

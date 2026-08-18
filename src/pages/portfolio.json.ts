@@ -7,6 +7,9 @@ import {
   primaryTopics,
   services,
   seo,
+  previousDomains,
+  SITE_DOMAIN,
+  SITE_NAME,
   SITE_UPDATED,
   SITE_URL,
 } from "../data/site";
@@ -21,6 +24,9 @@ export const GET: APIRoute = async () => {
     canonicalUrl: `${SITE_URL}/`,
     site: {
       name: `${person.name} portfolio`,
+      brand: SITE_NAME,
+      domain: SITE_DOMAIN,
+      previousDomains: [...previousDomains],
       title: seo.title,
       description: seo.description,
       language: "en-PH",
