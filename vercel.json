@@ -4,7 +4,7 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "redirects": [
     {
@@ -17,12 +17,6 @@
       ],
       "destination": "https://denforge.it.com/$1",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/google75c7716776d92269.html",
-      "destination": "/google75c7716776d92269.txt"
     }
   ],
   "headers": [
