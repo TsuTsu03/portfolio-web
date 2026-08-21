@@ -55,7 +55,29 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
 <html lang="en-PH">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* viewport-fit=cover is what makes env(safe-area-inset-*) report real
+        numbers, so the gutters can clear a notch in landscape. */}
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    {/*
+      Runs before the first paint, on purpose. Reading the stored choice
+      after hydration would show the dark ground for a frame and then
+      repaint the whole page white, which is worse than having no light
+      theme at all. Dark stays the default: the night identity is the
+      brand, and light is somewhere a visitor chooses to go.
+    */}
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          if (stored === "light" || stored === "dark") {
+            document.documentElement.setAttribute("data-theme", stored);
+          }
+        } catch (error) {
+          /* Private mode or blocked storage: the default theme is correct. */
+        }
+      })();
+    </script>
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -78,7 +100,9 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
     <meta name="geo.placename" content={`${person.locality}, ${person.region}`} />
     <meta name="geo.country" content={person.countryCode} />
     <meta name="language" content="en-PH" />
-    <meta name="color-scheme" content="dark" />
+    {/* Both schemes are supported; the dark one is what an unset visitor gets,
+        which is why it is named first. */}
+    <meta name="color-scheme" content="dark light" />
     <meta name="format-detection" content="telephone=yes" />
     {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
     {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
@@ -86,7 +110,9 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icon-180.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0c0e10" />
+    {/* Tints the browser chrome to match. Kept in sync by the toggle so the
+        address bar does not stay black over a paper-coloured page. */}
+    <meta name="theme-color" content="#0c0e10" data-theme-color />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="AI-readable portfolio summary" />
     <link rel="alternate" type="text/plain" href="/llms-full.txt" title="AI-readable portfolio details" />

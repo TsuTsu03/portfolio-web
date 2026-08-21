@@ -22,7 +22,7 @@ import { person } from "../data/site";
     </p>
 
     <div class="mt-10 flex flex-wrap items-center gap-3">
-      <a href={`mailto:${person.email}`} class="contact-email link inline-flex items-center gap-3">
+      <a href={`mailto:${person.email}`} class="contact-email link tap-target inline-flex items-center gap-3">
         <Icon name="mail" class="h-4 w-4" />
         {person.email}
       </a>
@@ -45,7 +45,7 @@ import { person } from "../data/site";
         <dd class="flex flex-wrap gap-4 text-sm">
           <a
             href={person.github}
-            class="link inline-flex items-center gap-2"
+            class="link tap-target inline-flex items-center gap-2"
             target="_blank"
             rel="noopener noreferrer me"
           >
@@ -54,7 +54,7 @@ import { person } from "../data/site";
           </a>
           <a
             href={person.linkedin}
-            class="link inline-flex items-center gap-2"
+            class="link tap-target inline-flex items-center gap-2"
             target="_blank"
             rel="noopener noreferrer me"
           >
@@ -63,7 +63,7 @@ import { person } from "../data/site";
           </a>
           <a
             href={person.instagram}
-            class="link inline-flex items-center gap-2"
+            class="link tap-target inline-flex items-center gap-2"
             target="_blank"
             rel="noopener noreferrer me"
           >

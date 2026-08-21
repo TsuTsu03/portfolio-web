@@ -3,12 +3,32 @@
 /* ============================================================
    TOKENS
 
-   One locked dark theme. Deep charcoal ground, graphite surfaces,
-   gunmetal rules, ivory text, one tungsten accent. Every colour on
-   the site resolves through these; nothing is hard-coded in markup.
+   Two lit states of one room.
+
+   Dark is the default and the brand: deep charcoal ground, graphite
+   surfaces, gunmetal rules, ivory text, one tungsten accent.
+
+   Light is the same architecture at ten in the morning — bone paper,
+   graphite ink, brass — and is entered only when the visitor asks for
+   it, so the night identity is what a first visit shows.
+
+   Every colour on the site resolves through these; nothing is
+   hard-coded in markup.
    ============================================================ */
 
 :root {
+  /* ---- Structure. Shared by both themes. ---- */
+  --radius: 2px;
+  --shell: 1320px;
+  --gutter: 1.25rem;
+
+  --dur: 160ms;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* ---- Night. The default state. ---- */
+:root,
+:root[data-theme="dark"] {
   color-scheme: dark;
 
   /* Ground and surfaces */
@@ -35,17 +55,105 @@
   --accent-deep: #b9773a;
   --accent-wash: rgb(224 160 92 / 0.1);
   --accent-edge: rgb(224 160 92 / 0.4);
+  /* Text laid directly on a filled accent. */
+  --on-accent: #0c0e10;
 
   /* Practical light: the warm pool a tungsten source leaves on a wall. */
   --glow-warm: rgb(224 160 92 / 0.07);
   --glow-cool: rgb(126 158 178 / 0.06);
 
-  --radius: 2px;
-  --shell: 1320px;
-  --gutter: 1.25rem;
+  /* Chrome */
+  --header-bg: rgb(12 14 16 / 0.82);
+  --header-bg-scrolled: rgb(10 12 14 / 0.94);
+  --header-bg-solid: rgb(10 12 14 / 0.97);
+  --btn-primary-hover: #efb273;
 
-  --dur: 160ms;
-  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  /* Atmosphere. Additive at night: light is added to a dark room. */
+  --blend-light: screen;
+  --grain-opacity: 0.035;
+  --vignette-edge: rgb(4 6 8 / 0.55);
+  --hero-shadow: rgb(0 0 0 / 0.52);
+  --rule-ghost: 150 165 178;
+  --ghost-type: rgb(155 166 174 / 0.04);
+  --zone-cool: rgb(108 149 174 / 0.035);
+  --zone-warm: rgb(224 160 92 / 0.026);
+  --zone-sweep: rgb(104 130 146 / 0.022);
+  --atmo-tint: radial-gradient(55rem 42rem at 78% 18%, rgb(60 91 111 / 0.1), transparent 72%),
+    linear-gradient(to bottom, rgb(5 8 12 / 0.2), transparent 48%);
+  --atmo-rain: rgb(170 205 224 / 0.46);
+  --atmo-rain-opacity: 0.085;
+  --atmo-fog: rgb(108 137 153 / 0.055);
+  --atmo-sky-near: #040608;
+  --atmo-sky-mid: #05080a;
+  --atmo-sky-far: #070a0d;
+  --atmo-sky-opacity: 0.26;
+  --shaft-core: rgb(224 160 92 / 0.12);
+  --shaft-edge: rgb(224 160 92 / 0.06);
+  --project-light: rgb(154 197 222 / 0.16);
+}
+
+/* ---- Day. Wayne at his desk: bone paper, graphite, brass. ----
+
+   Not an inversion. The ground stays warm rather than white, the
+   accent drops to a brass that survives on paper, and every wash
+   that added light at night subtracts it here instead — otherwise
+   the atmosphere layer is simply invisible. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --ink: #efece4;
+  --ink-deep: #e2ded2;
+  --surface: #f8f6f0;
+  --surface-raised: #fdfcf8;
+
+  --line: #d9d3c5;
+  --line-strong: #b5ad9b;
+  --line-control: #7a7364;
+
+  /* Same contrast floors as the night theme, measured against this ground:
+     text 14.6:1, dim 6.9:1, faint 5:1, accent 5.3:1, controls 4:1. */
+  --text: #191b1d;
+  --text-dim: #4a5055;
+  --text-faint: #5f656a;
+
+  /* Brass rather than tungsten. The night accent is far too pale to survive
+     on paper — it lands at 1.5:1 — so the same warmth is taken down until it
+     carries body text safely. */
+  --accent: #8b5410;
+  --accent-deep: #6d400b;
+  --accent-wash: rgb(139 84 16 / 0.09);
+  --accent-edge: rgb(139 84 16 / 0.42);
+  --on-accent: #fbf8f2;
+
+  --glow-warm: rgb(139 84 16 / 0.07);
+  --glow-cool: rgb(74 108 132 / 0.07);
+
+  --header-bg: rgb(239 236 228 / 0.84);
+  --header-bg-scrolled: rgb(243 240 233 / 0.95);
+  --header-bg-solid: rgb(243 240 233 / 0.98);
+  --btn-primary-hover: #6d400b;
+
+  --blend-light: multiply;
+  --grain-opacity: 0.026;
+  --vignette-edge: rgb(96 88 72 / 0.14);
+  --hero-shadow: rgb(74 66 52 / 0.16);
+  --rule-ghost: 96 92 80;
+  --ghost-type: rgb(70 66 56 / 0.05);
+  --zone-cool: rgb(74 108 132 / 0.05);
+  --zone-warm: rgb(139 84 16 / 0.04);
+  --zone-sweep: rgb(90 106 118 / 0.035);
+  --atmo-tint: radial-gradient(55rem 42rem at 78% 18%, rgb(212 195 160 / 0.28), transparent 72%),
+    linear-gradient(to bottom, rgb(255 252 244 / 0.4), transparent 46%);
+  --atmo-rain: rgb(120 128 134 / 0.34);
+  --atmo-rain-opacity: 0.05;
+  --atmo-fog: rgb(255 250 238 / 0.5);
+  --atmo-sky-near: #c9c3b4;
+  --atmo-sky-mid: #d2ccbd;
+  --atmo-sky-far: #dad4c6;
+  --atmo-sky-opacity: 0.4;
+  --shaft-core: rgb(255 236 196 / 0.5);
+  --shaft-edge: rgb(255 240 208 / 0.22);
+  --project-light: rgb(56 74 92 / 0.13);
 }
 
 @media (min-width: 640px) {
@@ -73,6 +181,7 @@
   --color-text-faint: var(--text-faint);
   --color-accent: var(--accent);
   --color-accent-deep: var(--accent-deep);
+  --color-on-accent: var(--on-accent);
 
   --color-background: var(--ink);
   --color-foreground: var(--text);
@@ -99,6 +208,25 @@
     /* Clears the fixed header when jumping to a section. */
     scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
+    /*
+      `clip` rather than `hidden`. Both stop the sideways scroll a phone
+      would otherwise inherit from the bleed layers, but `hidden` turns
+      the element into a scroll container, which silently kills every
+      `position: sticky` descendant on iOS.
+    */
+    overflow-x: clip;
+    /*
+      The theme swap is deliberately instant. Cross-fading the ground under
+      a page this tall means every fixed layer, every hairline and every
+      screenshot shifts together for a quarter of a second, which reads as a
+      repaint glitch rather than a transition. A switch should land.
+    */
+  }
+
+  /* One tap should never leave a grey box behind on Android. Real press
+     feedback is defined per control instead. */
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -124,7 +252,7 @@
     font-optical-sizing: auto;
     font-synthesis-weight: none;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body > main,
@@ -155,7 +283,7 @@
 
   ::selection {
     background: var(--accent);
-    color: var(--ink);
+    color: var(--on-accent);
   }
 
   :where(a, button, input, textarea, select, summary):focus-visible {
@@ -186,11 +314,16 @@
    ============================================================ */
 
 @layer components {
+  /* The gutter never falls under a notch: in landscape on a phone with a
+     cutout the safe-area inset wins, everywhere else it is zero and the
+     designed gutter stands. */
   .shell {
     width: 100%;
     max-width: var(--shell);
     margin-inline: auto;
-    padding-inline: var(--gutter);
+    padding-inline:
+      max(var(--gutter), env(safe-area-inset-left))
+      max(var(--gutter), env(safe-area-inset-right));
   }
 
   /* Wider measure for compositions that need to breathe past the shell. */
@@ -198,7 +331,9 @@
     width: 100%;
     max-width: 1680px;
     margin-inline: auto;
-    padding-inline: var(--gutter);
+    padding-inline:
+      max(var(--gutter), env(safe-area-inset-left))
+      max(var(--gutter), env(safe-area-inset-right));
   }
 
   /* ---- Typography -------------------------------------------------- */
@@ -278,26 +413,18 @@
   /* Static lighting zones stop the long page reading as one flat black plane.
      They change temperature by chapter without adding DOM or moving layers. */
   main > section:nth-of-type(3n + 1) {
-    background-image: radial-gradient(
-      52rem 34rem at 88% 22%,
-      rgb(108 149 174 / 0.035),
-      transparent 72%
-    );
+    background-image: radial-gradient(52rem 34rem at 88% 22%, var(--zone-cool), transparent 72%);
   }
 
   main > section:nth-of-type(3n + 2) {
-    background-image: radial-gradient(
-      48rem 32rem at 12% 54%,
-      rgb(224 160 92 / 0.026),
-      transparent 74%
-    );
+    background-image: radial-gradient(48rem 32rem at 12% 54%, var(--zone-warm), transparent 74%);
   }
 
   main > section:nth-of-type(3n) {
     background-image: linear-gradient(
       105deg,
       transparent 0 42%,
-      rgb(104 130 146 / 0.022) 56%,
+      var(--zone-sweep) 56%,
       transparent 76%
     );
   }
@@ -337,13 +464,8 @@
 
   .btn-primary {
     background: var(--accent);
-    color: var(--ink);
+    color: var(--on-accent);
     border-color: var(--accent);
-  }
-
-  .btn-primary:hover {
-    background: #efb273;
-    border-color: #efb273;
   }
 
   .btn-ghost {
@@ -351,13 +473,37 @@
     border-color: var(--line-control);
   }
 
-  .btn-ghost:hover {
-    border-color: var(--text-dim);
-    background: var(--surface);
+  /*
+    Hover states are gated behind a real pointer throughout this file.
+    A phone fires one synthetic hover on tap and then leaves it applied
+    until something else is touched, so an ungated :hover reads as a card
+    stuck mid-transition — which is most of what went wrong on mobile.
+  */
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover {
+      background: var(--btn-primary-hover);
+      border-color: var(--btn-primary-hover);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--text-dim);
+      background: var(--surface);
+    }
   }
 
+  /* Touch gets its feedback from the press itself. */
   .btn:active {
     transform: translateY(1px);
+  }
+
+  .btn-ghost:active {
+    background: var(--surface);
+    border-color: var(--text-dim);
+  }
+
+  .btn-primary:active {
+    background: var(--btn-primary-hover);
+    border-color: var(--btn-primary-hover);
   }
 
   /* Text link that keeps its underline honest and reads as a link without
@@ -373,9 +519,48 @@
       text-decoration-color var(--dur) var(--ease);
   }
 
-  .link:hover {
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+  }
+
+  .link:active {
     color: var(--accent);
     text-decoration-color: var(--accent);
+  }
+
+  /*
+    Standalone links — a footer nav item, a social link, a call to action at
+    the end of a card — are their own target, and at body size they were
+    landing around 17-21px tall. WCAG 2.2 exempts a link sitting inside a
+    sentence, which is why the ones in the prose are left alone, but these
+    are not that. They get a real touch target on touch hardware only, so
+    the typographic rhythm on a desktop is unchanged.
+  */
+  @media (pointer: coarse) {
+    .tap-target {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    /*
+      Where the link draws a border of its own, growing the box would strand
+      that border half a line below the word it belongs to. The target grows
+      invisibly instead: nothing about the type moves, and the finger still
+      gets its 44px.
+    */
+    .tap-pad {
+      position: relative;
+    }
+
+    .tap-pad::after {
+      content: "";
+      position: absolute;
+      inset: -12px -10px;
+    }
   }
 
   /* ---- Surfaces ---------------------------------------------------- */
@@ -419,9 +604,9 @@
     background: linear-gradient(
       100deg,
       transparent 0%,
-      rgb(224 160 92 / 0.07) 42%,
-      rgb(224 160 92 / 0.12) 50%,
-      rgb(224 160 92 / 0.06) 58%,
+      var(--shaft-edge) 42%,
+      var(--shaft-core) 50%,
+      var(--shaft-edge) 58%,
       transparent 100%
     );
     filter: blur(26px);
@@ -447,10 +632,10 @@
     pointer-events: none;
     z-index: -1;
     background-image:
-      linear-gradient(rgb(150 165 178 / 0.22), rgb(150 165 178 / 0.22)),
-      linear-gradient(rgb(150 165 178 / 0.16), rgb(150 165 178 / 0.16)),
-      linear-gradient(rgb(150 165 178 / 0.1), rgb(150 165 178 / 0.1)),
-      linear-gradient(rgb(150 165 178 / 0.14), rgb(150 165 178 / 0.14));
+      linear-gradient(rgb(var(--rule-ghost) / 0.22), rgb(var(--rule-ghost) / 0.22)),
+      linear-gradient(rgb(var(--rule-ghost) / 0.16), rgb(var(--rule-ghost) / 0.16)),
+      linear-gradient(rgb(var(--rule-ghost) / 0.1), rgb(var(--rule-ghost) / 0.1)),
+      linear-gradient(rgb(var(--rule-ghost) / 0.14), rgb(var(--rule-ghost) / 0.14));
     background-size:
       1px 100%,
       1px 100%,
@@ -471,7 +656,7 @@
     inset: 0;
     pointer-events: none;
     z-index: -1;
-    background: radial-gradient(120% 90% at 50% 42%, transparent 40%, rgb(4 6 8 / 0.55) 100%);
+    background: radial-gradient(120% 90% at 50% 42%, transparent 40%, var(--vignette-edge) 100%);
   }
 
   /* Pointer-tracked cold wash. Set by the layout script on pointer-fine
@@ -484,7 +669,7 @@
     z-index: -1;
     background: radial-gradient(
       30rem 30rem at var(--px, 50%) var(--py, 38%),
-      rgb(159 196 222 / 0.055),
+      var(--glow-cool),
       transparent 70%
     );
     transition: opacity 400ms var(--ease);
@@ -566,7 +751,15 @@
 
   /* ---- The night identity ------------------------------------------- */
 
+  /*
+    One number drives the whole switch. Every layer below reads --id-on and
+    interpolates between its resting and engaged value, so the pointer gate
+    is a single line rather than a duplicated block per layer — and a phone,
+    which never gets a real hover, still reaches the identical state through
+    aria-pressed.
+  */
   .identity {
+    --id-on: 0;
     position: relative;
     display: block;
     padding: 0;
@@ -574,6 +767,17 @@
     cursor: pointer;
     background: var(--ink-deep);
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .identity:focus-visible,
+  .identity[aria-pressed="true"] {
+    --id-on: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .identity:hover {
+      --id-on: 1;
+    }
   }
 
   .identity-state {
@@ -590,8 +794,9 @@
 
   .identity-state-base {
     position: relative;
-    filter: none;
-    transform: scale(1.001);
+    filter: saturate(calc(1 - var(--id-on) * 0.45)) contrast(calc(1 + var(--id-on) * 0.08))
+      brightness(calc(1 - var(--id-on) * 0.28));
+    transform: scale(calc(1.001 + var(--id-on) * 0.007));
     transition:
       filter 760ms var(--ease),
       transform 900ms var(--ease);
@@ -603,9 +808,10 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    clip-path: circle(0% at var(--ix, 52%) var(--iy, 44%));
-    filter: grayscale(1) contrast(1.16) brightness(0.98);
-    transform: scale(1.008);
+    clip-path: circle(calc(var(--id-on) * 145%) at var(--ix, 52%) var(--iy, 44%));
+    filter: grayscale(1) contrast(calc(1.16 + var(--id-on) * 0.04))
+      brightness(calc(0.98 + var(--id-on) * 0.06));
+    transform: scale(calc(1.008 - var(--id-on) * 0.008));
     transition:
       clip-path 760ms cubic-bezier(0.2, 0.72, 0.12, 1),
       filter 760ms var(--ease),
@@ -617,7 +823,7 @@
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    opacity: 0;
+    opacity: calc(var(--id-on) * 0.44);
     box-shadow:
       inset 0 0 0 1px rgb(244 241 232 / 0.5),
       inset 0 0 0 8px rgb(4 5 6 / 0.28);
@@ -653,25 +859,32 @@
     mask-image: linear-gradient(to bottom, black, transparent 38%);
   }
 
-  .identity:hover .identity-state-manga,
-  .identity:focus-visible .identity-state-manga,
-  .identity[aria-pressed="true"] .identity-state-manga {
-    clip-path: circle(145% at var(--ix, 52%) var(--iy, 44%));
-    filter: grayscale(1) contrast(1.2) brightness(1.04);
-    transform: scale(1);
+  /* A quiet instruction, because on a phone nothing else says the portrait
+     is a control. It steps back once the panel has been opened. */
+  .identity-hint {
+    display: none;
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 4;
+    padding: 0.3rem 0.55rem;
+    background: rgb(8 9 10 / 0.72);
+    border: 1px solid rgb(244 241 232 / 0.22);
+    color: rgb(244 241 232 / 0.86);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 650;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: calc(1 - var(--id-on));
+    transition: opacity 320ms var(--ease);
   }
 
-  .identity:hover .identity-state-base,
-  .identity:focus-visible .identity-state-base,
-  .identity[aria-pressed="true"] .identity-state-base {
-    filter: saturate(0.55) contrast(1.08) brightness(0.72);
-    transform: scale(1.008);
-  }
-
-  .identity:hover .identity-ink,
-  .identity:focus-visible .identity-ink,
-  .identity[aria-pressed="true"] .identity-ink {
-    opacity: 0.44;
+  @media (hover: none), (pointer: coarse) {
+    .identity-hint {
+      display: block;
+    }
   }
 
   /* One pale page-turn sweep marks the transition into ink. */
@@ -690,14 +903,8 @@
     );
     mix-blend-mode: screen;
     opacity: 0.72;
-    transform: translateX(-130%) skewX(-8deg);
+    transform: translateX(calc(-130% + var(--id-on) * 610%)) skewX(-8deg);
     transition: transform 900ms var(--ease);
-  }
-
-  .identity:hover .identity-scan,
-  .identity:focus-visible .identity-scan,
-  .identity[aria-pressed="true"] .identity-scan {
-    transform: translateX(480%) skewX(-8deg);
   }
 
   /* ---- Static atmosphere ------------------------------------------- */
@@ -708,7 +915,7 @@
     inset: 0;
     z-index: 40;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: var(--grain-opacity);
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.5'/></svg>");
   }
 
@@ -720,19 +927,17 @@
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    background:
-      radial-gradient(55rem 42rem at 78% 18%, rgb(60 91 111 / 0.1), transparent 72%),
-      linear-gradient(to bottom, rgb(5 8 12 / 0.2), transparent 48%);
+    background: var(--atmo-tint);
   }
 
   .atmosphere-rain {
     position: absolute;
     inset: -24% -12%;
-    opacity: 0.085;
+    opacity: var(--atmo-rain-opacity);
     background-image: repeating-linear-gradient(
       106deg,
       transparent 0 28px,
-      rgb(170 205 224 / 0.46) 29px 30px,
+      var(--atmo-rain) 29px 30px,
       transparent 31px 58px
     );
     background-size: 220px 340px;
@@ -741,13 +946,20 @@
     will-change: transform;
   }
 
+  /*
+    A blurred, animated element is re-blurred every frame on most phone
+    GPUs, and this one is fixed and full-width — the single biggest cause
+    of the scroll stutter on Android. The mobile block near the end of this
+    file swaps the filter for a pre-feathered gradient, which costs nothing
+    and looks the same at this opacity.
+  */
   .atmosphere-fog {
     position: absolute;
     width: min(68rem, 88vw);
     height: 18rem;
     border-radius: 50%;
     filter: blur(56px);
-    background: rgb(108 137 153 / 0.055);
+    background: var(--atmo-fog);
     will-change: transform, opacity;
   }
 
@@ -768,11 +980,19 @@
     position: absolute;
     inset: auto 0 0;
     height: min(18rem, 28vh);
-    opacity: 0.26;
+    opacity: var(--atmo-sky-opacity);
     background:
-      linear-gradient(to top, #040608 0 30%, transparent 30%) 0 100% / 100% 100% no-repeat,
-      repeating-linear-gradient(90deg, #05080a 0 5vw, transparent 5vw 7vw) 0 100% / 100% 55% no-repeat,
-      repeating-linear-gradient(90deg, transparent 0 3vw, #070a0d 3vw 8vw, transparent 8vw 12vw) 0 100% / 100% 78% no-repeat;
+      linear-gradient(to top, var(--atmo-sky-near) 0 30%, transparent 30%) 0 100% / 100% 100%
+        no-repeat,
+      repeating-linear-gradient(90deg, var(--atmo-sky-mid) 0 5vw, transparent 5vw 7vw) 0 100% / 100%
+        55% no-repeat,
+      repeating-linear-gradient(
+          90deg,
+          transparent 0 3vw,
+          var(--atmo-sky-far) 3vw 8vw,
+          transparent 8vw 12vw
+        )
+        0 100% / 100% 78% no-repeat;
     mask-image: linear-gradient(to top, black 0 36%, transparent 100%);
   }
 
@@ -821,9 +1041,23 @@
     inset-inline: 0;
     top: 0;
     z-index: 50;
-    background: rgb(12 14 16 / 0.82);
+    background: var(--header-bg);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--line);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /*
+    A backdrop filter re-samples everything behind a fixed bar on every
+    scroll frame. On a phone that is the difference between a smooth page
+    and a stuttering one, so the blur is dropped and the bar goes opaque
+    instead — visually near-identical, and the scroll stays at frame rate.
+  */
+  @media (max-width: 1023px) {
+    .site-header {
+      background: var(--header-bg-solid);
+      backdrop-filter: none;
+    }
   }
 
   .nav-link {
@@ -840,8 +1074,10 @@
     transition: color var(--dur) var(--ease);
   }
 
-  .nav-link:hover {
-    color: var(--text);
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover {
+      color: var(--text);
+    }
   }
 
   .nav-link[aria-current="page"] {
@@ -877,6 +1113,79 @@
     transform: rotate(45deg);
   }
 
+  /*
+    The mobile nav is a fixed panel, so on a short screen — any phone held
+    sideways — the list used to run off the bottom with no way to reach the
+    last item. It scrolls inside itself now, and the scroll stops at its own
+    edge rather than dragging the page behind it.
+  */
+  .menu-panel {
+    max-height: calc(100dvh - 4rem - env(safe-area-inset-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.55);
+  }
+
+  /* ---- Theme switch ------------------------------------------------- */
+
+  /*
+    The only control on the site that cannot work without JavaScript — the
+    choice has to be written down somewhere and read back before paint. The
+    rest of the page degrades to something usable, so rather than leave a
+    dead button in the header it is simply not shown until the script that
+    powers it has run. Everything else, including the nav, still works.
+  */
+  .theme-toggle {
+    display: none;
+  }
+
+  html.js .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border: 1px solid var(--line-control);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition:
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-wash);
+    }
+  }
+
+  .theme-toggle:active {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* The glyph names the state the visitor would move to, not the one they
+     are in, so only one is ever on screen. Dark is the default, so the sun
+     is what a first visit shows. */
+  .theme-toggle .icon-moon {
+    display: none;
+  }
+
+  :root[data-theme="light"] .theme-toggle .icon-moon {
+    display: block;
+  }
+
+  :root[data-theme="light"] .theme-toggle .icon-sun {
+    display: none;
+  }
+
   /* ---- Work index -------------------------------------------------- */
 
   .index-row {
@@ -890,14 +1199,6 @@
     transition: background-color var(--dur) var(--ease);
   }
 
-  .index-row:hover {
-    background: var(--surface);
-  }
-
-  .index-row:hover .index-title {
-    color: var(--accent);
-  }
-
   .index-title {
     transition: color var(--dur) var(--ease);
   }
@@ -906,8 +1207,56 @@
     transition: transform 220ms var(--ease);
   }
 
-  .index-row:hover .index-arrow {
-    transform: translateX(5px);
+  @media (hover: hover) and (pointer: fine) {
+    .index-row:hover {
+      background: var(--surface);
+    }
+
+    .index-row:hover .index-title {
+      color: var(--accent);
+    }
+
+    .index-row:hover .index-arrow {
+      transform: translateX(5px);
+    }
+  }
+
+  .index-row:active {
+    background: var(--surface);
+  }
+
+  .index-row:active .index-title {
+    color: var(--accent);
+  }
+
+  /*
+    Three columns of metadata do not fit a 320px phone. Below the tablet
+    breakpoint the row becomes two lines: number and status share the top,
+    the title and summary get the full measure underneath.
+  */
+  @media (max-width: 639px) {
+    .index-row {
+      grid-template-columns: auto 1fr;
+      gap: 0.5rem 0.85rem;
+      padding-block: 1.1rem;
+      align-items: center;
+    }
+
+    .index-row > :nth-child(1) {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .index-row > :nth-child(3) {
+      grid-row: 1;
+      grid-column: 2;
+      justify-content: flex-end;
+    }
+
+    .index-row > :nth-child(2) {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
   }
 
   /* ---- Photographic hover ------------------------------------------- */
@@ -918,19 +1267,11 @@
     transition: transform 800ms var(--ease);
   }
 
-  .group:hover .zoom img {
-    transform: scale(1.028);
-  }
-
   /* Project images pick up a cold inspection light at the pointer while the
      frame edge catches a thin tungsten line. */
   .zoom {
     box-shadow: inset 0 2px transparent;
     transition: box-shadow 420ms var(--ease);
-  }
-
-  .group:hover .zoom {
-    box-shadow: inset 0 2px var(--accent);
   }
 
   .project-glow {
@@ -941,15 +1282,53 @@
     opacity: 0;
     background: radial-gradient(
       18rem 15rem at var(--lx, 50%) var(--ly, 42%),
-      rgb(154 197 222 / 0.16),
+      var(--project-light),
       transparent 72%
     );
-    mix-blend-mode: screen;
+    mix-blend-mode: var(--blend-light);
     transition: opacity 300ms var(--ease);
   }
 
-  .group:hover .project-glow {
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .zoom img {
+      transform: scale(1.028);
+    }
+
+    .group:hover .zoom {
+      box-shadow: inset 0 2px var(--accent);
+    }
+
+    .group:hover .project-glow {
+      opacity: 1;
+    }
+  }
+
+  /*
+    Touch has no hover, and until now that meant every project card sat
+    completely still on a phone — the page read as a static document rather
+    than the thing it is on a desktop. The motion moves to the scroll
+    instead: an image settles out of a slight overscale as its card arrives,
+    and the tungsten edge lights on press. Same vocabulary, different
+    trigger.
+  */
+  @media (hover: none), (pointer: coarse) {
+    html.js .reveal .zoom img {
+      transform: scale(1.045);
+      transition: transform 1100ms cubic-bezier(0.16, 0.84, 0.24, 1);
+    }
+
+    html.js .reveal.is-in .zoom img {
+      transform: scale(1);
+    }
+
+    .group:active .zoom {
+      box-shadow: inset 0 2px var(--accent);
+    }
+
+    .group:active .zoom img {
+      transform: scale(1.012);
+      transition-duration: 260ms;
+    }
   }
 
   /* Corner ticks. The architectural detail that keeps a plain rectangle from
@@ -980,8 +1359,15 @@
     border-bottom: 1px solid;
   }
 
-  .group:hover .bracket::before,
-  .group:hover .bracket::after {
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .bracket::before,
+    .group:hover .bracket::after {
+      border-color: var(--accent);
+    }
+  }
+
+  .group:active .bracket::before,
+  .group:active .bracket::after {
     border-color: var(--accent);
   }
 
@@ -994,8 +1380,14 @@
   }
 
   .site-header.is-scrolled {
-    background: rgb(10 12 14 / 0.94);
+    background: var(--header-bg-scrolled);
     border-bottom-color: var(--line-strong);
+  }
+
+  @media (max-width: 1023px) {
+    .site-header.is-scrolled {
+      background: var(--header-bg-solid);
+    }
   }
 
   /* Reading progress, drawn on the header's bottom edge. */
@@ -1061,14 +1453,18 @@
 
   /* ---- Nocturne systems atlas ------------------------------------ */
 
+  /* vh first, dvh second. Browsers without dynamic viewport units drop the
+     second declaration and keep a usable hero instead of a collapsed one. */
   .hero-stage {
     display: grid;
+    min-height: 100vh;
     place-items: center;
   }
 
   .hero-atlas {
     display: grid;
     width: 100%;
+    min-height: calc(100vh - 6rem);
     min-height: calc(100dvh - 6rem);
     place-items: center;
     padding-block: clamp(2rem, 7vh, 5rem);
@@ -1110,7 +1506,7 @@
     z-index: 2;
     line-height: 0.84;
     letter-spacing: -0.06em;
-    text-shadow: 0 1.5rem 5rem rgb(0 0 0 / 0.52);
+    text-shadow: 0 1.5rem 5rem var(--hero-shadow);
   }
 
   .hero-name > span {
@@ -1121,10 +1517,16 @@
     margin-inline: auto;
   }
 
+  /*
+    An outlined display cut is only readable while the stroke keeps some
+    weight relative to the glyph. At phone sizes a 1px stroke on a 3rem
+    letter thins out to nearly nothing, so the stroke scales with the type
+    and the surname stays part of the name.
+  */
   .text-outline {
     color: transparent;
-    -webkit-text-stroke: 1px var(--text-dim);
-    text-shadow: 0 0 3rem rgb(126 158 178 / 0.08);
+    -webkit-text-stroke: clamp(1.2px, 0.35vw, 2px) var(--text-dim);
+    text-shadow: 0 0 3rem var(--glow-cool);
   }
 
   .hero-bat-field {
@@ -1227,9 +1629,11 @@
     animation-delay: -0.8s;
   }
 
-  .hero-name-wrap:hover .hero-bat {
-    color: var(--accent);
-    opacity: 0.72;
+  @media (hover: hover) and (pointer: fine) {
+    .hero-name-wrap:hover .hero-bat {
+      color: var(--accent);
+      opacity: 0.72;
+    }
   }
 
   @keyframes hero-bat-drift {
@@ -1295,7 +1699,7 @@
     top: -1.2rem;
     right: 0;
     z-index: -1;
-    color: rgb(155 166 174 / 0.04);
+    color: var(--ghost-type);
     font-family: var(--font-display);
     font-size: clamp(3rem, 8vw, 7rem);
     font-weight: 700;
@@ -1319,8 +1723,19 @@
     transition: width 520ms var(--ease);
   }
 
-  .approach-principle:hover::before {
-    width: min(10rem, 36%);
+  @media (hover: hover) and (pointer: fine) {
+    .approach-principle:hover::before {
+      width: min(10rem, 36%);
+    }
+  }
+
+  /* On touch the rule draws itself as the principle arrives instead. The
+     reveal class sits on the same element, so this is one selector. */
+  @media (hover: none), (pointer: coarse) {
+    html.js .approach-principle.reveal.is-in::before {
+      width: min(10rem, 36%);
+      transition-delay: 260ms;
+    }
   }
 
   .contact-email {
@@ -1347,8 +1762,8 @@
     z-index: -1;
     height: min(54rem, 82vh);
     background:
-      linear-gradient(108deg, transparent 36%, rgb(126 158 178 / 0.035) 36.1% 36.2%, transparent 36.3%),
-      radial-gradient(54rem 42rem at 88% 12%, rgb(126 158 178 / 0.07), transparent 72%);
+      linear-gradient(108deg, transparent 36%, var(--zone-sweep) 36.1% 36.2%, transparent 36.3%),
+      radial-gradient(54rem 42rem at 88% 12%, var(--glow-cool), transparent 72%);
   }
 
   .case-hero {
@@ -1385,7 +1800,7 @@
 
   .case-summary .plate {
     background:
-      linear-gradient(135deg, rgb(224 160 92 / 0.055), transparent 42%),
+      linear-gradient(135deg, var(--accent-wash), transparent 42%),
       var(--surface);
   }
 
@@ -1483,7 +1898,7 @@
     top: 0.75rem;
     padding: 0.75rem 1.1rem;
     background: var(--accent);
-    color: var(--ink);
+    color: var(--on-accent);
     font-weight: 600;
     border-radius: var(--radius);
   }
@@ -1510,14 +1925,61 @@
   }
 }
 
+/* ============================================================
+   MOBILE ATMOSPHERE BUDGET
+
+   Everything below is about frame rate, not looks.
+
+   The desktop atmosphere spends its budget on two blur filters and a
+   backdrop filter, all of them full-width and all of them re-evaluated
+   while the page scrolls. A laptop absorbs that. A phone does not: the
+   compositor drops frames, and the first thing a dropped frame kills is
+   the reveal transitions, which is why the motion looked broken on a
+   handset rather than merely reduced.
+
+   So the two blurs become pre-feathered gradients — a radial ramp is
+   painted once and then only translated, which the GPU does for free —
+   and the fixed layers give up the effects they cannot afford. The
+   composition survives; the cost does not.
+   ============================================================ */
+
 @media (max-width: 767px) {
   .atmosphere-fog-b,
   .atmosphere-skyline {
     display: none;
   }
 
-  .atmosphere-rain {
-    opacity: 0.055;
+  .atmosphere-fog {
+    filter: none;
+    border-radius: 0;
+    background: radial-gradient(closest-side, var(--atmo-fog), transparent 100%);
+  }
+}
+
+/*
+  Coarse pointer rather than narrow viewport: a large tablet is wide but
+  still runs a phone-class GPU, and it is the hardware that cannot pay for
+  an animated blur.
+*/
+@media (pointer: coarse) {
+  .light-shaft {
+    filter: none;
+    animation: none;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      var(--shaft-edge) 30%,
+      var(--shaft-core) 50%,
+      var(--shaft-edge) 70%,
+      transparent 100%
+    );
+    opacity: 0.85;
+  }
+
+  /* The drop shadow on every bat is a filter pass per bat per frame. The
+     silhouettes carry perfectly well without it, and the drift stays. */
+  .hero-bat {
+    filter: none;
   }
 }
 

@@ -45,6 +45,11 @@ import { person } from "../data/site";
 
         <span class="identity-ink" aria-hidden="true"></span>
         <span class="identity-scan" aria-hidden="true"></span>
+
+        {/* On a desktop the cursor already says this is a control. On a phone
+            nothing did, so the panel went undiscovered. Decorative: the button
+            carries its own label. */}
+        <span class="identity-hint" aria-hidden="true">Tap</span>
       </button>
 
       <p class="meta mt-3">{person.locality}, {person.region}, {person.timezone}</p>

@@ -1,26 +1,45 @@
 ---
 /**
- * The five glyphs the site actually uses, inlined.
+ * The glyphs the site actually uses, inlined.
  *
  * Replaces the icon dependency: no runtime, no client framework, and no set of
  * 1,400 unused paths in the bundle. Decorative by default — anything that needs
  * a name gets it from the text next to it.
+ *
+ * A glyph is one path or several. Square caps throughout, because the rest of
+ * the page is drawn with hairlines and right angles.
  */
 interface Props {
-  name: "arrow-right" | "arrow-left" | "arrow-up-right" | "lock" | "mail" | "plus";
+  name:
+    | "arrow-right"
+    | "arrow-left"
+    | "arrow-up-right"
+    | "lock"
+    | "mail"
+    | "plus"
+    | "sun"
+    | "moon";
   class?: string;
 }
 
 const { name, class: className = "h-4 w-4" } = Astro.props;
 
-const paths: Record<Props["name"], string> = {
+const paths: Record<Props["name"], string | string[]> = {
   "arrow-right": "M5 12h14M13 6l6 6-6 6",
   "arrow-left": "M19 12H5M11 18l-6-6 6-6",
   "arrow-up-right": "M7 17 17 7M8 7h9v9",
   lock: "M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z",
   mail: "m3 7 9 6 9-6M3 5h18v14H3z",
   plus: "M12 5v14M5 12h14",
+  sun: [
+    "M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2z",
+    "M12 2.5v2.2M12 19.3v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6",
+  ],
+  moon: "M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8z",
 };
+
+const glyph = paths[name];
+const strokes = Array.isArray(glyph) ? glyph : [glyph];
 ---
 
 <svg
@@ -33,5 +52,5 @@ const paths: Record<Props["name"], string> = {
   stroke-linejoin="miter"
   aria-hidden="true"
 >
-  <path d={paths[name]}></path>
+  {strokes.map((d) => <path d={d} />)}
 </svg>

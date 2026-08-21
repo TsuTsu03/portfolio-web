@@ -28,58 +28,81 @@ const onHome = path === "/";
       <span class="sr-only whitespace-nowrap text-sm font-medium text-text sm:not-sr-only">{person.name}</span>
     </a>
 
-    <nav aria-label="Sections" class="hidden items-center lg:flex">
-      {
-        navItems.map((item) => (
-          <a
-            class="nav-link"
-            href={onHome ? `#${item.id}` : `/#${item.id}`}
-            aria-label={`${item.label}: ${item.accessibleName}`}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-      <a href={`mailto:${person.email}`} class="btn btn-ghost ml-3 h-10 min-h-[44px] text-sm">
-        <Icon name="mail" class="h-4 w-4" />
-        Email
-      </a>
-    </nav>
-
-    {/* Mobile: a native disclosure, so the menu opens with no JavaScript. */}
-    <details class="disclosure lg:hidden" id="menu">
-      <summary
-        class="flex h-11 min-w-[44px] items-center justify-center gap-2 border border-line-control px-3 text-sm text-text"
-      >
-        Menu
-        <Icon name="plus" class="chev h-4 w-4" />
-      </summary>
-
-      <nav
-        aria-label="Sections"
-        class="fixed inset-x-0 top-16 border-y border-line bg-ink px-[var(--gutter)] pb-6 pt-2"
-      >
-        <ul>
-          {
-            navItems.map((item) => (
-              <li class="border-b border-line last:border-b-0">
-                <a
-                  href={onHome ? `#${item.id}` : `/#${item.id}`}
-                  class="flex min-h-[52px] items-center text-base text-text"
-                  aria-label={`${item.label}: ${item.accessibleName}`}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <a href={`mailto:${person.email}`} class="btn btn-primary mt-5 w-full">
+    {/* Navigation and the theme switch travel together on the right, so the
+        header keeps its two-part balance at every width. */}
+    <div class="flex items-center gap-2">
+      <nav aria-label="Sections" class="hidden items-center lg:flex">
+        {
+          navItems.map((item) => (
+            <a
+              class="nav-link"
+              href={onHome ? `#${item.id}` : `/#${item.id}`}
+              aria-label={`${item.label}: ${item.accessibleName}`}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        <a href={`mailto:${person.email}`} class="btn btn-ghost mx-3 h-10 min-h-[44px] text-sm">
           <Icon name="mail" class="h-4 w-4" />
-          Email {person.shortName}
+          Email
         </a>
       </nav>
-    </details>
+
+      {/*
+        Sits outside the mobile menu on purpose. Changing the light in the
+        room is not a navigation decision, and burying it one tap deep is
+        the reason most sites' theme switches go unused on a phone.
+
+        Rendered without a pressed state and with a label that names the
+        destination, so it reads the same to a screen reader as it looks:
+        one control, one outcome. The script below keeps both in step.
+      */}
+      <button
+        type="button"
+        class="theme-toggle"
+        data-theme-toggle
+        aria-label="Switch to light theme"
+      >
+        <Icon name="sun" class="icon-sun h-[1.15rem] w-[1.15rem]" />
+        <Icon name="moon" class="icon-moon h-[1.15rem] w-[1.15rem]" />
+      </button>
+
+      {/* Mobile: a native disclosure, so the menu opens with no JavaScript. */}
+      <details class="disclosure lg:hidden" id="menu">
+        <summary
+          class="flex h-11 min-w-[44px] items-center justify-center gap-2 border border-line-control px-3 text-sm text-text"
+        >
+          Menu
+          <Icon name="plus" class="chev h-4 w-4" />
+        </summary>
+
+        <nav
+          aria-label="Sections"
+          class="menu-panel fixed inset-x-0 top-[calc(4rem+env(safe-area-inset-top))] border-y border-line bg-ink px-[var(--gutter)] pt-2"
+        >
+          <ul>
+            {
+              navItems.map((item) => (
+                <li class="border-b border-line last:border-b-0">
+                  <a
+                    href={onHome ? `#${item.id}` : `/#${item.id}`}
+                    class="flex min-h-[52px] items-center text-base text-text"
+                    aria-label={`${item.label}: ${item.accessibleName}`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <a href={`mailto:${person.email}`} class="btn btn-primary mt-5 w-full">
+            <Icon name="mail" class="h-4 w-4" />
+            Email {person.shortName}
+          </a>
+        </nav>
+      </details>
+    </div>
   </div>
 </header>
 
@@ -91,4 +114,41 @@ const onHome = path === "/";
   menu?.addEventListener("click", (event) => {
     if ((event.target as HTMLElement).closest("a")) menu.open = false;
   });
+
+  // ---- Theme -------------------------------------------------------------
+  //
+  // The stored choice is already applied by the inline script in the head, so
+  // this only has to handle the switch itself and keep the label and the
+  // browser-chrome colour honest.
+  const root = document.documentElement;
+  const toggles = document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]");
+  const chrome = document.querySelector<HTMLMetaElement>("[data-theme-color]");
+
+  // Read from the stylesheet rather than repeating the hex here, so the tokens
+  // stay the single source of truth for what the page is actually painted.
+  const groundColor = () =>
+    getComputedStyle(root).getPropertyValue("--ink").trim() || "#0c0e10";
+
+  const sync = () => {
+    const light = root.getAttribute("data-theme") === "light";
+    toggles.forEach((button) => {
+      button.setAttribute("aria-label", light ? "Switch to dark theme" : "Switch to light theme");
+    });
+    if (chrome) chrome.content = groundColor();
+  };
+
+  toggles.forEach((button) => {
+    button.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch {
+        // Storage can be blocked. The switch still works for this visit.
+      }
+      sync();
+    });
+  });
+
+  sync();
 </script>
