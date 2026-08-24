@@ -8,7 +8,7 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path((?!google75c7716776d92269\\.html$).*)",
+      "source": "/:path((?!google).*)",
       "has": [
         {
           "type": "host",
