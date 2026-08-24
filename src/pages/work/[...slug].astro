@@ -11,7 +11,7 @@ import {
   personNode,
   websiteNode,
 } from "../../lib/schema";
-import { person, SITE_UPDATED, SITE_URL } from "../../data/site";
+import { person, SITE_URL } from "../../data/site";
 
 export async function getStaticPaths() {
   const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
@@ -92,7 +92,7 @@ const facts = [
   ogImageWidth={1200}
   ogImageHeight={630}
   ogImageAlt={`${data.shortTitle} interface from the ${person.name} software case study`}
-  dateModified={SITE_UPDATED}
+  dateModified={data.lastVerified.toISOString().slice(0, 10)}
   articleSection={`${data.sector} ${data.category}`}
   articleTags={articleTags}
   jsonLd={jsonLd}

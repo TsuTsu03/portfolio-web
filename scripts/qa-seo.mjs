@@ -88,7 +88,12 @@ for (const [path, html] of htmlDocuments) {
     assert(types.has("SoftwareApplication") || types.has("CreativeWork"), `${path}: missing project schema`);
     const article = graph.find((node) => node["@type"] === "Article");
     const project = graph.find((node) => ["SoftwareApplication", "CreativeWork"].includes(node["@type"]));
-    assert(article.dateModified === SITE_UPDATED, `${path}: stale Article dateModified`);
+    /* The case study is dated by its own verification check, so the gate
+       verifies the shape and that the date is real, not that every page
+       carries one shared value. */
+    assert(/^\d{4}-\d{2}-\d{2}$/.test(article.dateModified || ""), `${path}: Article dateModified is not a plain date`);
+    assert(article.dateModified <= SITE_UPDATED, `${path}: Article dateModified is in the future`);
+    assert(article.dateModified === project.dateModified, `${path}: Article and project disagree on the date`);
     assert(article.about?.["@id"] === project["@id"], `${path}: Article does not reference project`);
     assert(project.mainEntityOfPage?.["@id"] === article["@id"], `${path}: project does not reference Article`);
   } else {

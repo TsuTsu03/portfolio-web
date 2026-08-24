@@ -12,7 +12,10 @@ export const GET: APIRoute = async () => {
     { path: "/", lastmod: SITE_UPDATED, priority: "1.0" },
     ...entries.map((entry) => ({
       path: `/work/${entry.id}`,
-      lastmod: SITE_UPDATED,
+      /* Each case study carries its own verification date. Repeating one
+         site-wide date across every URL tells a crawler nothing about which
+         page is worth fetching again. */
+      lastmod: entry.data.lastVerified.toISOString().slice(0, 10),
       priority: entry.data.featured ? "0.9" : "0.8",
     })),
     ...servicePages.map((service) => ({

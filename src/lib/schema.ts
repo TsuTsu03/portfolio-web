@@ -363,7 +363,12 @@ export function caseStudyArticleNode(
     url,
     mainEntityOfPage: url,
     image: imageUrl,
-    dateModified: SITE_UPDATED,
+    /* The page's own verification date. A site-wide date told every case study
+       it had changed today, which was neither true nor useful as a signal. */
+    dateModified: data.lastVerified.toISOString().slice(0, 10),
+    ...(data.published
+      ? { datePublished: data.published.toISOString().slice(0, 10) }
+      : {}),
     author: { "@id": PERSON_ID },
     publisher: { "@id": PERSON_ID },
     about: { "@id": `${url}#project` },

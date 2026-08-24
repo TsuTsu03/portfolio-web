@@ -54,6 +54,13 @@ const work = defineCollection({
         featured: z.boolean().default(false),
         order: z.number().int().positive(),
         lastVerified: z.coerce.date(),
+        /**
+         * The date the case study itself was first published, when it is
+         * known. Left unset rather than guessed: an invented publication date
+         * is a claim the site cannot support, and `datePublished` is only
+         * emitted when this is present.
+         */
+        published: z.coerce.date().optional(),
       })
       .strict()
       .refine((entry) => entry.status !== "Deployed" || entry.liveUrl !== null, {
