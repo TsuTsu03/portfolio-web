@@ -8,14 +8,14 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/((?!google75c7716776d92269\\.html$).*)",
+      "source": "/:path((?!google75c7716776d92269\\.html$).*)",
       "has": [
         {
           "type": "host",
           "value": "jansen-dev.vercel.app"
         }
       ],
-      "destination": "https://denforge.it.com/$1",
+      "destination": "https://denforge.it.com/:path",
       "permanent": true
     }
   ],
