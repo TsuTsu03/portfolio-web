@@ -8,14 +8,91 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path((?!google).*)",
+      "source": "/",
       "has": [
         {
           "type": "host",
           "value": "jansen-dev.vercel.app"
         }
       ],
-      "destination": "https://denforge.it.com/:path",
+      "destination": "https://denforge.it.com/",
+      "permanent": true
+    },
+    {
+      "source": "/work/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/work/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/services/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/services/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/llms.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/llms.txt",
+      "permanent": true
+    },
+    {
+      "source": "/llms-full.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/llms-full.txt",
+      "permanent": true
+    },
+    {
+      "source": "/humans.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/humans.txt",
+      "permanent": true
+    },
+    {
+      "source": "/portfolio.json",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/portfolio.json",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [
+        {
+          "type": "host",
+          "value": "jansen-dev.vercel.app"
+        }
+      ],
+      "destination": "https://denforge.it.com/sitemap.xml",
       "permanent": true
     }
   ],
