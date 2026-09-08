@@ -1,0 +1,81 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
+import { person } from "../../data/site";
+import {
+  breadcrumbNode,
+  insightsCollectionNode,
+  insightsItemListNode,
+  personNode,
+  websiteNode,
+} from "../../lib/schema";
+import { sortInsights } from "../../lib/insights";
+
+const entries = sortInsights(await getCollection("insights"));
+const path = "/insights";
+const jsonLd = [
+  personNode([...new Set(entries.flatMap((entry) => entry.data.keywords))]),
+  websiteNode(),
+  insightsCollectionNode(entries),
+  insightsItemListNode(entries),
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "Insights", path },
+  ]),
+];
+---
+
+<BaseLayout
+  path={path}
+  title={`Engineering insights | ${person.name}`}
+  description="Engineering notes by Den Jansen Flores on SaaS access boundaries, logistics operations data and controlled AI output, linked to working case studies."
+  jsonLd={jsonLd}
+>
+  <section class="pb-20 pt-28">
+    <header class="shell">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="meta flex flex-wrap items-center gap-2">
+          <li><a href="/" class="transition-colors hover:text-accent">Home</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li class="text-text" aria-current="page">Insights</li>
+        </ol>
+      </nav>
+      <p class="meta mb-5">Engineering notes</p>
+      <h1 class="display max-w-[17ch] text-[clamp(2.75rem,7vw,5.75rem)]">
+        Decisions behind the systems.
+      </h1>
+      <p class="lede mt-7 max-w-[66ch]">
+        Practical notes on the access, data and AI boundaries used in documented builds. Each article links to the case study it draws from.
+      </p>
+    </header>
+
+    <ol class="shell mt-16 border-t border-line">
+      {
+        entries.map((entry, index) => (
+          <li>
+            <a
+              href={`/insights/${entry.id}`}
+              class="group grid gap-5 border-b border-line py-8 md:grid-cols-[5rem_1fr_auto] md:items-start"
+            >
+              <span class="meta">{String(index + 1).padStart(2, "0")}</span>
+              <span>
+                <span class="meta mb-3 block">{entry.data.topic}</span>
+                <span class="display-tight block text-[clamp(1.5rem,3vw,2.25rem)] transition-colors group-hover:text-accent">
+                  {entry.data.title}
+                </span>
+                <span class="mt-4 block max-w-[64ch] leading-relaxed text-text-dim">
+                  {entry.data.summary}
+                </span>
+              </span>
+              <span class="meta inline-flex items-center gap-2 md:mt-8">
+                Read
+                <Icon name="arrow-right" class="h-3.5 w-3.5" />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</BaseLayout>

@@ -1,0 +1,160 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BrandIcon from "../components/BrandIcon.astro";
+import Icon from "../components/Icon.astro";
+import { person, primaryTopics, services, SITE_UPDATED } from "../data/site";
+import { breadcrumbNode, personNode, resumeWebPageNode, websiteNode } from "../lib/schema";
+
+const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const selected = entries.filter((entry) => entry.data.featured).slice(0, 4);
+const knowsAbout = [
+  ...new Set(entries.flatMap((entry) => [...entry.data.technologies, ...entry.data.capabilities])),
+];
+const path = "/resume";
+const jsonLd = [
+  personNode(knowsAbout),
+  websiteNode(),
+  resumeWebPageNode(),
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "Résumé", path },
+  ]),
+];
+---
+
+<BaseLayout
+  path={path}
+  title={`${person.name} résumé | Full-stack and AI engineer`}
+  description="Résumé of Den Jansen Flores, a senior full-stack developer and agentic AI engineer in Metro Manila, with skills, selected projects and contact details."
+  dateModified={SITE_UPDATED}
+  jsonLd={jsonLd}
+>
+  <article class="resume-page pb-20 pt-28">
+    <header class="shell">
+      <nav aria-label="Breadcrumb" class="resume-screen-only mb-10">
+        <ol class="meta flex flex-wrap items-center gap-2">
+          <li><a href="/" class="transition-colors hover:text-accent">Home</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li class="text-text" aria-current="page">Résumé</li>
+        </ol>
+      </nav>
+
+      <div class="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
+        <div class="lg:col-span-8">
+          <p class="meta mb-5">Professional profile</p>
+          <h1 class="display text-[clamp(3rem,8vw,6.5rem)]">{person.name}</h1>
+          <p class="mt-6 text-xl leading-relaxed text-text">
+            {person.role} and {person.secondRole}
+          </p>
+          <p class="lede mt-5">
+            I build operational SaaS, secure web platforms and controlled AI workflows from the data model through the interface.
+          </p>
+        </div>
+
+        <div class="lg:col-span-4">
+          <dl class="border-t border-line">
+            <div class="flex justify-between gap-4 border-b border-line py-3">
+              <dt class="meta">Based in</dt>
+              <dd class="text-right text-sm text-text">{person.locality}, {person.region}</dd>
+            </div>
+            <div class="flex justify-between gap-4 border-b border-line py-3">
+              <dt class="meta">Open to</dt>
+              <dd class="max-w-[18rem] text-right text-sm text-text">{person.engagements}</dd>
+            </div>
+            <div class="flex justify-between gap-4 border-b border-line py-3">
+              <dt class="meta">Experience</dt>
+              <dd class="text-right text-sm text-text">{person.yearsActive} years of project work</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="resume-actions resume-screen-only mt-9 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href={`mailto:${person.email}`}>
+          <Icon name="mail" class="h-4 w-4" />
+          Email {person.shortName}
+        </a>
+        <button class="btn btn-ghost" type="button" data-print-resume>Print or save as PDF</button>
+      </div>
+    </header>
+
+    <div class="shell mt-14 grid gap-12 border-t border-line pt-12 lg:grid-cols-12 lg:gap-16">
+      <div class="space-y-12 lg:col-span-8">
+        <section aria-labelledby="work-heading">
+          <p class="meta mb-3">Selected work</p>
+          <h2 id="work-heading" class="display-tight text-3xl">Systems I have built</h2>
+          <ol class="mt-7 border-t border-line">
+            {
+              selected.map((entry) => (
+                <li class="border-b border-line py-6">
+                  <div class="flex flex-wrap items-baseline justify-between gap-3">
+                    <h3 class="display-tight text-xl">{entry.data.shortTitle}</h3>
+                    <span class="meta">{entry.data.sector} · {entry.data.category}</span>
+                  </div>
+                  <p class="mt-3 max-w-[65ch] leading-relaxed text-text-dim">{entry.data.summary}</p>
+                  <p class="mt-3 text-sm text-text">
+                    <strong>Role:</strong> {entry.data.role}
+                  </p>
+                  <a class="resume-screen-only link tap-target mt-3 inline-flex" href={`/work/${entry.id}`}>
+                    Read the case study
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
+
+        <section aria-labelledby="service-heading">
+          <p class="meta mb-3">Scope</p>
+          <h2 id="service-heading" class="display-tight text-3xl">Work I can own</h2>
+          <ul class="mt-7 grid gap-5 sm:grid-cols-2">
+            {
+              services.map((service) => (
+                <li class="border-t border-line pt-4">
+                  <h3 class="font-medium text-text">{service.name}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-text-dim">{service.description}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+
+      <aside class="space-y-10 lg:col-span-4">
+        <section aria-labelledby="skills-heading" class="plate p-6 lg:p-8">
+          <p class="meta mb-3">Core capabilities</p>
+          <h2 id="skills-heading" class="display-tight text-xl">Technical focus</h2>
+          <ul class="mt-5 space-y-3">
+            {primaryTopics.map((topic) => <li class="text-sm leading-relaxed text-text-dim">{topic}</li>)}
+          </ul>
+        </section>
+
+        <section aria-labelledby="contact-heading">
+          <p class="meta mb-3">Direct contact</p>
+          <h2 id="contact-heading" class="display-tight text-xl">Profiles and contact</h2>
+          <ul class="mt-5 space-y-3 text-sm">
+            <li><a class="link" href={`mailto:${person.email}`}>{person.email}</a></li>
+            <li><a class="link" href={`tel:${person.phoneE164}`}>{person.phone}</a></li>
+            <li>
+              <a class="link inline-flex items-center gap-2" href={person.github} rel="me">
+                <BrandIcon name="github" class="h-4 w-4" /> GitHub
+              </a>
+            </li>
+            <li>
+              <a class="link inline-flex items-center gap-2" href={person.linkedin} rel="me">
+                <BrandIcon name="linkedin" class="h-4 w-4" /> LinkedIn
+              </a>
+            </li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  document.querySelector<HTMLButtonElement>("[data-print-resume]")?.addEventListener("click", () => {
+    window.print();
+  });
+</script>

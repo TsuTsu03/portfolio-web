@@ -76,4 +76,24 @@ const work = defineCollection({
       ),
 });
 
-export const collections = { work };
+const insights = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/insights" }),
+  schema: z
+    .object({
+      title: z.string().min(20).max(75),
+      description: z.string().min(70).max(180),
+      summary: z.string().min(50),
+      topic: z.string().min(3),
+      published: z.coerce.date(),
+      updated: z.coerce.date(),
+      relatedWork: z.array(z.string().min(2)).min(1),
+      keywords: z.array(z.string().min(2)).min(3),
+    })
+    .strict()
+    .refine((entry) => entry.updated >= entry.published, {
+      message: "The updated date cannot be earlier than the publication date.",
+      path: ["updated"],
+    }),
+});
+
+export const collections = { work, insights };

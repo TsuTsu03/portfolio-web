@@ -2,14 +2,26 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { SITE_UPDATED, SITE_URL } from "../data/site";
 import { servicePages } from "../data/service-pages";
+import { sortInsights } from "../lib/insights";
 
 const escapeXml = (value: string) =>
   value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 export const GET: APIRoute = async () => {
-  const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  const [work, insights] = await Promise.all([
+    getCollection("work"),
+    getCollection("insights"),
+  ]);
+  const entries = work.sort((a, b) => a.data.order - b.data.order);
   const urls = [
     { path: "/", lastmod: SITE_UPDATED, priority: "1.0" },
+    { path: "/resume", lastmod: SITE_UPDATED, priority: "0.9" },
+    { path: "/insights", lastmod: SITE_UPDATED, priority: "0.9" },
+    ...sortInsights(insights).map((entry) => ({
+      path: `/insights/${entry.id}`,
+      lastmod: entry.data.updated.toISOString().slice(0, 10),
+      priority: "0.8",
+    })),
     ...entries.map((entry) => ({
       path: `/work/${entry.id}`,
       /* Each case study carries its own verification date. Repeating one

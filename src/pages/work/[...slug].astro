@@ -12,9 +12,15 @@ import {
   websiteNode,
 } from "../../lib/schema";
 import { person, SITE_URL } from "../../data/site";
+import { sortInsights } from "../../lib/insights";
 
 export async function getStaticPaths() {
-  const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  const [work, insights] = await Promise.all([
+    getCollection("work"),
+    getCollection("insights"),
+  ]);
+  const entries = work.sort((a, b) => a.data.order - b.data.order);
+  const orderedInsights = sortInsights(insights);
 
   return entries.map((entry, index) => ({
     params: { slug: entry.id },
@@ -22,6 +28,7 @@ export async function getStaticPaths() {
       entry,
       previous: index > 0 ? entries[index - 1] : null,
       next: index < entries.length - 1 ? entries[index + 1] : null,
+      relatedInsights: orderedInsights.filter((insight) => insight.data.relatedWork.includes(entry.id)),
     },
   }));
 }
@@ -30,9 +37,10 @@ interface Props {
   entry: CollectionEntry<"work">;
   previous: CollectionEntry<"work"> | null;
   next: CollectionEntry<"work"> | null;
+  relatedInsights: CollectionEntry<"insights">[];
 }
 
-const { entry, previous, next } = Astro.props;
+const { entry, previous, next, relatedInsights } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
 
@@ -273,6 +281,35 @@ const facts = [
         }
       </aside>
     </div>
+
+    {
+      relatedInsights.length > 0 && (
+        <section class="shell mt-16 border-t border-line pt-12" aria-labelledby="related-insights-heading">
+          <p class="meta mb-4">Engineering notes</p>
+          <h2 id="related-insights-heading" class="display-tight text-2xl">
+            Decisions explained from this build
+          </h2>
+          <ul class="mt-7 grid gap-px border border-line bg-line md:grid-cols-2">
+            {relatedInsights.map((insight) => (
+              <li class="bg-ink">
+                <a
+                  href={`/insights/${insight.id}`}
+                  class="group block h-full p-6 transition-colors hover:bg-surface lg:p-8"
+                >
+                  <span class="meta">{insight.data.topic}</span>
+                  <span class="display-tight mt-3 block text-xl transition-colors group-hover:text-accent">
+                    {insight.data.title}
+                  </span>
+                  <span class="mt-3 block text-sm leading-relaxed text-text-dim">
+                    {insight.data.summary}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     <nav aria-label="More projects" class="shell mt-20">
       <div class="grid gap-px border border-line bg-line sm:grid-cols-2">

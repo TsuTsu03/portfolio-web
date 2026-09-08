@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Icon from "../../components/Icon.astro";
 import { servicePages, type ServicePage } from "../../data/service-pages";
 import { person, SITE_UPDATED } from "../../data/site";
+import { sortInsights } from "../../lib/insights";
 import {
   breadcrumbNode,
   personNode,
@@ -14,7 +15,11 @@ import {
 } from "../../lib/schema";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("work");
+  const [entries, insights] = await Promise.all([
+    getCollection("work"),
+    getCollection("insights"),
+  ]);
+  const orderedInsights = sortInsights(insights);
 
   return servicePages.map((service) => ({
     params: { slug: service.slug },
@@ -23,6 +28,9 @@ export async function getStaticPaths() {
       evidence: service.evidenceIds
         .map((id) => entries.find((entry) => entry.id === id))
         .filter((entry): entry is CollectionEntry<"work"> => Boolean(entry)),
+      relatedInsights: orderedInsights.filter((entry) =>
+        entry.data.relatedWork.some((id) => service.evidenceIds.includes(id))
+      ),
     },
   }));
 }
@@ -30,9 +38,10 @@ export async function getStaticPaths() {
 interface Props {
   service: ServicePage;
   evidence: CollectionEntry<"work">[];
+  relatedInsights: CollectionEntry<"insights">[];
 }
 
-const { service, evidence } = Astro.props;
+const { service, evidence, relatedInsights } = Astro.props;
 const path = `/services/${service.slug}`;
 const jsonLd = [
   personNode(service.keywords),
@@ -157,6 +166,36 @@ const jsonLd = [
         </div>
       </div>
     </section>
+
+    {
+      relatedInsights.length > 0 && (
+        <section class="section border-t border-line" aria-labelledby="service-insights-heading">
+          <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+            <div class="lg:col-span-4">
+              <p class="meta mb-4">Engineering notes</p>
+              <h2 id="service-insights-heading" class="display text-[clamp(2rem,5vw,3.5rem)]">
+                How the decisions work
+              </h2>
+            </div>
+            <ul class="border-t border-line lg:col-span-8">
+              {relatedInsights.map((entry) => (
+                <li class="border-b border-line py-6">
+                  <a class="group block" href={`/insights/${entry.id}`}>
+                    <span class="meta">{entry.data.topic}</span>
+                    <span class="display-tight mt-3 block text-xl transition-colors group-hover:text-accent">
+                      {entry.data.title}
+                    </span>
+                    <span class="mt-3 block text-sm leading-relaxed text-text-dim">
+                      {entry.data.summary}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
 
     <section class="section border-t border-line" aria-labelledby="process-heading">
       <div class="shell">

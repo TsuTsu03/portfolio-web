@@ -14,9 +14,15 @@ import {
   SITE_URL,
 } from "../data/site";
 import { principles } from "../data/principles";
+import { sortInsights } from "../lib/insights";
 
 export const GET: APIRoute = async () => {
-  const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  const [work, insightEntries] = await Promise.all([
+    getCollection("work"),
+    getCollection("insights"),
+  ]);
+  const entries = work.sort((a, b) => a.data.order - b.data.order);
+  const insights = sortInsights(insightEntries);
 
   const body = {
     schemaVersion: "1.0",
@@ -35,7 +41,10 @@ export const GET: APIRoute = async () => {
         fullContext: `${SITE_URL}/llms-full.txt`,
         sitemap: `${SITE_URL}/sitemap.xml`,
         humans: `${SITE_URL}/humans.txt`,
+        rss: `${SITE_URL}/rss.xml`,
       },
+      resume: `${SITE_URL}/resume`,
+      insights: `${SITE_URL}/insights`,
     },
     person: {
       name: person.name,
@@ -84,6 +93,18 @@ export const GET: APIRoute = async () => {
       liveUrl: entry.data.liveUrl,
       repositoryUrl: entry.data.repositoryUrl,
       repositoryVisibility: entry.data.repositoryVisibility,
+    })),
+    insights: insights.map((entry) => ({
+      id: entry.id,
+      title: entry.data.title,
+      description: entry.data.description,
+      summary: entry.data.summary,
+      topic: entry.data.topic,
+      url: `${SITE_URL}/insights/${entry.id}`,
+      published: entry.data.published.toISOString().slice(0, 10),
+      updated: entry.data.updated.toISOString().slice(0, 10),
+      relatedWork: entry.data.relatedWork.map((id) => `${SITE_URL}/work/${id}`),
+      keywords: entry.data.keywords,
     })),
     questions: faqs,
   };

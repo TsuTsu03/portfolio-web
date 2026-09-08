@@ -118,10 +118,103 @@ export function profilePageNode(
       `${SITE_URL}/#work`,
       `${SITE_URL}/#capabilities`,
       `${SITE_URL}/#contact`,
+      `${SITE_URL}/resume`,
+      `${SITE_URL}/insights`,
     ],
     hasPart: entries.map((entry) => ({
       "@id": `${SITE_URL}/work/${entry.id}#article`,
     })),
+  };
+}
+
+export function resumeWebPageNode(): Record<string, unknown> {
+  const url = `${SITE_URL}/resume`;
+
+  return {
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: `${person.name} résumé`,
+    description:
+      "Professional profile for Den Jansen Flores with capabilities, selected software case studies, location, availability and direct contact details.",
+    dateModified: SITE_UPDATED,
+    inLanguage: "en-PH",
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": PERSON_ID },
+    mainEntity: { "@id": PERSON_ID },
+    author: { "@id": PERSON_ID },
+  };
+}
+
+export function insightsCollectionNode(
+  entries: CollectionEntry<"insights">[]
+): Record<string, unknown> {
+  const url = `${SITE_URL}/insights`;
+
+  return {
+    "@type": "CollectionPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: `${person.name} engineering insights`,
+    description:
+      "Engineering notes drawn from documented SaaS, logistics and agentic AI builds by Den Jansen Flores.",
+    dateModified: SITE_UPDATED,
+    inLanguage: "en-PH",
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": PERSON_ID },
+    author: { "@id": PERSON_ID },
+    mainEntity: { "@id": `${url}#articles` },
+    hasPart: entries.map((entry) => ({
+      "@id": `${SITE_URL}/insights/${entry.id}#article`,
+    })),
+  };
+}
+
+export function insightsItemListNode(
+  entries: CollectionEntry<"insights">[]
+): Record<string, unknown> {
+  return {
+    "@type": "ItemList",
+    "@id": `${SITE_URL}/insights#articles`,
+    name: `${person.name} engineering articles`,
+    numberOfItems: entries.length,
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    itemListElement: entries.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/insights/${entry.id}`,
+      name: entry.data.title,
+    })),
+  };
+}
+
+export function insightArticleNode(
+  entry: CollectionEntry<"insights">
+): Record<string, unknown> {
+  const { data } = entry;
+  const url = `${SITE_URL}/insights/${entry.id}`;
+
+  return {
+    "@type": "Article",
+    "@id": `${url}#article`,
+    url,
+    mainEntityOfPage: url,
+    headline: data.title,
+    name: data.title,
+    description: data.description,
+    image: `${SITE_URL}/og.png`,
+    datePublished: data.published.toISOString().slice(0, 10),
+    dateModified: data.updated.toISOString().slice(0, 10),
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": PERSON_ID },
+    articleSection: data.topic,
+    keywords: data.keywords.join(", "),
+    about: data.keywords,
+    mentions: data.relatedWork.map((id) => ({
+      "@id": `${SITE_URL}/work/${id}#project`,
+    })),
+    inLanguage: "en-PH",
+    isPartOf: { "@id": WEBSITE_ID },
   };
 }
 

@@ -1,8 +1,8 @@
 # Den Jansen Flores — Portfolio
 
 Personal portfolio of Den Jansen Flores, Senior Full-Stack Developer and Agentic AI
-Engineer. A static Astro site: no client-side framework, no hydration, one small
-progressive-enhancement script.
+Engineer. A static Astro site: no client-side framework, no hydration, and small
+progressive-enhancement scripts.
 
 Live: https://denforge.it.com
 
@@ -12,7 +12,7 @@ Live: https://denforge.it.com
 | ----------- | ------------------------------------------------------------- |
 | Framework   | Astro 7, static output                                         |
 | Interaction | Native HTML (`<details>`), inline SVG, CSS, and vanilla JS       |
-| Styling     | Tailwind CSS v4 + CSS custom properties, one locked dark theme |
+| Styling     | Tailwind CSS v4 + CSS custom properties, dark and light themes |
 | Content     | Astro Content Collections with a strict Zod schema             |
 | Images      | Astro `<Picture>` — AVIF and WebP, responsive `srcset`         |
 | Fonts       | Two self-hosted variable faces: Archivo and Instrument Sans    |
@@ -64,10 +64,9 @@ while the live CSS treatment locks it to black-and-white manga ink and screenton
 
 ## Design system
 
-Art direction: a nocturne editorial layout. Deep charcoal ground, graphite
-surfaces, gunmetal rules, ivory type, and a single tungsten-amber accent that is
-only used for warmth, attention or action. There is no light theme and no theme
-switch: `:root` in `src/styles/global.css` is the whole palette.
+Art direction: a nocturne editorial layout that defaults to deep charcoal,
+graphite, ivory type and one tungsten-amber accent. A restrained light theme is
+available from the header switch. Both palettes live in `src/styles/global.css`.
 
 Rules that keep it coherent:
 
@@ -140,40 +139,47 @@ page does not show.
 `src/data/data.test.ts` guards the one thing that breaks quietly: a capability
 citing a project that no longer exists.
 
-### Résumé link
+### Résumé and insights
 
-`resumeUrl` in `src/data/site.ts` is `null`, because the previous Google Drive
-URL returned 404 on 2026-08-15. While it is null, the résumé buttons are not
-rendered and the site says the résumé is sent on request. Set it to a working URL
-and the buttons reappear.
+`/resume` is the canonical, print-friendly professional profile. It is generated
+from the same identity, service and project data as the rest of the site, so it
+does not depend on an external document link.
+
+Engineering articles live in `src/content/insights/*.md`. Their strict schema
+requires publication dates, topics, keywords and at least one related case study.
 
 ## Discoverability
 
 - `sitemap.xml`, generated at build, excluding the 404 page.
 - Two indexable service pages for full-stack and agentic AI work in Metro Manila,
   including freelance, contract and full-time search intent.
+- A crawlable résumé and an insights index with three source-backed engineering
+  articles linked in both directions with the relevant case studies.
 - `robots.txt` explicitly allowing AI and answer-engine crawlers.
 - `/llms.txt`, generated from the content collection in llms.txt link-list format.
 - JSON-LD: `Person`, `WebSite`, `ProfilePage`, `ItemList`, `FAQPage` and
   `ProfessionalService` on the home page;
   `SoftwareApplication` (or `CreativeWork` where there is no live deployment),
   plus `BreadcrumbList`, on each project page.
+- `WebPage` data for the résumé, `CollectionPage` and `ItemList` data for the
+  insights index, and `Article` data with author, dates and related project
+  entities for each engineering note.
 - Canonical URLs, Open Graph and Twitter cards on every page.
 - A `ProfessionalService` node with an `OfferCatalog` built from `services` in
   `src/data/site.ts`. The same service names and descriptions are visible under
   `#services`, so the structured data does not claim hidden content.
 - Machine feeds carry the same data as the page: `/llms.txt`, `/llms-full.txt`
   (now including services and working principles), `/portfolio.json`,
-  `/humans.txt`.
+  `/humans.txt`, and `/rss.xml` for engineering article updates.
 
 ## Verified
 
 Measured against the local Astro preview on 2026-08-18 after the voice,
 typography and SEO/AEO/GEO pass:
 
-- `astro check`: 0 errors. `eslint`: clean. `vitest`: 8 passed. Eleven static
-  routes built. SEO QA passed across ten indexable pages: the home page, seven
-  case studies and two service pages.
+- The August 2026 baseline passed `astro check`, ESLint and Vitest across ten
+  indexable pages. Current verification results are reported with each release
+  rather than frozen in this README.
 - axe-core: 0 violations on the home page. Composited colour contrast remains a
   manual-review item because the atmospheric layers prevent a conclusive automated
   result.

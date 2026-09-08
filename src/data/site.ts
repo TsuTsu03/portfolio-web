@@ -14,7 +14,7 @@ export const SITE_DOMAIN = "denforge.it.com";
  * engines can attach to that person, not a second identity.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-08-19";
+export const SITE_UPDATED = "2026-09-09";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site
@@ -48,13 +48,10 @@ export const person = {
 } as const;
 
 /**
- * Résumé link.
- *
- * The previous Google Drive URL returned 404 on 2026-08-15, so the CTA is
- * withheld rather than shipped broken. Set this to a working URL and the
- * résumé buttons reappear across the header, hero and footer automatically.
+ * Résumé route. Kept on the canonical domain so recruiters and crawlers can
+ * read the same current, source-backed professional profile.
  */
-export const resumeUrl: string | null = null;
+export const resumeUrl = "/resume";
 
 export const seo = {
   title: `${person.name} | Full-Stack Developer and AI Engineer`,
@@ -133,6 +130,12 @@ export const navItems = [
   { id: "capabilities", label: "Capabilities", accessibleName: "technical capabilities" },
   { id: "approach", label: "Approach", accessibleName: "engineering principles" },
   { id: "contact", label: "Contact", accessibleName: "email, phone and profiles" },
+] as const;
+
+/** Standalone pages that remain useful from any route. */
+export const pageNavItems = [
+  { path: "/insights", label: "Insights", accessibleName: "engineering insights" },
+  { path: "/resume", label: "Résumé", accessibleName: "professional résumé" },
 ] as const;
 
 /**

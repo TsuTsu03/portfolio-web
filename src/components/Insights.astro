@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+
+interface Props {
+  entries: CollectionEntry<"insights">[];
+}
+
+const { entries } = Astro.props;
+---
+
+<section id="insights" class="section rule-top" aria-labelledby="insights-heading">
+  <div class="shell">
+    <div class="grid gap-8 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="meta mb-4">Engineering notes</p>
+        <h2 id="insights-heading" class="display text-[clamp(2.4rem,6vw,4.75rem)]">
+          Decisions behind the builds.
+        </h2>
+        <p class="mt-6 max-w-[42ch] leading-relaxed text-text-dim">
+          Direct explanations of the data, access and AI boundaries used in published case studies.
+        </p>
+        <a href="/insights" class="link tap-target mt-5 inline-flex items-center gap-2">
+          Read all insights
+          <Icon name="arrow-right" class="h-3.5 w-3.5" />
+        </a>
+      </div>
+
+      <ol class="border-t border-line lg:col-span-8">
+        {
+          entries.map((entry, index) => (
+            <li>
+              <a
+                href={`/insights/${entry.id}`}
+                class="group grid gap-3 border-b border-line py-6 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-5"
+              >
+                <span class="meta">{String(index + 1).padStart(2, "0")}</span>
+                <span>
+                  <span class="display-tight block text-xl transition-colors group-hover:text-accent">
+                    {entry.data.title}
+                  </span>
+                  <span class="mt-2 block max-w-[62ch] text-sm leading-relaxed text-text-dim">
+                    {entry.data.summary}
+                  </span>
+                </span>
+                <Icon name="arrow-right" class="mt-1 hidden h-4 w-4 text-text-dim sm:block" />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

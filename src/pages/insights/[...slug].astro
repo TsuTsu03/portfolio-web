@@ -1,0 +1,116 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
+import { person } from "../../data/site";
+import {
+  breadcrumbNode,
+  insightArticleNode,
+  personNode,
+  websiteNode,
+} from "../../lib/schema";
+
+export async function getStaticPaths() {
+  const [insights, work] = await Promise.all([
+    getCollection("insights"),
+    getCollection("work"),
+  ]);
+
+  return insights.map((entry) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      relatedWork: entry.data.relatedWork
+        .map((id) => work.find((project) => project.id === id))
+        .filter((project): project is CollectionEntry<"work"> => Boolean(project)),
+    },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"insights">;
+  relatedWork: CollectionEntry<"work">[];
+}
+
+const { entry, relatedWork } = Astro.props;
+const { Content } = await render(entry);
+const path = `/insights/${entry.id}`;
+const published = entry.data.published.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const jsonLd = [
+  personNode(entry.data.keywords),
+  websiteNode(),
+  insightArticleNode(entry),
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "Insights", path: "/insights" },
+    { name: entry.data.title, path },
+  ]),
+];
+---
+
+<BaseLayout
+  path={path}
+  title={`${entry.data.title} | ${person.name}`}
+  description={entry.data.description}
+  ogType="article"
+  dateModified={entry.data.updated.toISOString().slice(0, 10)}
+  datePublished={entry.data.published.toISOString().slice(0, 10)}
+  articleSection={entry.data.topic}
+  articleTags={entry.data.keywords}
+  jsonLd={jsonLd}
+>
+  <article class="pb-20 pt-28">
+    <header class="shell">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="meta flex flex-wrap items-center gap-2">
+          <li><a href="/" class="transition-colors hover:text-accent">Home</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li><a href="/insights" class="transition-colors hover:text-accent">Insights</a></li>
+          <li aria-hidden="true" class="text-line-control">/</li>
+          <li class="text-text" aria-current="page">{entry.data.topic}</li>
+        </ol>
+      </nav>
+
+      <p class="meta mb-5">{entry.data.topic}</p>
+      <h1 class="display max-w-[19ch] text-[clamp(2.5rem,6.5vw,5.25rem)]">{entry.data.title}</h1>
+      <p class="lede mt-7 max-w-[66ch]">{entry.data.summary}</p>
+      <p class="mt-7 text-sm text-text-dim">
+        By <a class="link" href="/#about" rel="author">{person.name}</a>
+        <span aria-hidden="true"> · </span>
+        <time datetime={entry.data.published.toISOString().slice(0, 10)}>{published}</time>
+      </p>
+    </header>
+
+    <div class="shell mt-14 grid gap-12 border-t border-line pt-12 lg:grid-cols-12 lg:gap-16">
+      <div class="article-prose lg:col-span-8">
+        <Content />
+      </div>
+
+      <aside class="lg:col-span-4" aria-labelledby="evidence-heading">
+        <div class="plate p-6 lg:p-8">
+          <p class="meta mb-3">Published evidence</p>
+          <h2 id="evidence-heading" class="display-tight text-xl">Related case studies</h2>
+          <ul class="mt-5 border-t border-line">
+            {
+              relatedWork.map((project) => (
+                <li class="border-b border-line py-4">
+                  <a class="group flex items-center justify-between gap-4" href={`/work/${project.id}`}>
+                    <span>
+                      <span class="block font-medium text-text group-hover:text-accent">{project.data.shortTitle}</span>
+                      <span class="meta mt-1 block">Case {project.data.caseNumber} · {project.data.sector}</span>
+                    </span>
+                    <Icon name="arrow-right" class="h-4 w-4 shrink-0 text-text-dim" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>

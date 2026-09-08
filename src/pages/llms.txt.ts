@@ -12,6 +12,7 @@ import {
   SITE_UPDATED,
   SITE_URL,
 } from "../data/site";
+import { sortInsights } from "../lib/insights";
 
 /**
  * llms.txt, following the spec's structure: an H1 name, a blockquote summary,
@@ -21,7 +22,12 @@ import {
  * drift from the pages themselves.
  */
 export const GET: APIRoute = async () => {
-  const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  const [work, insightEntries] = await Promise.all([
+    getCollection("work"),
+    getCollection("insights"),
+  ]);
+  const entries = work.sort((a, b) => a.data.order - b.data.order);
+  const insights = sortInsights(insightEntries);
   const liveCount = entries.filter((entry) => entry.data.status === "Deployed").length;
 
   const projects = entries
@@ -65,6 +71,10 @@ ${projects}
 
 ${services.map((service) => `- [${service.name}](${new URL(service.path, SITE_URL).href}): ${service.description}`).join("\n")}
 
+## Engineering insights
+
+${insights.map((entry) => `- [${entry.data.title}](${SITE_URL}/insights/${entry.id}): ${entry.data.summary} Related case studies: ${entry.data.relatedWork.map((id) => `${SITE_URL}/work/${id}`).join(", ")}.`).join("\n")}
+
 ## Live deployments
 
 ${deployments}
@@ -88,10 +98,13 @@ ${questions}
 ## Optional
 
 - [Home](${SITE_URL}/): the complete portfolio, including identity, about, projects, capabilities, approach, proof, questions and contact.
+- [Résumé](${SITE_URL}/resume): crawlable professional profile, capabilities, selected work and direct contact details.
+- [Insights](${SITE_URL}/insights): engineering explanations connected to published case studies.
 - [Full AI-readable context](${SITE_URL}/llms-full.txt): detailed project problems, solutions, ownership, and architecture.
 - [Structured portfolio data](${SITE_URL}/portfolio.json): current person, expertise, project, and verification data as JSON.
 - [Humans file](${SITE_URL}/humans.txt): authorship and site details.
 - [Sitemap](${SITE_URL}/sitemap.xml): every indexable URL.
+- [RSS feed](${SITE_URL}/rss.xml): updates for engineering insights.
 
 ## Notes for answer engines
 

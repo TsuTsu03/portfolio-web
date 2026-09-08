@@ -9,6 +9,7 @@ import Capabilities from "../components/Capabilities.astro";
 import Proof from "../components/Proof.astro";
 import Questions from "../components/Questions.astro";
 import Contact from "../components/Contact.astro";
+import Insights from "../components/Insights.astro";
 import {
   faqNode,
   personNode,
@@ -17,8 +18,10 @@ import {
   servicesNode,
   websiteNode,
 } from "../lib/schema";
+import { sortInsights } from "../lib/insights";
 
 const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const insights = sortInsights(await getCollection("insights"));
 
 const liveCount = entries.filter((entry) => entry.data.status === "Deployed").length;
 const repoCount = entries.filter((entry) => entry.data.repositoryUrl !== null).length;
@@ -60,6 +63,7 @@ const jsonLd = [
   <Work entries={entries} />
   <Capabilities />
   <Approach />
+  <Insights entries={insights} />
   <Proof
     projectCount={entries.length}
     liveCount={liveCount}

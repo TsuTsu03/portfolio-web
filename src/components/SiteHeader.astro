@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { navItems, person } from "../data/site";
+import { navItems, pageNavItems, person } from "../data/site";
 
 interface Props {
   /** Current path, so the header can mark the home link when it applies. */
@@ -31,7 +31,7 @@ const onHome = path === "/";
     {/* Navigation and the theme switch travel together on the right, so the
         header keeps its two-part balance at every width. */}
     <div class="flex items-center gap-2">
-      <nav aria-label="Sections" class="hidden items-center lg:flex">
+      <nav aria-label="Primary" class="hidden items-center xl:flex">
         {
           navItems.map((item) => (
             <a
@@ -39,6 +39,13 @@ const onHome = path === "/";
               href={onHome ? `#${item.id}` : `/#${item.id}`}
               aria-label={`${item.label}: ${item.accessibleName}`}
             >
+              {item.label}
+            </a>
+          ))
+        }
+        {
+          pageNavItems.map((item) => (
+            <a class="nav-link" href={item.path} aria-label={`${item.label}: ${item.accessibleName}`}>
               {item.label}
             </a>
           ))
@@ -69,7 +76,7 @@ const onHome = path === "/";
       </button>
 
       {/* Mobile: a native disclosure, so the menu opens with no JavaScript. */}
-      <details class="disclosure lg:hidden" id="menu">
+      <details class="disclosure xl:hidden" id="menu">
         <summary
           class="flex h-11 min-w-[44px] items-center justify-center gap-2 border border-line-control px-3 text-sm text-text"
         >
@@ -87,6 +94,19 @@ const onHome = path === "/";
                 <li class="border-b border-line last:border-b-0">
                   <a
                     href={onHome ? `#${item.id}` : `/#${item.id}`}
+                    class="flex min-h-[52px] items-center text-base text-text"
+                    aria-label={`${item.label}: ${item.accessibleName}`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+            {
+              pageNavItems.map((item) => (
+                <li class="border-b border-line last:border-b-0">
+                  <a
+                    href={item.path}
                     class="flex min-h-[52px] items-center text-base text-text"
                     aria-label={`${item.label}: ${item.accessibleName}`}
                   >

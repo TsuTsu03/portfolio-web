@@ -13,9 +13,15 @@ import {
   SITE_URL,
 } from "../data/site";
 import { principles } from "../data/principles";
+import { sortInsights } from "../lib/insights";
 
 export const GET: APIRoute = async () => {
-  const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  const [work, insightEntries] = await Promise.all([
+    getCollection("work"),
+    getCollection("insights"),
+  ]);
+  const entries = work.sort((a, b) => a.data.order - b.data.order);
+  const insights = sortInsights(insightEntries);
 
   const projects = entries
     .map((entry) => {
@@ -83,14 +89,21 @@ ${projects}
 
 ${questions}
 
+# Engineering insights
+
+${insights.map((entry) => `## ${entry.data.title}\n\nCanonical article: ${SITE_URL}/insights/${entry.id}\n\n${entry.data.summary}\n\nTopic: ${entry.data.topic}. Related case studies: ${entry.data.relatedWork.map((id) => `${SITE_URL}/work/${id}`).join(", ")}.`).join("\n\n")}
+
 # Contact and verification
 
 - Email: mailto:${person.email}
 - GitHub: ${person.github}
 - LinkedIn: ${person.linkedin}
 - Instagram: ${person.instagram}
+- Résumé: ${SITE_URL}/resume
+- Engineering insights: ${SITE_URL}/insights
 - Structured portfolio data: ${SITE_URL}/portfolio.json
 - XML sitemap: ${SITE_URL}/sitemap.xml
+- RSS feed: ${SITE_URL}/rss.xml
 
 The portfolio does not claim customer counts, revenue figures, employers, testimonials, awards or performance outcomes without published evidence.
 `;

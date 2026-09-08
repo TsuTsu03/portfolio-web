@@ -1,5 +1,5 @@
 ---
-import { navItems, person, SITE_UPDATED } from "../data/site";
+import { navItems, pageNavItems, person, SITE_UPDATED } from "../data/site";
 
 const year = new Date().getFullYear();
 ---
@@ -17,6 +17,19 @@ const year = new Date().getFullYear();
             <li>
               <a
                 href={`/#${item.id}`}
+                class="tap-target text-sm text-text-dim transition-colors hover:text-text"
+                aria-label={`${item.label}: ${item.accessibleName}`}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        {
+          pageNavItems.map((item) => (
+            <li>
+              <a
+                href={item.path}
                 class="tap-target text-sm text-text-dim transition-colors hover:text-text"
                 aria-label={`${item.label}: ${item.accessibleName}`}
               >

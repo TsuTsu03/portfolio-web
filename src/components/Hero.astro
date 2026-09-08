@@ -52,9 +52,9 @@ const bats = Array.from({ length: 7 });
         </a>
         {
           resumeUrl ? (
-            <a href={resumeUrl} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
-              Download résumé
-              <Icon name="arrow-up-right" class="h-4 w-4" />
+            <a href={resumeUrl} class="btn btn-ghost">
+              View résumé
+              <Icon name="arrow-right" class="h-4 w-4" />
             </a>
           ) : (
             <a href={`mailto:${person.email}`} class="btn btn-ghost">

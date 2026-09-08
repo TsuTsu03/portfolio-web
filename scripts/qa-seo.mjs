@@ -1,5 +1,4 @@
 import { access, readFile, readdir } from "node:fs/promises";
-import { join } from "node:path";
 
 const root = new URL("..", import.meta.url);
 const dist = new URL("dist/", root);
@@ -33,8 +32,15 @@ const serviceDirs = (await readdir(new URL("services/", dist), { withFileTypes: 
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
+const insightDirs = (await readdir(new URL("insights/", dist), { withFileTypes: true }))
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort();
 const htmlPaths = [
   "index.html",
+  "resume/index.html",
+  "insights/index.html",
+  ...insightDirs.map((slug) => `insights/${slug}/index.html`),
   ...projectDirs.map((slug) => `work/${slug}/index.html`),
   ...serviceDirs.map((slug) => `services/${slug}/index.html`),
 ];
@@ -96,7 +102,7 @@ for (const [path, html] of htmlDocuments) {
     assert(article.dateModified === project.dateModified, `${path}: Article and project disagree on the date`);
     assert(article.about?.["@id"] === project["@id"], `${path}: Article does not reference project`);
     assert(project.mainEntityOfPage?.["@id"] === article["@id"], `${path}: project does not reference Article`);
-  } else {
+  } else if (path.startsWith("services/")) {
     for (const type of ["Person", "WebSite", "Service", "WebPage", "FAQPage", "BreadcrumbList"]) {
       assert(types.has(type), `${path}: missing ${type} schema`);
     }
@@ -106,6 +112,30 @@ for (const [path, html] of htmlDocuments) {
     assert(page.mainEntity?.["@id"] === service["@id"], `${path}: WebPage does not reference Service`);
     const faq = graph.find((node) => node["@type"] === "FAQPage");
     assert(faq.mainEntity.length === 4, `${path}: service FAQ count mismatch`);
+  } else if (path === "resume/index.html") {
+    for (const type of ["Person", "WebSite", "WebPage", "BreadcrumbList"]) {
+      assert(types.has(type), `${path}: missing ${type} schema`);
+    }
+    const page = graph.find((node) => node["@type"] === "WebPage");
+    assert(page.dateModified === SITE_UPDATED, `${path}: stale résumé dateModified`);
+    assert(page.mainEntity?.["@id"] === `${SITE_URL}/#person`, `${path}: résumé does not reference Person`);
+  } else if (path === "insights/index.html") {
+    for (const type of ["Person", "WebSite", "CollectionPage", "ItemList", "BreadcrumbList"]) {
+      assert(types.has(type), `${path}: missing ${type} schema`);
+    }
+    const collection = graph.find((node) => node["@type"] === "CollectionPage");
+    const itemList = graph.find((node) => node["@type"] === "ItemList");
+    assert(collection.dateModified === SITE_UPDATED, `${path}: stale collection dateModified`);
+    assert(itemList.numberOfItems === insightDirs.length, `${path}: insight ItemList count mismatch`);
+  } else if (path.startsWith("insights/")) {
+    for (const type of ["Person", "WebSite", "Article", "BreadcrumbList"]) {
+      assert(types.has(type), `${path}: missing ${type} schema`);
+    }
+    const article = graph.find((node) => node["@type"] === "Article");
+    assert(/^\d{4}-\d{2}-\d{2}$/.test(article.datePublished || ""), `${path}: Article datePublished is not a plain date`);
+    assert(/^\d{4}-\d{2}-\d{2}$/.test(article.dateModified || ""), `${path}: Article dateModified is not a plain date`);
+    assert(article.datePublished <= article.dateModified, `${path}: Article dates are out of order`);
+    assert(article.dateModified <= SITE_UPDATED, `${path}: Article dateModified is in the future`);
   }
 }
 
@@ -119,6 +149,12 @@ for (const slug of projectDirs) {
 for (const slug of serviceDirs) {
   assert(sitemapUrls.includes(`${SITE_URL}/services/${slug}`), `sitemap: ${slug} missing`);
 }
+for (const route of ["resume", "insights"]) {
+  assert(sitemapUrls.includes(`${SITE_URL}/${route}`), `sitemap: ${route} missing`);
+}
+for (const slug of insightDirs) {
+  assert(sitemapUrls.includes(`${SITE_URL}/insights/${slug}`), `sitemap: insight ${slug} missing`);
+}
 assert((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g) || []).length === htmlPaths.length, "sitemap: lastmod missing");
 
 const robots = await read("robots.txt");
@@ -127,19 +163,28 @@ for (const crawler of ["OAI-SearchBot", "Claude-SearchBot", "PerplexityBot", "Bi
 }
 assert(robots.includes(`Sitemap: ${SITE_URL}/sitemap.xml`), "robots.txt: sitemap declaration missing");
 
-for (const endpoint of ["llms.txt", "llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml"]) {
+for (const endpoint of ["llms.txt", "llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml", "rss.xml"]) {
   await access(new URL(endpoint, dist));
 }
 const portfolio = JSON.parse(await read("portfolio.json"));
 assert(portfolio.projects.length === projectDirs.length, "portfolio.json: project count mismatch");
+assert(portfolio.insights.length === insightDirs.length, "portfolio.json: insight count mismatch");
 assert(portfolio.expertise.length >= 8, "portfolio.json: expertise list is too thin");
 assert(portfolio.lastUpdated === SITE_UPDATED, "portfolio.json: stale lastUpdated value");
 assert(portfolio.site?.language === "en-PH", "portfolio.json: language missing");
-for (const endpoint of ["llms.txt", "llms-full.txt", "sitemap.xml", "humans.txt"]) {
+for (const endpoint of ["llms.txt", "llms-full.txt", "sitemap.xml", "humans.txt", "rss.xml"]) {
   assert(
     Object.values(portfolio.site.machineReadable).includes(`${SITE_URL}/${endpoint}`),
     `portfolio.json: ${endpoint} machine-readable link missing`
   );
+}
+assert(portfolio.site.resume === `${SITE_URL}/resume`, "portfolio.json: résumé route missing");
+assert(portfolio.site.insights === `${SITE_URL}/insights`, "portfolio.json: insights route missing");
+for (const insight of portfolio.insights) {
+  assert(insight.relatedWork.length > 0, `portfolio.json: ${insight.id} has no related work`);
+  for (const url of insight.relatedWork) {
+    assert(portfolio.projects.some((project) => project.pageUrl === url), `portfolio.json: ${insight.id} has unknown related work ${url}`);
+  }
 }
 
 const homepage = htmlDocuments.find(([path]) => path === "index.html")[1];
@@ -148,6 +193,9 @@ for (const service of portfolio.services) {
 }
 for (const faq of portfolio.questions) {
   assert(homepage.includes(faq.question), `index.html: visible FAQ missing: ${faq.question}`);
+}
+for (const insight of portfolio.insights) {
+  assert(homepage.includes(insight.title), `index.html: visible insight missing: ${insight.title}`);
 }
 
 const personSchema = homepageGraph.find((node) => node["@type"] === "Person");
@@ -160,7 +208,7 @@ for (const offer of personSchema.makesOffer) {
   assert(offerIds.has(offer["@id"]), `schema: dangling Person offer reference ${offer["@id"]}`);
 }
 const llms = await read("llms.txt");
-for (const endpoint of ["llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml"]) {
+for (const endpoint of ["llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml", "rss.xml"]) {
   assert(llms.includes(`${SITE_URL}/${endpoint}`), `llms.txt: ${endpoint} link missing`);
 }
 
@@ -177,4 +225,10 @@ for (const [path, html] of htmlDocuments) {
   }
 }
 
-console.log(`SEO QA passed: ${htmlPaths.length} indexable pages, ${projectDirs.length} case studies, ${serviceDirs.length} service pages, 5 machine-readable endpoints.`);
+const rss = await read("rss.xml");
+assert((rss.match(/<item>/g) || []).length === insightDirs.length, "rss.xml: insight count mismatch");
+for (const slug of insightDirs) {
+  assert(rss.includes(`${SITE_URL}/insights/${slug}`), `rss.xml: insight ${slug} missing`);
+}
+
+console.log(`SEO QA passed: ${htmlPaths.length} indexable pages, ${projectDirs.length} case studies, ${serviceDirs.length} service pages, ${insightDirs.length} insight articles, 6 machine-readable endpoints.`);
