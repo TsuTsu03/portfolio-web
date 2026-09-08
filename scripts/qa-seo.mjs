@@ -23,6 +23,20 @@ const constant = (name) => {
 };
 const SITE_URL = constant("SITE_URL");
 const SITE_UPDATED = constant("SITE_UPDATED");
+const previousDomain = siteSource.match(/previousDomains = \["([^"]+)"\]/)?.[1];
+assert(previousDomain, "site.ts: previous domain not found");
+
+const vercel = JSON.parse(await readFile(new URL("vercel.json", root), "utf8"));
+const retiredHostRedirect = vercel.redirects?.find(
+  (redirect) =>
+    redirect.source === "/:path*" &&
+    redirect.destination === `${SITE_URL}/:path*` &&
+    redirect.permanent === true &&
+    redirect.has?.some(
+      (condition) => condition.type === "host" && condition.value === previousDomain
+    )
+);
+assert(retiredHostRedirect, "vercel.json: missing permanent catch-all redirect from retired host");
 
 const projectDirs = (await readdir(new URL("work/", dist), { withFileTypes: true }))
   .filter((entry) => entry.isDirectory())
