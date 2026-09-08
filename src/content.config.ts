@@ -45,8 +45,8 @@ const work = defineCollection({
         screenshot: image(),
         screenshotAlt: z.string().min(12),
 
-        liveUrl: z.string().url().nullable(),
-        repositoryUrl: z.string().url().nullable(),
+        liveUrl: z.url().nullable(),
+        repositoryUrl: z.url().nullable(),
         repositoryVisibility: z.enum(["public", "private"]),
 
         /** Verified deployment state, checked on `lastVerified`. */
