@@ -27,6 +27,15 @@ const previousDomain = siteSource.match(/previousDomains = \["([^"]+)"\]/)?.[1];
 assert(previousDomain, "site.ts: previous domain not found");
 
 const vercel = JSON.parse(await readFile(new URL("vercel.json", root), "utf8"));
+const retiredHostRootRedirect = vercel.redirects?.find(
+  (redirect) =>
+    redirect.source === "/" &&
+    redirect.destination === `${SITE_URL}/` &&
+    redirect.permanent === true &&
+    redirect.has?.some(
+      (condition) => condition.type === "host" && condition.value === previousDomain
+    )
+);
 const retiredHostRedirect = vercel.redirects?.find(
   (redirect) =>
     redirect.source === "/:path*" &&
@@ -36,6 +45,7 @@ const retiredHostRedirect = vercel.redirects?.find(
       (condition) => condition.type === "host" && condition.value === previousDomain
     )
 );
+assert(retiredHostRootRedirect, "vercel.json: missing permanent root redirect from retired host");
 assert(retiredHostRedirect, "vercel.json: missing permanent catch-all redirect from retired host");
 
 const projectDirs = (await readdir(new URL("work/", dist), { withFileTypes: true }))
