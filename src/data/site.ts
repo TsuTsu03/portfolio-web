@@ -56,7 +56,7 @@ export const resumeUrl = "/resume";
 export const seo = {
   title: `${person.name} | Full-Stack Developer and AI Engineer`,
   description:
-    "Senior full-stack developer and agentic AI engineer in Metro Manila building operational SaaS, secure web platforms and AI workflows. Seven case studies.",
+    "Senior full-stack developer and agentic AI engineer in Metro Manila building operational SaaS, secure web platforms and AI workflows. Eight case studies.",
   ogImage: "/og.png",
   ogImageAlt:
     "Den Jansen Flores, Senior Full-Stack Developer and Agentic AI Engineer, Metro Manila, Philippines.",
@@ -177,7 +177,7 @@ export const faqs = [
   {
     question: "What industries has he built software for?",
     answer:
-      "His documented work covers healthcare operations, dental practice management, courier dispatch, workforce systems, e-commerce, education assessment and AI-assisted business intelligence. Each sector links to a case study with the problem, architecture, ownership, source status and deployment status stated plainly.",
+      "His documented work covers education technology, healthcare operations, dental practice management, courier dispatch, workforce systems, e-commerce and AI-assisted business intelligence. Each sector links to a case study with the problem, architecture, ownership, source status and deployment status stated plainly.",
   },
   {
     question: "What does working with him look like?",
@@ -187,7 +187,7 @@ export const faqs = [
   {
     question: "How can someone review the source or the live builds?",
     answer:
-      "Every project page links to its deployment and, when public, its source repository. Private source is labelled private. Offline deployments are labelled offline. Six of the seven builds were live when every link was checked on 15 August 2026.",
+      "Every project page links to its deployment and, when public, its source repository. Private source is labelled private, and offline deployments are labelled offline. Each case study carries the date when its deployment status was last checked.",
   },
   {
     question: "Where does his portfolio live online?",

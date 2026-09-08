@@ -40,7 +40,7 @@ repositoryUrl: null
 repositoryVisibility: "private"
 status: "Deployed"
 featured: true
-order: 1
+order: 2
 lastVerified: 2026-08-15
 ---
 

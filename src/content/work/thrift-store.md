@@ -34,7 +34,7 @@ repositoryUrl: "https://github.com/TsuTsu03/thrift-store"
 repositoryVisibility: "public"
 status: "Deployed"
 featured: false
-order: 7
+order: 8
 lastVerified: 2026-08-15
 ---
 

@@ -383,7 +383,7 @@ export function portfolioItemListNode(
     "@id": `${SITE_URL}/#portfolio`,
     name: `${person.name} portfolio projects`,
     description:
-      "Seven software case studies covering operational SaaS, healthcare, logistics, workforce systems, commerce and applied AI.",
+      "Eight software case studies covering education technology, operational SaaS, healthcare, logistics, workforce systems, commerce and applied AI.",
     numberOfItems: entries.length,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     itemListElement: entries.map((entry, index) => ({
