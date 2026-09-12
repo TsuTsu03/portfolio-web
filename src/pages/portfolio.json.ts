@@ -101,6 +101,8 @@ export const GET: APIRoute = async () => {
       summary: agent.summary,
       project: agent.built,
       publicDemo: agent.demo,
+      demoUrl: `${SITE_URL}${agent.demoUrl}`,
+      screenshot: `${SITE_URL}${agent.screenshot}`,
       url: `${SITE_URL}/agents/${agent.slug}`,
     })),
     insights: insights.map((entry) => ({

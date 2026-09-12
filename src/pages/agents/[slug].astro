@@ -10,118 +10,64 @@ export function getStaticPaths() {
 const { agent } = Astro.props as { agent: Agent };
 const pageUrl = `${SITE_URL}/agents/${agent.slug}`;
 const jsonLd = [
-  { "@type": "WebPage", "@id": `${pageUrl}#page`, url: pageUrl, name: agent.title, description: agent.description, dateModified: SITE_UPDATED, author: { "@type": "Person", name: person.name }, breadcrumb: { "@id": `${pageUrl}#breadcrumb` } },
+  { "@type": "WebPage", "@id": `${pageUrl}#page`, url: pageUrl, name: agent.title, description: agent.description, image: `${SITE_URL}${agent.screenshot}`, dateModified: SITE_UPDATED, author: { "@type": "Person", name: person.name }, breadcrumb: { "@id": `${pageUrl}#breadcrumb` } },
   { "@type": "BreadcrumbList", "@id": `${pageUrl}#breadcrumb`, itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
     { "@type": "ListItem", position: 2, name: "AI Agents", item: `${SITE_URL}/agents` },
     { "@type": "ListItem", position: 3, name: agent.name, item: pageUrl },
   ] },
-  { "@type": "SoftwareApplication", "@id": `${pageUrl}#project`, name: agent.name, applicationCategory: agent.role, description: agent.summary, author: { "@type": "Person", name: person.name }, url: pageUrl },
+  { "@type": "SoftwareApplication", "@id": `${pageUrl}#project`, name: agent.name, applicationCategory: agent.role, description: agent.summary, image: `${SITE_URL}${agent.screenshot}`, author: { "@type": "Person", name: person.name }, url: pageUrl },
 ];
 ---
 
 <BaseLayout path={`/agents/${agent.slug}`} title={`${agent.title} | Den Jansen Flores`} description={agent.description} jsonLd={jsonLd} dateModified={SITE_UPDATED}>
-  <article class="shell pt-14 pb-24 sm:pt-20">
+  <article class="shell-wide pt-14 pb-24 sm:pt-20">
     <nav aria-label="Breadcrumb" class="meta flex flex-wrap items-center gap-2">
       <a href="/" class="text-text-dim hover:text-accent">Home</a><span aria-hidden="true">/</span>
       <a href="/agents" class="text-text-dim hover:text-accent">AI Agents</a><span aria-hidden="true">/</span>
       <span class="text-accent" aria-current="page">{agent.name}</span>
     </nav>
-    <header class="mt-10 grid gap-9 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+
+    <header class="mt-10 grid gap-9 border-b border-line-strong pb-10 lg:grid-cols-[1fr_0.65fr] lg:items-end">
       <div>
         <p class="meta text-accent">{agent.role}</p>
         <h1 class="display mt-4 text-[clamp(2.7rem,7vw,5.5rem)]">{agent.name}</h1>
         <p class="mt-5 max-w-[65ch] text-lg leading-relaxed text-text-dim">{agent.summary}</p>
-        <a href="#demo" class="btn btn-primary mt-8">Try the demo <span aria-hidden="true">↓</span></a>
+        <a href="#demo" class="btn btn-primary mt-8">Use the interface <span aria-hidden="true">↓</span></a>
       </div>
       <div class="border-l-2 border-accent pl-6">
-        <p class="meta text-accent">What I built</p>
+        <p class="meta text-accent">Project</p>
         <p class="mt-3 text-text">{agent.built}</p>
-        <p class="meta mt-7 text-accent">This public demo</p>
+        <p class="meta mt-7 text-accent">Public demo</p>
         <p class="mt-3 text-text-dim">{agent.demo}</p>
       </div>
     </header>
 
-    <section id="demo" class="mt-16 scroll-mt-24 border-t border-line-strong pt-10" aria-labelledby="demo-heading">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="meta text-accent">Interactive demo</p>
-          <h2 id="demo-heading" class="display-tight mt-3 text-[clamp(1.8rem,4vw,3rem)]">Try {agent.name}</h2>
-        </div>
-        <span class="meta border border-line-control px-3 py-2">Fictional sample data</span>
+    <section class="mt-12 sm:mt-16" aria-labelledby="screens-heading">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div><p class="meta text-accent">The screens</p><h2 id="screens-heading" class="display-tight mt-3 text-[clamp(1.8rem,4vw,3rem)]">Inside {agent.name}</h2></div>
+        <p class="meta text-text-dim">Project interface / public sample data</p>
       </div>
+      <div class="mt-7 grid gap-4 lg:grid-cols-[1.55fr_0.85fr]">
+        <a href={agent.screenshot} target="_blank" rel="noopener noreferrer" class="block overflow-hidden border border-line-strong bg-surface" aria-label={`Open ${agent.name} primary interface screenshot`}>
+          <img src={agent.screenshot} alt={agent.screenshotAlt} class="aspect-[16/10] w-full object-cover object-top" loading="eager" />
+        </a>
+        <a href={agent.secondaryScreenshot} target="_blank" rel="noopener noreferrer" class="block overflow-hidden border border-line-strong bg-surface" aria-label={`Open ${agent.name} second interface screenshot`}>
+          <img src={agent.secondaryScreenshot} alt={agent.secondaryScreenshotAlt} class="aspect-[16/10] w-full object-cover object-top" loading="lazy" />
+        </a>
+      </div>
+    </section>
 
-      {agent.slug === "mara" && (
-        <div data-mara-demo class="agent-console mt-7 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
-            <h3 class="display-tight text-xl">Start with evidence.</h3>
-            <p class="mt-3 text-sm text-text-dim">Research two sample prospects, inspect the facts behind a draft, then approve it. Approval never sends email.</p>
-            <button type="button" data-mara-find class="btn btn-primary mt-6">Find sample prospects</button>
-            <div data-mara-results hidden class="mt-6">
-              <label for="mara-prospect" class="meta block text-accent">Choose a sample prospect</label>
-              <select id="mara-prospect" data-mara-select class="agent-field mt-2 w-full">
-                <option value="harborview">Harborview Dental Studio</option>
-                <option value="southline">Southline Family Clinic</option>
-              </select>
-              <p class="mt-4 text-sm text-text-dim" data-mara-location></p>
-              <ul data-mara-evidence class="mt-3 list-disc space-y-2 pl-5 text-sm text-text-dim"></ul>
-            </div>
-          </div>
-          <div class="border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-            <p class="meta text-accent">Review queue</p>
-            <div data-mara-empty class="mt-4 border border-line p-5 text-sm text-text-dim">Find a sample prospect to open its evidence and draft.</div>
-            <div data-mara-review hidden>
-              <h3 data-mara-name class="display-tight mt-4 text-xl"></h3>
-              <p class="mt-3 text-sm text-text-dim">Draft observation: <span data-mara-observation class="text-text"></span></p>
-              <div class="mt-5 border-l-2 border-accent pl-4 text-sm text-text-dim">Hi <span data-mara-greeting></span> team, I noticed that <span data-mara-draft></span>. Would a short workflow review be useful?</div>
-              <div class="mt-5 flex flex-wrap gap-3">
-                <button type="button" data-mara-approve class="btn btn-primary">Approve sample draft</button>
-                <button type="button" data-mara-reply class="btn btn-secondary">Simulate a reply</button>
-              </div>
-              <p class="mt-4 text-sm text-text-dim" data-mara-status aria-live="polite">Awaiting human review. Nothing has been sent.</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {agent.slug === "alfred" && (
-        <div data-alfred-demo class="agent-console mt-7 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
-            <h3 class="display-tight text-xl">Choose a request.</h3>
-            <p class="mt-3 text-sm text-text-dim">These examples show Alfred's workflow with invented files, mail and calendar events.</p>
-            <div class="mt-6 grid gap-2">
-              <button type="button" data-alfred-command="brief" class="btn btn-secondary justify-start text-left">Brief my day</button>
-              <button type="button" data-alfred-command="find" class="btn btn-secondary justify-start text-left">Find the project note</button>
-              <button type="button" data-alfred-command="draft" class="btn btn-secondary justify-start text-left">Draft a calendar change</button>
-            </div>
-          </div>
-          <div class="border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-            <p class="meta text-accent">Alfred / sample response</p>
-            <h3 data-alfred-title class="display-tight mt-4 text-xl">Standing by.</h3>
-            <p data-alfred-response class="mt-4 whitespace-pre-line text-text-dim" aria-live="polite">Select a request to see a sample result.</p>
-            <div data-alfred-approval hidden class="mt-6 border border-accent-edge p-5">
-              <p class="meta text-accent">Approval required</p>
-              <p class="mt-3 text-sm text-text">Proposed change: move the fictional project review from 10:00 to 11:00. No real calendar is connected.</p>
-              <div class="mt-4 flex flex-wrap gap-3">
-                <button type="button" data-alfred-approve class="btn btn-primary">Approve in demo</button>
-                <button type="button" data-alfred-decline class="btn btn-secondary">Decline</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {agent.slug === "front-desk" && (
-        <div class="agent-console mt-7 grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <img src="/agent-demos/front-desk-preview.png" alt="Reception screen with quick requests and typed input" loading="lazy" class="w-full border border-line" />
-          <div>
-            <h3 class="display-tight text-2xl">Step behind the desk.</h3>
-            <p class="mt-4 text-text-dim">Try “Can I check in early?” or switch to Taglish. The prototype checks fictional rooms and reservations. Requests that change money or bookings enter a manager queue.</p>
-            <p class="mt-4 text-sm text-text-dim">Typing works in any modern browser. Voice input depends on browser support, HTTPS and microphone permission.</p>
-            <a href="/agent-demos/front-desk/index.html" class="btn btn-primary mt-7">Open the full front desk demo <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      )}
+    <section id="demo" class="mt-16 scroll-mt-24 border-t border-line-strong pt-10 sm:mt-20" aria-labelledby="demo-heading">
+      <div class="flex flex-wrap items-end justify-between gap-5">
+        <div><p class="meta text-accent">Interactive demo</p><h2 id="demo-heading" class="display-tight mt-3 text-[clamp(1.8rem,4vw,3rem)]">Work in {agent.name}'s interface</h2></div>
+        <a href={agent.demoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Open full screen <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="mt-5 max-w-[80ch] text-text-dim">{agent.demo}</p>
+      <div class="mt-7 overflow-hidden border border-line-strong bg-surface">
+        <iframe src={agent.demoUrl} title={`${agent.name} interactive public demo`} allow="microphone" loading="lazy" class="block h-[720px] w-full border-0 sm:h-[820px] lg:h-[900px]"></iframe>
+      </div>
+      <p class="mt-3 text-sm text-text-dim">On a small screen, scroll within the interface. You can also open it full screen.</p>
     </section>
 
     <section class="mt-16 border-t border-line-strong pt-9" aria-labelledby="capabilities-heading">
@@ -129,19 +75,7 @@ const jsonLd = [
       <ul class="mt-6 grid gap-px border border-line bg-line md:grid-cols-3">
         {agent.capabilities.map((capability) => <li class="bg-ink p-5 text-sm text-text">{capability}</li>)}
       </ul>
-      <p class="mt-7 max-w-[68ch] text-sm leading-relaxed text-text-dim">{agent.demo}</p>
       <a href="/agents" class="mt-7 inline-flex min-h-11 items-center border-b border-accent text-sm text-accent hover:text-text">Explore all AI agents</a>
     </section>
   </article>
 </BaseLayout>
-
-<style>
-  .agent-console { border: 1px solid var(--line-strong); background: var(--surface); padding: clamp(1.25rem, 3vw, 2rem); }
-  .agent-field { min-height: 44px; border: 1px solid var(--line-control); background: var(--ink); color: var(--text); padding: 0.65rem; }
-  [hidden] { display: none !important; }
-</style>
-
-<script>
-  import { initAgentDemos } from "../../scripts/agent-demos";
-  initAgentDemos();
-</script>

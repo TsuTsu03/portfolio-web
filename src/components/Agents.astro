@@ -5,23 +5,32 @@ import { agents } from "../data/agents";
 <section id="agents" class="section rule-top" aria-labelledby="agents-heading">
   <div class="shell">
     <span aria-hidden="true" class="section-tick reveal"></span>
-    <p class="meta mb-5 text-accent">Built to do a job</p>
+    <p class="meta mb-5 text-accent">Interactive projects</p>
     <div class="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
-      <h2 id="agents-heading" class="display max-w-[16ch] text-[clamp(2rem,5vw,3.75rem)]">AI Agents</h2>
-      <p class="max-w-[62ch] text-lg leading-relaxed text-text-dim">Three different jobs, three demos you can use right here. The public scenarios use fictional data. Each page explains what the full project does and where the demo stops.</p>
+      <h2 id="agents-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">AI Agents</h2>
+      <p class="max-w-[62ch] text-lg leading-relaxed text-text-dim">Three agents, shown in the interfaces I built for them. Explore their screens here, then use each public demo with fictional data.</p>
     </div>
-    <div class="mt-11 grid gap-px border border-line-strong bg-line-strong lg:grid-cols-3">
-      {agents.map((agent, index) => (
-        <article class="group bg-ink p-6 sm:p-8">
-          <p class="meta text-accent">0{index + 1} / {agent.role}</p>
-          <div class="mt-6 aspect-[16/10] overflow-hidden border border-line bg-surface">
-            <img src={agent.image} alt={agent.imageAlt} loading="lazy" class:list={["h-full w-full object-top", agent.slug === "alfred" ? "object-contain" : "object-cover"]} />
+  </div>
+  <div class="shell-wide mt-12 space-y-16 lg:mt-16 lg:space-y-24">
+    {agents.map((agent, index) => (
+      <article class="border-t border-line-strong pt-8 sm:pt-10">
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(17rem,0.45fr)] lg:items-start lg:gap-12">
+          <a href={`/agents/${agent.slug}`} class="group block overflow-hidden border border-line-strong bg-surface" aria-label={`Explore ${agent.name}'s interface and demo`}>
+            <img src={agent.screenshot} alt={agent.screenshotAlt} loading="lazy" class="aspect-[4/3] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015] sm:aspect-[16/10]" />
+          </a>
+          <div class="lg:pt-3">
+            <p class="meta text-accent">0{index + 1} / {agent.role}</p>
+            <h3 class="display-tight mt-4 text-[clamp(2rem,3.5vw,3rem)]">{agent.name}</h3>
+            <p class="mt-5 max-w-[55ch] text-lg leading-relaxed text-text-dim">{agent.summary}</p>
+            <p class="meta mt-7">Inside the demo</p>
+            <ul class="mt-3 space-y-2 text-sm text-text">
+              {agent.capabilities.map((capability) => <li class="border-l border-accent pl-3">{capability}</li>)}
+            </ul>
+            <a href={`/agents/${agent.slug}#demo`} class="btn btn-primary mt-8">Use {agent.name}'s interface <span aria-hidden="true">↗</span></a>
           </div>
-          <h3 class="display-tight mt-6 text-2xl">{agent.name}</h3>
-          <p class="mt-3 min-h-24 text-text-dim">{agent.summary}</p>
-          <a href={`/agents/${agent.slug}`} class="mt-5 inline-flex min-h-11 items-center gap-2 border-b border-accent text-sm font-medium text-accent transition-colors hover:text-text">Try {agent.name} <span aria-hidden="true">↗</span></a>
-        </article>
-      ))}
-    </div>
+        </div>
+      </article>
+    ))}
+    <a href="/agents" class="inline-flex min-h-11 items-center gap-2 border-b border-accent text-sm font-medium text-accent hover:text-text">Explore all three agent projects <span aria-hidden="true">↗</span></a>
   </div>
 </section>

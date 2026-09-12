@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <meta name="description" content="Mara's original StackWise workspace interface with a fictional, browser-only public scenario.">
+  <title>Mara | Public workspace demo</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    .demo-disclosure { margin: 0 0 12px; border: 1px solid var(--border-strong); border-left: 3px solid var(--live); border-radius: var(--radius); padding: 10px 14px; background: var(--surface); font-size: 13px; }
+    .demo-disclosure strong { color: var(--live); }
+    .demo-note { color: var(--text-dim); font-size: 12px; }
+    .demo-item { width: 100%; text-align: left; display: block; margin-bottom: 9px; }
+    .demo-item strong, .demo-item small { display: block; }
+    .demo-item small { color: var(--text-dim); margin-top: 3px; }
+    .demo-item[data-active="true"] { border-color: var(--accent-strong); background: var(--surface-soft); }
+    .demo-status { min-height: 1.5em; color: var(--live); }
+    .demo-evidence li { margin-bottom: 8px; }
+    .demo-draft { white-space: pre-wrap; }
+    .demo-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+    .demo-toolbar h1 { margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="app" id="app-shell">
+    <a class="skip-link" href="#main">Skip to workspace</a>
+    <nav class="sidebar" aria-label="Mara workspace sections">
+      <div class="workspace-brand"><span class="brand-mark compact" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><strong>Mara</strong><small>by StackWise</small></span></div>
+      <div class="workspace-label">Pipeline</div>
+      <button class="nav-button" type="button" data-view="briefing" aria-current="page">Briefing</button>
+      <button class="nav-button" type="button" data-view="review">Draft review <span class="count" id="draft-count">2</span></button>
+      <button class="nav-button" type="button" data-view="replies">Replies <span class="count" id="reply-count">1</span></button>
+      <button class="nav-button" type="button" data-view="leads">Leads</button>
+      <button class="nav-button" type="button" data-view="discovery">Find prospects</button>
+      <div class="sidebar-footer"><span>Public sample workspace</span><button class="nav-button" id="reset-demo" type="button">Reset demo</button></div>
+    </nav>
+
+    <main class="main" id="main" tabindex="-1">
+      <div class="workspace-topbar"><div><span class="workspace-kicker">StackWise growth desk</span><strong id="workspace-context">Daily briefing</strong></div><div class="topbar-status"><span class="presence-indicator" aria-hidden="true"></span>Mara is ready</div></div>
+      <p class="demo-disclosure"><strong>Public interface demo.</strong> Fictional prospects and drafts. Nothing is researched, sent or connected to a mailbox.</p>
+      <div id="view" aria-live="polite"></div>
+    </main>
+
+    <aside class="agent-dock" aria-labelledby="agent-dock-title">
+      <div class="dock-portrait"><img src="./mara.jpg" alt="" width="900" height="900"><div class="dock-status"><span class="presence-indicator" aria-hidden="true"></span>Working with you</div></div>
+      <div class="dock-body">
+        <div class="dock-heading"><div><h2 id="agent-dock-title">Mara</h2><p>Sales and marketing operations</p></div><span class="agent-mode" id="agent-mode">Briefing</span></div>
+        <div class="agent-message" id="agent-message" aria-live="polite">One fictional reply needs attention. I would handle that before starting new outreach.</div>
+        <div class="agent-quick-actions" aria-label="Ask Mara"><button type="button" data-command="priorities">Prioritize my day</button><button type="button" data-command="review">Open best next draft</button><button type="button" data-command="prospects">Find prospects</button></div>
+        <form class="agent-command" id="agent-command-form"><label for="agent-command-input">Ask Mara to navigate the sample workspace</label><div><input id="agent-command-input" type="text" autocomplete="off" placeholder="Try “show replies”"><button class="primary" type="submit">Ask</button></div><p class="agent-command-help">Try review, replies, leads, or discovery.</p></form>
+      </div>
+    </aside>
+  </div>
+  <script src="./demo.js" defer></script>
+</body>
+</html>
