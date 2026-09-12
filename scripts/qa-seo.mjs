@@ -27,6 +27,8 @@ const previousDomain = siteSource.match(/previousDomains = \["([^"]+)"\]/)?.[1];
 assert(previousDomain, "site.ts: previous domain not found");
 
 const vercel = JSON.parse(await readFile(new URL("vercel.json", root), "utf8"));
+const permissionPolicy = vercel.headers?.flatMap((rule) => rule.headers ?? []).find((header) => header.key === "Permissions-Policy")?.value;
+assert(permissionPolicy?.includes("microphone=(self)"), "vercel.json: same-origin front desk microphone is blocked");
 const retiredHostRootRedirect = vercel.redirects?.find(
   (redirect) =>
     redirect.source === "/" &&
