@@ -1,0 +1,43 @@
+export const agents = [
+  {
+    slug: "mara",
+    name: "Mara",
+    role: "Sales and marketing operations",
+    title: "Mara | Sales and Marketing AI Agent",
+    description: "Explore Mara's sample prospect research, evidence review, outreach approval and reply routing. This public demo uses fictional data and sends no email.",
+    summary: "Mara researches prospects, keeps evidence beside each lead, prepares outreach for review and pauses follow-up when someone replies.",
+    built: "A private Google Apps Script workspace with lead qualification, draft review, approval and reply-aware workflows.",
+    demo: "Browser-only scenario with fictional prospects. No web research, mailbox access or email sending occurs here.",
+    image: "/agent-demos/mara.jpg",
+    imageAlt: "Mara's character portrait from the sales and marketing agent project",
+    capabilities: ["Evidence-linked prospect review", "Draft approval", "Reply-aware follow-up"],
+  },
+  {
+    slug: "alfred",
+    name: "Alfred",
+    role: "Private AI secretary",
+    title: "Alfred | Private AI Secretary",
+    description: "Try a fictional preview of Alfred's briefing, file search and confirm-before-writing workflow. His real assistant remains private to its owner.",
+    summary: "Alfred combines a daily briefing, local file search and guarded actions with calendar and mail tools in a private assistant.",
+    built: "A self-hosted assistant with streaming conversation, local voice and file search, Google Calendar and Gmail tools, and approval before writes.",
+    demo: "A scripted portfolio scenario. It has no access to the owner's files, calendar, mailbox, microphone or live AI providers.",
+    image: "/agent-demos/alfred-icon.png",
+    imageAlt: "Alfred assistant app icon from the private AI secretary project",
+    capabilities: ["Daily briefing", "File search", "Confirm-before-writing"],
+  },
+  {
+    slug: "front-desk",
+    name: "AI Front Desk",
+    role: "Hotel reception prototype",
+    title: "AI Front Desk | Interactive Hotel Reception Prototype",
+    description: "Try a rule-based hotel front desk prototype with typed requests, optional browser voice, simulated room state and manager approvals.",
+    summary: "A hotel reception prototype checks fictional reservation and room state, answers common requests and holds consequential changes for a manager.",
+    built: "A React and TypeScript rule engine with English and Taglish requests, simulated hotel operations, approval effects and an audit timeline.",
+    demo: "The actual standalone rule-based prototype. No language model, hotel system, booking engine or payment service is connected.",
+    image: "/agent-demos/front-desk-preview.png",
+    imageAlt: "Reception screen of the AI Hotel Front Desk prototype",
+    capabilities: ["English and Taglish requests", "Simulated room policy", "Manager approval queue"],
+  },
+] as const;
+
+export type Agent = (typeof agents)[number];

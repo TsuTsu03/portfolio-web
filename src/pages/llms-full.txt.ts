@@ -14,6 +14,7 @@ import {
 } from "../data/site";
 import { principles } from "../data/principles";
 import { sortInsights } from "../lib/insights";
+import { agents } from "../data/agents";
 
 export const GET: APIRoute = async () => {
   const [work, insightEntries] = await Promise.all([
@@ -84,6 +85,10 @@ ${principles.map((principle) => `- **${principle.title}.** ${principle.claim} ${
 # Project case studies
 
 ${projects}
+
+# AI agents with public demos
+
+${agents.map((agent) => `## ${agent.name}\n\nCanonical page: ${SITE_URL}/agents/${agent.slug}\n\n${agent.summary}\n\nBuilt: ${agent.built}\n\nPublic demo boundary: ${agent.demo}`).join("\n\n")}
 
 # Direct answers
 

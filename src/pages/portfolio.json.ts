@@ -15,6 +15,7 @@ import {
 } from "../data/site";
 import { principles } from "../data/principles";
 import { sortInsights } from "../lib/insights";
+import { agents } from "../data/agents";
 
 export const GET: APIRoute = async () => {
   const [work, insightEntries] = await Promise.all([
@@ -93,6 +94,14 @@ export const GET: APIRoute = async () => {
       liveUrl: entry.data.liveUrl,
       repositoryUrl: entry.data.repositoryUrl,
       repositoryVisibility: entry.data.repositoryVisibility,
+    })),
+    aiAgents: agents.map((agent) => ({
+      name: agent.name,
+      role: agent.role,
+      summary: agent.summary,
+      project: agent.built,
+      publicDemo: agent.demo,
+      url: `${SITE_URL}/agents/${agent.slug}`,
     })),
     insights: insights.map((entry) => ({
       id: entry.id,

@@ -170,7 +170,7 @@ export const capabilityGroups: CapabilityGroup[] = [
       },
       {
         name: "Astro static delivery",
-        proof: "This portfolio ships as static HTML with no client-side framework and no hydration.",
+        proof: "Core portfolio pages ship as static Astro HTML without hydration. The separate hotel front desk demo is a React static bundle.",
         provenBy: [],
         thisSite: true,
       },

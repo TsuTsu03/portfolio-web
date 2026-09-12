@@ -60,8 +60,14 @@ const insightDirs = (await readdir(new URL("insights/", dist), { withFileTypes: 
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
+const agentDirs = (await readdir(new URL("agents/", dist), { withFileTypes: true }))
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort();
 const htmlPaths = [
   "index.html",
+  "agents/index.html",
+  ...agentDirs.map((slug) => `agents/${slug}/index.html`),
   "resume/index.html",
   "insights/index.html",
   ...insightDirs.map((slug) => `insights/${slug}/index.html`),
@@ -112,6 +118,18 @@ for (const [path, html] of htmlDocuments) {
     assert(profile.hasPart.length === projectDirs.length, `${path}: profile/project relationship mismatch`);
     assert(itemList.numberOfItems === projectDirs.length, `${path}: ItemList count mismatch`);
     assert(html.includes('id="services"'), `${path}: visible services section missing`);
+    assert(html.includes('id="agents"'), `${path}: visible AI agents section missing`);
+  } else if (path === "agents/index.html") {
+    for (const type of ["WebPage", "ItemList"]) {
+      assert(types.has(type), `${path}: missing ${type} schema`);
+    }
+    const itemList = graph.find((node) => node["@type"] === "ItemList");
+    assert(itemList.numberOfItems === agentDirs.length, `${path}: AI agent count mismatch`);
+  } else if (path.startsWith("agents/")) {
+    for (const type of ["WebPage", "BreadcrumbList", "SoftwareApplication"]) {
+      assert(types.has(type), `${path}: missing ${type} schema`);
+    }
+    assert(html.includes('id="demo"'), `${path}: demo section missing`);
   } else if (path.startsWith("work/")) {
     assert(types.has("Article"), `${path}: missing Article schema`);
     assert(types.has("BreadcrumbList"), `${path}: missing BreadcrumbList schema`);
@@ -179,6 +197,9 @@ for (const route of ["resume", "insights"]) {
 for (const slug of insightDirs) {
   assert(sitemapUrls.includes(`${SITE_URL}/insights/${slug}`), `sitemap: insight ${slug} missing`);
 }
+for (const route of ["agents", ...agentDirs.map((slug) => `agents/${slug}`)]) {
+  assert(sitemapUrls.includes(`${SITE_URL}/${route}`), `sitemap: ${route} missing`);
+}
 assert((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g) || []).length === htmlPaths.length, "sitemap: lastmod missing");
 
 const robots = await read("robots.txt");
@@ -191,8 +212,10 @@ for (const endpoint of ["llms.txt", "llms-full.txt", "portfolio.json", "humans.t
   await access(new URL(endpoint, dist));
 }
 const portfolio = JSON.parse(await read("portfolio.json"));
+await access(new URL("agent-demos/front-desk/index.html", dist));
 assert(portfolio.projects.length === projectDirs.length, "portfolio.json: project count mismatch");
 assert(portfolio.insights.length === insightDirs.length, "portfolio.json: insight count mismatch");
+assert(portfolio.aiAgents.length === agentDirs.length, "portfolio.json: AI agent count mismatch");
 assert(portfolio.expertise.length >= 8, "portfolio.json: expertise list is too thin");
 assert(portfolio.lastUpdated === SITE_UPDATED, "portfolio.json: stale lastUpdated value");
 assert(portfolio.site?.language === "en-PH", "portfolio.json: language missing");
@@ -210,6 +233,13 @@ for (const insight of portfolio.insights) {
     assert(portfolio.projects.some((project) => project.pageUrl === url), `portfolio.json: ${insight.id} has unknown related work ${url}`);
   }
 }
+const frontDeskPage = await read("agents/front-desk/index.html");
+assert(frontDeskPage.includes('href="/agent-demos/front-desk/index.html"'), "front desk: demo link missing");
+const frontDeskDemo = await read("agent-demos/front-desk/index.html");
+assert(frontDeskDemo.includes('name="robots" content="noindex, follow"'), "front desk: standalone demo should not compete with its case page");
+const frontDeskScript = frontDeskDemo.match(/<script[^>]+src="\.\/([^"]+)"/)?.[1];
+assert(frontDeskScript, "front desk: bundled script missing");
+await access(new URL(`agent-demos/front-desk/${frontDeskScript}`, dist));
 
 const homepage = htmlDocuments.find(([path]) => path === "index.html")[1];
 for (const service of portfolio.services) {

@@ -18,6 +18,7 @@ dist-ssr
 
 # Local QA and agent state
 artifacts/
+.claude/
 .claude/settings.local.json
 .claude/worktrees/
 

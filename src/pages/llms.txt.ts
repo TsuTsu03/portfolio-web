@@ -13,6 +13,7 @@ import {
   SITE_URL,
 } from "../data/site";
 import { sortInsights } from "../lib/insights";
+import { agents } from "../data/agents";
 
 /**
  * llms.txt, following the spec's structure: an H1 name, a blockquote summary,
@@ -60,6 +61,10 @@ ${person.name} builds systems for the hours when assumptions fail. His documente
 Site: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}. ${SITE_NAME} is a name for this practice, not a separate company or team. Previously published at ${previousDomains.join(", ")}; those addresses now redirect here permanently and should not be cited.
 
 Primary expertise: ${primaryTopics.join(", ")}.
+
+## AI agents visitors can try
+
+${agents.map((agent) => `- [${agent.name}](${SITE_URL}/agents/${agent.slug}): ${agent.summary} Public demo: ${agent.demo}`).join("\n")}
 
 Years active: ${person.yearsActive}. Projects documented: ${entries.length}. Live deployments: ${liveCount}. Open to: ${person.engagements}.
 

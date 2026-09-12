@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { agents } from "../../data/agents";
+import { person, SITE_UPDATED, SITE_URL } from "../../data/site";
+
+const jsonLd = [
+  { "@type": "WebPage", "@id": `${SITE_URL}/agents#page`, url: `${SITE_URL}/agents`, name: "AI Agents by Den Jansen Flores", dateModified: SITE_UPDATED, author: { "@type": "Person", name: person.name } },
+  { "@type": "ItemList", "@id": `${SITE_URL}/agents#list`, numberOfItems: agents.length, itemListElement: agents.map((agent, index) => ({ "@type": "ListItem", position: index + 1, name: agent.name, url: `${SITE_URL}/agents/${agent.slug}` })) },
+];
+---
+
+<BaseLayout path="/agents" title="AI Agents by Den Jansen Flores | Try Three Demos" description="Try Mara, Alfred and an AI hotel front desk on Den Jansen Flores's portfolio. Explore three public demos with clear data and integration boundaries." jsonLd={jsonLd} dateModified={SITE_UPDATED}>
+  <div class="shell pt-20 pb-24 sm:pt-28">
+    <p class="meta text-accent">Interactive work / 01–03</p>
+    <h1 class="display mt-5 max-w-[16ch] text-[clamp(2.5rem,7vw,5rem)]">AI agents you can try</h1>
+    <p class="mt-6 max-w-[68ch] text-lg leading-relaxed text-text-dim">I built these agents for sales operations, private assistance and hotel reception. The demos let you test a workflow without connecting to personal data, a real mailbox or a hotel system.</p>
+    <div class="mt-14 border-y border-line-strong">
+      {agents.map((agent, index) => (
+        <article class="grid gap-5 border-b border-line py-8 last:border-b-0 md:grid-cols-[7rem_1fr_auto] md:items-center">
+          <p class="meta text-accent">0{index + 1}</p>
+          <div>
+            <h2 class="display-tight text-2xl">{agent.name}</h2>
+            <p class="meta mt-2">{agent.role}</p>
+            <p class="mt-3 max-w-[65ch] text-text-dim">{agent.summary}</p>
+          </div>
+          <a href={`/agents/${agent.slug}`} class="btn btn-secondary justify-center">Try the demo <span aria-hidden="true">↗</span></a>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
