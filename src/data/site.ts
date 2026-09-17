@@ -14,7 +14,7 @@ export const SITE_DOMAIN = "denforge.it.com";
  * engines can attach to that person, not a second identity.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-09-12";
+export const SITE_UPDATED = "2026-09-17";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site

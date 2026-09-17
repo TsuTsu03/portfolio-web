@@ -89,10 +89,12 @@ export function websiteNode(): Record<string, unknown> {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     url: `${SITE_URL}/`,
-    name: `${person.name} | Portfolio`,
-    /* The domain name and the person are the same entity to a reader; this is
-       how an answer engine is told the same thing. */
-    alternateName: [SITE_NAME, SITE_DOMAIN, `${SITE_NAME} portfolio`],
+    /* Google treats this as the preferred site name, so keep it identical to
+       the name shown by the homepage title, heading and Open Graph metadata. */
+    name: person.name,
+    /* The brand, common shorter personal name and lowercase hostname are
+       ordered fallbacks if Google cannot use the preferred personal name. */
+    alternateName: [SITE_NAME, person.alternateName, SITE_DOMAIN],
     description: seo.description,
     inLanguage: "en-PH",
     copyrightHolder: { "@id": PERSON_ID },

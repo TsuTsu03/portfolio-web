@@ -22,7 +22,15 @@ const constant = (name) => {
   return match[1];
 };
 const SITE_URL = constant("SITE_URL");
+const SITE_DOMAIN = constant("SITE_DOMAIN");
+const SITE_NAME = constant("SITE_NAME");
 const SITE_UPDATED = constant("SITE_UPDATED");
+const PERSON_NAME = siteSource.match(/export const person = \{\s*name: "([^"]+)"/)?.[1];
+const PERSON_ALTERNATE_NAME = siteSource.match(
+  /export const person = \{[\s\S]*?alternateName: "([^"]+)"/
+)?.[1];
+assert(PERSON_NAME, "site.ts: person name not found");
+assert(PERSON_ALTERNATE_NAME, "site.ts: person alternate name not found");
 const previousDomain = siteSource.match(/previousDomains = \["([^"]+)"\]/)?.[1];
 assert(previousDomain, "site.ts: previous domain not found");
 
@@ -115,7 +123,18 @@ for (const [path, html] of htmlDocuments) {
       assert(types.has(type), `${path}: missing ${type} schema`);
     }
     const profile = graph.find((node) => node["@type"] === "ProfilePage");
+    const website = graph.find((node) => node["@type"] === "WebSite");
     const itemList = graph.find((node) => node["@type"] === "ItemList");
+    assert(website.name === PERSON_NAME, "index.html: WebSite name must match the public personal name");
+    assert(
+      JSON.stringify(website.alternateName) ===
+        JSON.stringify([SITE_NAME, PERSON_ALTERNATE_NAME, SITE_DOMAIN]),
+      "index.html: WebSite alternate names are missing or out of preference order"
+    );
+    assert(
+      html.includes(`<meta property="og:site_name" content="${PERSON_NAME}">`),
+      "index.html: Open Graph site name must match WebSite name"
+    );
     assert(profile.dateModified === SITE_UPDATED, `${path}: stale profile dateModified`);
     assert(profile.hasPart.length === projectDirs.length, `${path}: profile/project relationship mismatch`);
     assert(itemList.numberOfItems === projectDirs.length, `${path}: ItemList count mismatch`);
