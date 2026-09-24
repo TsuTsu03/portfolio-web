@@ -6,10 +6,8 @@ import { person } from "../data/site";
 ---
 
 <section id="about" class="section rule-top relative overflow-hidden" aria-labelledby="about-heading">
-  <div aria-hidden="true" class="wash-cool left-[-12%] top-[14%] h-[40rem] w-[40rem]"></div>
-
-  <div class="shell about-layout grid gap-12 lg:grid-cols-12 lg:gap-16">
-    <div class="reveal about-portrait lg:col-span-7">
+  <div class="shell profile-grid">
+    <div class="reveal profile-image">
       <button
         type="button"
         class="identity frame group/id w-full"
@@ -46,63 +44,64 @@ import { person } from "../data/site";
         <span class="identity-ink" aria-hidden="true"></span>
         <span class="identity-scan" aria-hidden="true"></span>
 
-        {/* On a desktop the cursor already says this is a control. On a phone
-            nothing did, so the panel went undiscovered. Decorative: the button
-            carries its own label. */}
-        <span class="identity-hint" aria-hidden="true">Tap</span>
+        <span class="identity-hint" aria-hidden="true">Switch view</span>
       </button>
 
-      <p class="meta mt-3">{person.locality}, {person.region}, {person.timezone}</p>
+      <div class="profile-caption">
+        <p class="meta">{person.locality}, Philippines</p>
+        <p class="meta">Portrait / Alter ego</p>
+      </div>
     </div>
 
-    <div class="reveal about-copy lg:col-span-5">
-      <p class="meta mb-5">About Den Jansen Flores</p>
-      <h2 id="about-heading" class="display-tight text-[clamp(1.9rem,4vw,3.1rem)]">
-        Full-stack engineering for systems that cannot afford to lose control.
+    <div class="reveal profile-copy">
+      <p class="meta profile-label">03 / About</p>
+      <h2 id="about-heading" class="display profile-heading">
+        The person<br />behind the build.
       </h2>
 
-      <div class="prose-body mt-8 text-[1.0625rem] leading-relaxed text-text-dim">
+      <p class="profile-name">{person.name}</p>
+      <div class="prose-body profile-body text-text-dim">
         <p>
-          I am a senior full-stack developer and agentic AI engineer based in Muntinlupa City,
-          Metro Manila. I build operational SaaS, secure web platforms and agentic AI workflows
-          for teams here and abroad. The work covers <a class="link" href="/work/clinicflow">healthcare operations</a>,
+          Senior full-stack developer and agentic AI engineer in Metro Manila. I build
+          web platforms and AI workflows for teams in the Philippines and abroad, from
+          <a class="link" href="/work/clinicflow">healthcare operations</a> to
           <a class="link" href="/work/biyahero-express">courier logistics</a> and
-          <a class="link" href="/work/data-analysis-platform">AI-assisted analysis</a>. I own the
-          schema, access rules, server logic and interface. A weak seam is enough to compromise
-          the whole system.
+          <a class="link" href="/work/data-analysis-platform">AI-assisted analysis</a>.
         </p>
         <p>
-          Requirements rarely arrive complete. I trace the job from one end to the other: who
-          touches the record, which decision follows, and where the truth lives today. Often it
-          is split between a wall calendar, a group chat and one person's memory. The point where
-          that chain breaks is where the product begins.
+          I follow the work before choosing the tools: who handles each record, what happens
+          next, and where things get stuck. Then I own the build from the database to the screen.
         </p>
         <p>
-          I assume every shortcut will eventually be found, usually at the worst possible hour.
-          Access rules stay close to the data. Every state has a name. Recovery paths are designed
-          before the demo because a system reveals its quality when the ordinary path is gone.
-        </p>
-        <p>
-          Working with me is straightforward. We agree on the boundaries before the build starts.
-          Updates come directly from me. If a feature has no business value, I say so before it
-          reaches the invoice.
+          We agree on scope before work starts. Updates come directly from me. If a feature
+          adds cost without helping the business, I say so.
         </p>
       </div>
 
-      <div class="mt-8 border-l-2 border-accent-deep pl-5">
-        <p class="text-text">
-          The visible half is easy to recognize: a clear interface, a direct explanation and a
-          client who knows what the system will do.
-        </p>
-        <p class="mt-4 text-sm leading-relaxed text-text-dim">
-          The other half stays out of sight. I read the logs, test the case nobody raised and put
-          the system under the conditions it will meet outside the demo. When that work is done
-          properly, the silence is the evidence.
-        </p>
-      </div>
+      <dl class="profile-facts">
+        <div><dt class="meta">Focus</dt><dd>Full-stack systems &amp; agentic AI</dd></div>
+        <div><dt class="meta">Based in</dt><dd>{person.locality} · {person.timezone}</dd></div>
+      </dl>
     </div>
   </div>
 </section>
+
+<style>
+  .profile-grid { display: grid; gap: 2.5rem; align-items: center; }
+  .profile-image { min-width: 0; }
+  .profile-image .identity { border: 1px solid var(--line-strong); }
+  .profile-caption { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+  .profile-label { margin-bottom: 1.75rem; color: var(--accent); }
+  .profile-heading { font-size: clamp(2.75rem, 5vw, 4.7rem); line-height: 1; }
+  .profile-name { margin-top: 2rem; font-weight: 600; font-size: 1.1rem; }
+  .profile-body { margin-top: 1rem; font-size: 1rem; }
+  .profile-facts { margin-top: 2rem; border-top: 1px solid var(--line); }
+  .profile-facts > div { display: flex; justify-content: space-between; gap: 1.5rem; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+  .profile-facts dd { font-size: .85rem; text-align: right; }
+  @media (min-width: 900px) {
+    .profile-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: clamp(3rem, 7vw, 7rem); }
+  }
+</style>
 
 <script>
   document.querySelectorAll<HTMLButtonElement>("[data-identity]").forEach((identity) => {

@@ -14,13 +14,13 @@ import sharp from "sharp";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = join(root, "public");
 
-const INK = "#0c0e10";
-const SURFACE = "#16191c";
+const INK = "#0b0d0e";
+const SURFACE = "#111416";
 const LINE = "#23282d";
 const LINE_CONTROL = "#5c656d";
 const TEXT = "#eceae4";
 const TEXT_DIM = "#9ba6ae";
-const ACCENT = "#e0a05c";
+const ACCENT = "#d7b46a";
 
 const SANS = "Archivo, Helvetica, Arial, sans-serif";
 const MONO = "Consolas, 'DejaVu Sans Mono', monospace";
@@ -45,7 +45,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
   <!-- Monogram plate -->
   <g transform="translate(72 20)">
     <rect x="0" y="0" width="34" height="34" fill="none" stroke="${LINE_CONTROL}" stroke-width="1.5"/>
-    <text x="17" y="23" text-anchor="middle" font-family="${SANS}" font-size="13" font-weight="700" letter-spacing="0.4" fill="${TEXT}">DJF</text>
+    <text x="17" y="23" text-anchor="middle" font-family="${SANS}" font-size="13" font-weight="700" letter-spacing="0.4" fill="${TEXT}">DF</text>
   </g>
   <text x="122" y="43" font-family="${SANS}" font-size="19" font-weight="600" fill="${TEXT_DIM}">denforge.it.com</text>
 
@@ -57,7 +57,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
   <text x="72" y="500" font-family="${SANS}" font-size="30" font-weight="600" letter-spacing="-0.4" fill="${TEXT_DIM}">Senior Full-Stack Developer / Agentic AI Engineer</text>
 
   <line x1="72" y1="548" x2="1000" y2="548" stroke="${LINE}" stroke-width="1"/>
-  <text x="72" y="586" font-family="${MONO}" font-size="19" font-weight="600" letter-spacing="2" fill="${TEXT_DIM}">SYSTEMS BUILT FOR PRESSURE</text>
+  <text x="72" y="586" font-family="${MONO}" font-size="15" font-weight="600" letter-spacing="2" fill="${TEXT_DIM}">SOFTWARE ENGINEERING / APPLIED AI</text>
   <text x="1000" y="586" text-anchor="end" font-family="${MONO}" font-size="19" font-weight="600" letter-spacing="2" fill="${ACCENT}">METRO MANILA / UTC+8</text>
 </svg>`;
 
@@ -65,7 +65,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
 const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64">
   <rect width="64" height="64" fill="${INK}"/>
   <rect x="8" y="8" width="48" height="48" fill="none" stroke="${ACCENT}" stroke-width="2.5"/>
-  <text x="32" y="40" text-anchor="middle" font-family="${SANS}" font-size="22" font-weight="700" letter-spacing="0.5" fill="${TEXT}">DJF</text>
+  <text x="32" y="40" text-anchor="middle" font-family="${SANS}" font-size="22" font-weight="700" letter-spacing="0.5" fill="${TEXT}">DF</text>
 </svg>`;
 
 await mkdir(publicDir, { recursive: true });

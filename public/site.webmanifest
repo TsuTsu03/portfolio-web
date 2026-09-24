@@ -1,13 +1,13 @@
 {
   "name": "Den Jansen Flores | Senior Full-Stack Developer & Agentic AI Engineer",
   "id": "/",
-  "short_name": "DJF",
+  "short_name": "DenForge",
   "description": "Den Jansen Flores builds operational SaaS, secure full-stack platforms and controlled agentic AI workflows.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0c0e10",
-  "theme_color": "#0c0e10",
+  "background_color": "#0b0d0e",
+  "theme_color": "#0b0d0e",
   "icons": [
     {
       "src": "/icon-192.png",

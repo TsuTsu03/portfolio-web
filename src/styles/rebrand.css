@@ -1,0 +1,36 @@
+/* Shared editorial system. Theme tokens remain in global.css. */
+@layer components {
+  .section { padding-block: clamp(64px, 7.5vw, 108px); }
+  .display { font-variation-settings: "wdth" 88; font-weight: 650; line-height: 1.02; letter-spacing: -.045em; }
+  .section-label { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; color: var(--accent); font: 10px/1.5 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+  .section-label::before { content: ""; width: 17px; height: 1px; background: currentColor; flex-shrink: 0; }
+  .section-heading-row { display: grid; grid-template-columns: 1.1fr 1fr; align-items: end; gap: 60px; }
+  .section-heading-row .display { font-size: clamp(2.5rem, 4.4vw, 4rem); }
+  .section-intro { max-width: 43ch; justify-self: end; color: var(--text-dim); font-size: 15px; line-height: 1.8; padding-bottom: 4px; }
+  .heading-muted { color: var(--text-faint); }
+  .btn { border-radius: 0; font-weight: 550; padding-inline: 22px; gap: 16px; }
+  .site-header { border-bottom: 1px solid var(--line); }
+  .site-header > .shell { height: 80px; }
+  .brand-lockup > span:first-child { width: 34px; height: 36px; border-color: var(--accent-edge); color: var(--accent); font-size: 11px; }
+  .brand-wordmark { font: 650 16px/1 var(--font-display); letter-spacing: .06em; color: var(--text); }
+  .brand-wordmark > span { color: var(--text-dim); }
+  .brand-wordmark small { display: block; margin-top: 7px; font: 7px/1 var(--font-mono); letter-spacing: .12em; color: var(--text-faint); }
+  .nav-link { font-size: 12px; padding-inline: 13px; }
+  .menu-panel { top: calc(80px + env(safe-area-inset-top)); max-height: calc(100dvh - 80px); overflow-y: auto; }
+  .case-hero { padding-bottom: 55px; }
+  .inner-page { padding-top: 40px; }
+  .case-hero h1 { max-width: 16ch; }
+  .frame { border-color: var(--line-strong); }
+  .plate { border-color: var(--line); box-shadow: none; }
+  .section-tick { width: 26px; height: 2px; margin-bottom: 24px; }
+  .prose-body { font-size: 16px; }
+  @media(max-width:760px) {
+    .section-heading-row { grid-template-columns: 1fr; gap: 24px; }
+    .section-intro { justify-self: start; font-size: 14px; max-width: 48ch; }
+    .section-label { font-size: 9px; margin-bottom: 18px; }
+    .section-heading-row .display { font-size: clamp(2.3rem, 8vw, 3.2rem); }
+    .brand-wordmark { font-size: 14px; }
+    .brand-wordmark small { font-size: 6px; }
+  }
+  @media(max-width:359px) { .brand-wordmark small { display: none; } .brand-lockup { gap: 8px; } }
+}

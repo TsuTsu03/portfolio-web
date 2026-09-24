@@ -1,47 +1,49 @@
 ---
 import { principles } from "../data/principles";
+import Icon from "./Icon.astro";
 ---
 
 <section id="approach" class="section rule-top" aria-labelledby="approach-heading">
-  <div class="shell">
-    <div class="grid gap-8 lg:grid-cols-12 lg:gap-12">
-      <div class="approach-intro lg:col-span-4">
-        <span aria-hidden="true" class="section-tick reveal"></span>
-        <h2 id="approach-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">
-          How I build software that survives pressure
-        </h2>
-        <p class="mt-6 max-w-[38ch] leading-relaxed text-text-dim">
-          I map the real operation, keep authority close to the data and name the failure states
-          before launch. AI remains one controlled stage inside a larger system. Each rule below
-          points to the work that tested it.
-        </p>
-      </div>
-
-      {/*
-        Typographic, not cards. Each principle is a hanging heading with its
-        cost underneath and its evidence set apart in the right column, so the
-        page can be scanned three different ways.
-      */}
-      <div class="approach-list lg:col-span-8">
-        {
-          principles.map((principle) => (
-            <article class="reveal approach-principle grid gap-4 border-t border-line py-8 lg:grid-cols-12 lg:gap-8 lg:py-10">
-              <div class="lg:col-span-7">
-                <h3 class="display-tight text-[clamp(1.25rem,2.2vw,1.6rem)]">
-                  {principle.title}
-                </h3>
-                <p class="mt-2 text-accent">{principle.claim}</p>
-                <p class="mt-4 max-w-[58ch] text-text-dim">{principle.body}</p>
-              </div>
-
-              <div class="lg:col-span-5 lg:pt-1">
-                <p class="meta mb-2">Evidence</p>
-                <p class="text-sm leading-relaxed text-text-dim">{principle.evidence}</p>
-              </div>
-            </article>
-          ))
-        }
-      </div>
+  <div class="shell method-grid">
+    <header class="method-intro">
+      <p class="meta method-label">05 / Approach</p>
+      <h2 id="approach-heading" class="display">Built with<br />intent.</h2>
+      <p class="method-description">Understand the operation. Make the rules clear. Test what happens when things go wrong.</p>
+      <p class="meta method-note">Five principles behind the work</p>
+    </header>
+    <div class="method-list">
+      {principles.map((principle, index) => (
+        <details class="disclosure method-row" open={index === 0}>
+          <summary>
+            <span class="meta method-number">{String(index + 1).padStart(2, "0")}</span>
+            <span class="method-title">{principle.title}</span>
+            <Icon name="plus" class="chev h-4 w-4 shrink-0 text-accent" />
+          </summary>
+          <div class="method-detail">
+            <p class="method-claim">{principle.claim}</p>
+            <p>{principle.body}</p>
+            <div class="method-evidence"><p class="meta">In practice</p><p>{principle.evidence}</p></div>
+          </div>
+        </details>
+      ))}
     </div>
   </div>
 </section>
+
+<style>
+  .method-grid { display: grid; gap: 2.5rem; }
+  .method-label { color: var(--accent); margin-bottom: 1.75rem; }
+  .method-intro h2 { font-size: clamp(3rem, 6vw, 5rem); line-height: .98; }
+  .method-description { color: var(--text-dim); max-width: 32ch; margin-top: 1.5rem; line-height: 1.7; }
+  .method-note { margin-top: 2rem; }
+  .method-row { border-top: 1px solid var(--line); }
+  .method-row:last-child { border-bottom: 1px solid var(--line); }
+  .method-row summary { display: flex; align-items: center; gap: 1.25rem; padding-block: 1.4rem; }
+  .method-number { color: var(--accent); }
+  .method-title { flex: 1; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 1.8vw, 1.45rem); line-height: 1.25; }
+  .method-detail { padding: 0 0 1.5rem 2.4rem; color: var(--text-dim); font-size: .9rem; line-height: 1.7; }
+  .method-claim { color: var(--text); margin-bottom: .75rem; }
+  .method-evidence { border-left: 2px solid var(--accent-deep); padding-left: 1rem; margin-top: 1.25rem; font-size: .8rem; }
+  .method-evidence .meta { margin-bottom: .5rem; }
+  @media (min-width: 900px) { .method-grid { grid-template-columns: 1fr 1.65fr; gap: 5rem; } }
+</style>

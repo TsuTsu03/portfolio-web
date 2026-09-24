@@ -20,6 +20,7 @@ import {
   websiteNode,
 } from "../lib/schema";
 import { sortInsights } from "../lib/insights";
+import { agents } from "../data/agents";
 
 const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const insights = sortInsights(await getCollection("insights"));
@@ -53,16 +54,12 @@ const jsonLd = [
 ];
 ---
 
-{/*
-  Identity, the person, verifiable projects, capabilities, approach, proof,
-  questions, contact. A recruiter can stop after the projects and still know
-  whether to keep reading.
-*/}
+{/* Lead with identity and inspectable work, then explain the person and process. */}
 <BaseLayout path="/" jsonLd={jsonLd}>
-  <Hero />
-  <About />
+  <Hero projectCount={entries.length} agentCount={agents.length} />
   <Work entries={entries} />
   <Agents />
+  <About />
   <Capabilities />
   <Approach />
   <Insights entries={insights} />

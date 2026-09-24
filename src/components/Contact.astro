@@ -4,74 +4,52 @@ import Icon from "./Icon.astro";
 import { person } from "../data/site";
 ---
 
-<section id="contact" class="stage section rule-top relative overflow-hidden" aria-labelledby="contact-heading">
-  <div aria-hidden="true" class="wash-warm left-1/2 top-0 h-[34rem] w-[34rem] -translate-x-1/2"></div>
-  <div aria-hidden="true" class="rules"></div>
-  <div aria-hidden="true" class="vignette"></div>
-
+<section id="contact" class="section rule-top contact-section" aria-labelledby="contact-heading">
   <div class="shell">
-    <span aria-hidden="true" class="section-tick reveal"></span>
-    <p class="meta mb-5">Open a line</p>
-    <h2 id="contact-heading" class="display max-w-[15ch] text-[clamp(2.25rem,6vw,4.5rem)]">
-      Bring me the system that fails after hours.
-    </h2>
-
-    <p class="lede mt-8">
-      Tell me what breaks, who carries the cost and when you need it standing. If the problem is
-      outside my range, I will say so before either of us wastes time.
-    </p>
-
-    <div class="mt-10 flex flex-wrap items-center gap-3">
-      <a href={`mailto:${person.email}`} class="contact-email link tap-target inline-flex items-center gap-3">
-        <Icon name="mail" class="h-4 w-4" />
-        {person.email}
-      </a>
-      <a href={`tel:${person.phoneE164}`} class="btn btn-ghost">{person.phone}</a>
+    <div class="contact-topline"><p class="meta">08 / Contact</p><p class="meta">{person.locality} · Remote worldwide</p></div>
+    <div class="contact-grid">
+      <div>
+        <h2 id="contact-heading" class="display contact-heading">Let's build<br />what's next<span>.</span></h2>
+        <p class="contact-description">A new product, a difficult workflow, or a system ready for its next chapter. Tell me what you have in mind.</p>
+      </div>
+      <div class="contact-actions">
+        <p class="meta">Start a conversation</p>
+        <a href={`mailto:${person.email}`} class="contact-primary">
+          <span>Write to me<span class="contact-address">{person.email}</span></span>
+          <Icon name="arrow-up-right" class="h-6 w-6 shrink-0" />
+        </a>
+        <a href={`tel:${person.phoneE164}`} class="link tap-target contact-phone">Call {person.phone}</a>
+        <p class="contact-reply">Usually replies within one business day.<br />{person.timezone}</p>
+      </div>
     </div>
-
-    <dl class="mt-14 grid gap-8 border-t border-line pt-8 sm:grid-cols-3">
-      <div>
-        <dt class="meta mb-2">Reply time</dt>
-        <dd class="text-sm text-text">Usually within one business day ({person.timezone})</dd>
-      </div>
-      <div>
-        <dt class="meta mb-2">Location</dt>
-        <dd class="text-sm text-text">
-          {person.locality}, {person.region}, remote worldwide
-        </dd>
-      </div>
-      <div>
-        <dt class="meta mb-2">Elsewhere</dt>
-        <dd class="flex flex-wrap gap-4 text-sm">
-          <a
-            href={person.github}
-            class="link tap-target inline-flex items-center gap-2"
-            target="_blank"
-            rel="noopener noreferrer me"
-          >
-            <BrandIcon name="github" class="h-4 w-4" />
-            GitHub
-          </a>
-          <a
-            href={person.linkedin}
-            class="link tap-target inline-flex items-center gap-2"
-            target="_blank"
-            rel="noopener noreferrer me"
-          >
-            <BrandIcon name="linkedin" class="h-4 w-4" />
-            LinkedIn
-          </a>
-          <a
-            href={person.instagram}
-            class="link tap-target inline-flex items-center gap-2"
-            target="_blank"
-            rel="noopener noreferrer me"
-          >
-            <BrandIcon name="instagram" class="h-4 w-4" />
-            Instagram
-          </a>
-        </dd>
-      </div>
-    </dl>
+    <div class="contact-bottom">
+      <p class="contact-fit">{person.engagements}</p>
+      <nav aria-label="Social profiles" class="contact-socials">
+        <a href={person.github} class="link tap-target" target="_blank" rel="noopener noreferrer me"><BrandIcon name="github" class="h-4 w-4" />GitHub</a>
+        <a href={person.linkedin} class="link tap-target" target="_blank" rel="noopener noreferrer me"><BrandIcon name="linkedin" class="h-4 w-4" />LinkedIn</a>
+        <a href={person.instagram} class="link tap-target" target="_blank" rel="noopener noreferrer me"><BrandIcon name="instagram" class="h-4 w-4" />Instagram</a>
+      </nav>
+    </div>
   </div>
 </section>
+
+<style>
+  .contact-section { background-color: var(--surface); }
+  .contact-topline { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem; }
+  .contact-topline > :first-child { color: var(--accent); }
+  .contact-grid { display: grid; gap: 2.5rem; padding-block: 3rem; align-items: center; }
+  .contact-heading { font-size: clamp(3.5rem, 8vw, 7.5rem); line-height: .95; letter-spacing: -.055em; }
+  .contact-heading > span { color: var(--accent); }
+  .contact-description { margin-top: 1.75rem; max-width: 43ch; color: var(--text-dim); line-height: 1.7; }
+  .contact-actions > .meta { margin-bottom: 1rem; }
+  .contact-primary { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; background: var(--accent); color: var(--on-accent); padding: 1.3rem 1.5rem; font-size: 1.3rem; font-weight: 650; transition: background-color 180ms ease; }
+  .contact-primary:hover { background: var(--text); }
+  .contact-address { display: block; font-size: .75rem; margin-top: .25rem; font-weight: 500; overflow-wrap: anywhere; }
+  .contact-phone { display: inline-flex; gap: .6rem; align-items: center; margin-top: 1rem; font-size: .9rem; }
+  .contact-reply { font-size: .8rem; color: var(--text-dim); margin-top: 1rem; line-height: 1.6; }
+  .contact-bottom { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; border-top: 1px solid var(--line-strong); padding-top: 1.5rem; align-items: center; }
+  .contact-fit { font-size: .85rem; color: var(--text-dim); }
+  .contact-socials { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .contact-socials a { display: inline-flex; align-items: center; gap: .5rem; font-size: .8rem; }
+  @media (min-width: 900px) { .contact-grid { grid-template-columns: 1.5fr 1fr; gap: 5rem; padding-block: 4rem; } }
+</style>

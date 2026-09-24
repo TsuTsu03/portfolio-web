@@ -14,7 +14,7 @@ export const SITE_DOMAIN = "denforge.it.com";
  * engines can attach to that person, not a second identity.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-09-17";
+export const SITE_UPDATED = "2026-09-24";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site
@@ -125,11 +125,9 @@ export const audiences = [
  * page, so renaming one here moves the link and the target together.
  */
 export const navItems = [
+  { id: "work", label: "Work", accessibleName: "selected projects and case studies" },
+  { id: "agents", label: "AI Agents", accessibleName: "interactive AI agent demos" },
   { id: "about", label: "About", accessibleName: "who Den is and how he works" },
-    { id: "work", label: "Projects", accessibleName: "selected projects and case studies" },
-    { id: "agents", label: "AI Agents", accessibleName: "interactive AI agent demos" },
-  { id: "capabilities", label: "Capabilities", accessibleName: "technical capabilities" },
-  { id: "approach", label: "Approach", accessibleName: "engineering principles" },
   { id: "contact", label: "Contact", accessibleName: "email, phone and profiles" },
 ] as const;
 

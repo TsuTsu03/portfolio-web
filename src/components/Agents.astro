@@ -1,36 +1,64 @@
 ---
 import { agents } from "../data/agents";
 ---
-
-<section id="agents" class="section rule-top" aria-labelledby="agents-heading">
+<section id="agents" class="section agent-section" aria-labelledby="agents-heading">
   <div class="shell">
-    <span aria-hidden="true" class="section-tick reveal"></span>
-    <p class="meta mb-5 text-accent">Interactive projects</p>
-    <div class="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
-      <h2 id="agents-heading" class="display text-[clamp(2rem,5vw,3.75rem)]">AI Agents</h2>
-      <p class="max-w-[62ch] text-lg leading-relaxed text-text-dim">Three agents, shown in the interfaces I built for them. Explore their screens here, then use each public demo with fictional data.</p>
+    <div class="section-heading-row">
+      <div><p class="section-label">02 / Applied intelligence</p><h2 id="agents-heading" class="display">Meet the<br /><span class="heading-muted">other team.</span></h2></div>
+      <p class="section-intro">AI agents with a job to do. Explore the interfaces, try the workflows, and see where human approval stays in control.</p>
     </div>
-  </div>
-  <div class="shell-wide mt-12 space-y-16 lg:mt-16 lg:space-y-24">
+    <div class="agent-tabs" role="tablist" aria-label="AI agent projects" hidden>
+      {agents.map((agent, index) => <button id={`tab-${agent.slug}`} type="button" role="tab" aria-controls={`panel-${agent.slug}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1}><span class="agent-tab-number">0{index + 1}</span><span>{agent.name}<small>{agent.role}</small></span><span class="agent-tab-arrow" aria-hidden="true">↗</span></button>)}
+    </div>
     {agents.map((agent, index) => (
-      <article class="border-t border-line-strong pt-8 sm:pt-10">
-        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(17rem,0.45fr)] lg:items-start lg:gap-12">
-          <a href={`/agents/${agent.slug}`} class="group block overflow-hidden border border-line-strong bg-surface" aria-label={`Explore ${agent.name}'s interface and demo`}>
-            <img src={agent.screenshot} alt={agent.screenshotAlt} loading="lazy" class="aspect-[4/3] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015] sm:aspect-[16/10]" />
-          </a>
-          <div class="lg:pt-3">
-            <p class="meta text-accent">0{index + 1} / {agent.role}</p>
-            <h3 class="display-tight mt-4 text-[clamp(2rem,3.5vw,3rem)]">{agent.name}</h3>
-            <p class="mt-5 max-w-[55ch] text-lg leading-relaxed text-text-dim">{agent.summary}</p>
-            <p class="meta mt-7">Inside the demo</p>
-            <ul class="mt-3 space-y-2 text-sm text-text">
-              {agent.capabilities.map((capability) => <li class="border-l border-accent pl-3">{capability}</li>)}
-            </ul>
-            <a href={`/agents/${agent.slug}#demo`} class="btn btn-primary mt-8">Use {agent.name}'s interface <span aria-hidden="true">↗</span></a>
-          </div>
+      <article id={`panel-${agent.slug}`} class="agent-panel" aria-labelledby={`agent-name-${agent.slug}`}>
+        <a href={`/agents/${agent.slug}#demo`} class="agent-preview" aria-label={`Try ${agent.name}'s interactive demo`}>
+          <img src={agent.screenshot} alt={agent.screenshotAlt} loading="lazy" width="1440" height="900" />
+          <span class="agent-preview-link">Explore the interface <span aria-hidden="true">↗</span></span>
+        </a>
+        <div class="agent-info">
+          <p class="section-label">Agent 0{index + 1} / {agent.role}</p>
+          <h3 id={`agent-name-${agent.slug}`}>{agent.name}<span>.</span></h3>
+          <p>{agent.summary}</p>
+          <ul>{agent.capabilities.map((capability) => <li><span aria-hidden="true">↳</span>{capability}</li>)}</ul>
+          <a href={`/agents/${agent.slug}#demo`} class="btn btn-primary">Try {agent.name}'s demo <span aria-hidden="true">↗</span></a>
+          <p class="agent-note">Interactive demo · Fictional data</p>
         </div>
       </article>
     ))}
-    <a href="/agents" class="inline-flex min-h-11 items-center gap-2 border-b border-accent text-sm font-medium text-accent hover:text-text">Explore all three agent projects <span aria-hidden="true">↗</span></a>
+    <div class="agent-section-foot"><p>Built for useful work. Designed for human oversight.</p><a href="/agents">All agent projects <span aria-hidden="true">↗</span></a></div>
   </div>
 </section>
+<script>
+  const tablist = document.querySelector<HTMLElement>(".agent-tabs");
+  const tabs = Array.from(tablist?.querySelectorAll<HTMLButtonElement>("[role=tab]") ?? []);
+  const panels = Array.from(document.querySelectorAll<HTMLElement>(".agent-panel"));
+  if (tablist && tabs.length === panels.length) {
+    const selectTab = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => { tab.setAttribute("aria-selected", String(i === index)); tab.tabIndex = i === index ? 0 : -1; });
+      panels.forEach((panel, i) => { panel.hidden = i !== index; });
+      if (focus) tabs[index].focus();
+    };
+    panels.forEach((panel, index) => { panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", tabs[index].id); panel.tabIndex = 0; });
+    tablist.hidden = false;
+    selectTab(0);
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectTab(index));
+      tab.addEventListener("keydown", (event) => {
+        const next = event.key === "ArrowRight" ? (index + 1) % tabs.length : event.key === "ArrowLeft" ? (index - 1 + tabs.length) % tabs.length : event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : null;
+        if (next !== null) { event.preventDefault(); selectTab(next, true); }
+      });
+    });
+  }
+</script>
+<style>
+  .agent-section{background:var(--ink-deep);border-block:1px solid var(--line)}
+  .agent-tabs:not([hidden]){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:42px;border:1px solid var(--line)}
+  .agent-tabs button{min-width:0;text-align:left;display:flex;align-items:center;gap:14px;padding:20px 23px;border-right:1px solid var(--line);border-bottom:2px solid transparent;background:var(--ink);color:var(--text-dim);cursor:pointer;transition:background 160ms}.agent-tabs button:last-child{border-right:0}.agent-tabs button[aria-selected="true"]{border-bottom-color:var(--accent);background:var(--accent-wash);color:var(--text)}.agent-tabs button:hover{background:var(--surface-raised)}.agent-tabs button>span:nth-child(2){font-size:18px;font-weight:550}.agent-tabs small{display:block;font-size:10px;font-weight:400;color:var(--text-dim);margin-top:5px}.agent-tab-number{font:10px var(--font-mono);color:var(--accent)}.agent-tab-arrow{margin-left:auto;color:var(--accent)}
+  .agent-panel{display:grid;grid-template-columns:1.4fr 1fr;align-items:center;gap:40px;padding:40px 0 24px}.agent-panel[hidden]{display:none}.agent-preview{border:1px solid var(--line-strong);position:relative;overflow:hidden;background:var(--surface)}.agent-preview img{width:100%;height:auto;aspect-ratio:16/11;object-fit:cover;object-position:top;transition:transform 300ms}.agent-preview:hover img{transform:scale(1.02)}.agent-preview-link{display:flex;align-items:center;justify-content:space-between;font-size:11px;padding:14px 18px;color:var(--text-dim);border-top:1px solid var(--line)}.agent-preview-link>span{color:var(--accent)}
+  .agent-info>.section-label{font-size:9px;margin-bottom:14px}.agent-info h3{font:650 clamp(2.3rem,4vw,3.8rem)/1 var(--font-display);letter-spacing:-.05em}.agent-info h3>span{color:var(--accent)}.agent-info>p:not(.section-label):not(.agent-note){color:var(--text-dim);font-size:14px;line-height:1.7;margin-top:20px}.agent-info ul{margin:22px 0;display:grid;gap:10px}.agent-info li{display:flex;gap:12px;font-size:12px;color:var(--text-dim)}.agent-info li>span{color:var(--accent)}.agent-info .btn{font-size:12px;gap:25px}.agent-note{font:9px var(--font-mono);color:var(--text-faint);margin-top:14px}
+  .agent-section-foot{border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;padding-top:20px;margin-top:15px;font-size:11px;color:var(--text-faint)}.agent-section-foot a{color:var(--accent);display:flex;gap:20px;min-height:44px;align-items:center}.agent-section-foot p{align-self:center}
+  @media(max-width:900px){.agent-panel{grid-template-columns:1fr;gap:28px}.agent-tabs button{padding:16px 12px;gap:10px}.agent-tabs small{font-size:9px}.agent-tab-arrow{display:none}.agent-info h3{font-size:2.5rem}.agent-info>p{max-width:60ch}.agent-preview img{aspect-ratio:16/10}}
+  @media(max-width:540px){.agent-tabs button{flex-direction:column;align-items:flex-start;gap:8px;padding:14px 10px}.agent-tabs button>span:nth-child(2){font-size:14px}.agent-tabs small{font-size:9px;line-height:1.5}.agent-section-foot{flex-direction:column;gap:4px}.agent-section-foot p{align-self:flex-start}}
+  @media(prefers-reduced-motion:reduce){.agent-preview:hover img{transform:none}}
+</style>

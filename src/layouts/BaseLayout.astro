@@ -2,6 +2,7 @@
 import "@fontsource-variable/archivo/wdth.css";
 import "@fontsource-variable/instrument-sans";
 import "../styles/global.css";
+import "../styles/rebrand.css";
 
 import archivoLatin from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
 import instrumentLatin from "@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url";
@@ -178,7 +179,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
     <span class="top-sentinel" aria-hidden="true"></span>
     <SiteHeader path={path} />
 
-    <main id="main" class="relative">
+    <main id="main" class:list={["relative", { "inner-page": path !== "/" }]}>
       <slot />
     </main>
 

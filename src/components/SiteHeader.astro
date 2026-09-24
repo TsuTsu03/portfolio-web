@@ -13,19 +13,19 @@ const onHome = path === "/";
 
 <header class="site-header">
   <span class="scroll-line" aria-hidden="true"></span>
-  <div class="shell flex h-16 items-center justify-between gap-4">
+  <div class="shell flex h-20 items-center justify-between gap-4">
     {/* No aria-label here: the visible name is the accessible name, which keeps
         WCAG 2.5.3 satisfied. On narrow screens it stays in the accessibility
         tree as screen-reader-only text rather than being removed. */}
-    <a href="/" class="group flex items-center gap-3 py-2">
+    <a href="/" class="brand-lockup group flex items-center gap-3 py-2" aria-label={`DenForge: ${person.name}, home`}>
       <span
         aria-hidden="true"
         class="flex h-8 w-8 items-center justify-center border border-line-control text-[0.6875rem] font-semibold tracking-[0.02em] text-text transition-colors group-hover:border-accent group-hover:text-accent"
         style="font-family: var(--font-display); font-variation-settings: 'wdth' 92;"
       >
-        DJF
+        DF
       </span>
-      <span class="sr-only whitespace-nowrap text-sm font-medium text-text sm:not-sr-only">{person.name}</span>
+      <span class="brand-wordmark">DEN<span>FORGE</span><small aria-hidden="true">ENGINEERING WITH INTENT</small></span>
     </a>
 
     {/* Navigation and the theme switch travel together on the right, so the
@@ -51,8 +51,8 @@ const onHome = path === "/";
           ))
         }
         <a href={`mailto:${person.email}`} class="btn btn-ghost mx-3 h-10 min-h-[44px] text-sm">
-          <Icon name="mail" class="h-4 w-4" />
-          Email
+          Let’s talk
+          <Icon name="arrow-up-right" class="h-4 w-4" />
         </a>
       </nav>
 
@@ -86,7 +86,7 @@ const onHome = path === "/";
 
         <nav
           aria-label="Sections"
-          class="menu-panel fixed inset-x-0 top-[calc(4rem+env(safe-area-inset-top))] border-y border-line bg-ink px-[var(--gutter)] pt-2"
+          class="menu-panel fixed inset-x-0 top-[calc(5rem+env(safe-area-inset-top))] border-y border-line bg-ink px-[var(--gutter)] pt-2"
         >
           <ul>
             {
@@ -133,6 +133,12 @@ const onHome = path === "/";
   const menu = document.getElementById("menu") as HTMLDetailsElement | null;
   menu?.addEventListener("click", (event) => {
     if ((event.target as HTMLElement).closest("a")) menu.open = false;
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menu?.open) {
+      menu.open = false;
+      menu.querySelector("summary")?.focus();
+    }
   });
 
   // ---- Theme -------------------------------------------------------------

@@ -19,7 +19,7 @@
 :root {
   /* ---- Structure. Shared by both themes. ---- */
   --radius: 2px;
-  --shell: 1320px;
+  --shell: 1400px;
   --gutter: 1.25rem;
 
   --dur: 160ms;
@@ -32,10 +32,10 @@
   color-scheme: dark;
 
   /* Ground and surfaces */
-  --ink: #0c0e10;
-  --ink-deep: #08090a;
-  --surface: #16191c;
-  --surface-raised: #1c2125;
+  --ink: #0b0d0e;
+  --ink-deep: #080a0b;
+  --surface: #111416;
+  --surface-raised: #191d20;
 
   /* Structure. --line is decorative hairline, --line-strong is a real
      edge, --line-control carries interactive boundaries and is held
@@ -51,10 +51,10 @@
   --text-faint: #79838c;
 
   /* One accent. Warmth, attention, action — used sparingly. */
-  --accent: #e0a05c;
-  --accent-deep: #b9773a;
-  --accent-wash: rgb(224 160 92 / 0.1);
-  --accent-edge: rgb(224 160 92 / 0.4);
+  --accent: #d7b46a;
+  --accent-deep: #a28343;
+  --accent-wash: rgb(215 180 106 / 0.08);
+  --accent-edge: rgb(215 180 106 / 0.4);
   /* Text laid directly on a filled accent. */
   --on-accent: #0c0e10;
 
@@ -66,7 +66,7 @@
   --header-bg: rgb(12 14 16 / 0.82);
   --header-bg-scrolled: rgb(10 12 14 / 0.94);
   --header-bg-solid: rgb(10 12 14 / 0.97);
-  --btn-primary-hover: #efb273;
+  --btn-primary-hover: #edcc8b;
 
   /* Atmosphere. Additive at night: light is added to a dark room. */
   --blend-light: screen;

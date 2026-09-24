@@ -1,44 +1,33 @@
 ---
 import { navItems, pageNavItems, person, SITE_UPDATED } from "../data/site";
-
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line py-10">
-  <div class="shell flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-    <p class="text-sm text-text-dim">
-      © {year} {person.name}. Built with Astro. Last reviewed <time datetime={SITE_UPDATED}>{SITE_UPDATED}</time>.
-    </p>
-
-    <nav aria-label="Footer">
-      <ul class="flex flex-wrap gap-x-6 gap-y-2">
-        {
-          navItems.map((item) => (
-            <li>
-              <a
-                href={`/#${item.id}`}
-                class="tap-target text-sm text-text-dim transition-colors hover:text-text"
-                aria-label={`${item.label}: ${item.accessibleName}`}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-        {
-          pageNavItems.map((item) => (
-            <li>
-              <a
-                href={item.path}
-                class="tap-target text-sm text-text-dim transition-colors hover:text-text"
-                aria-label={`${item.label}: ${item.accessibleName}`}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-main">
+      <a href="/" class="footer-signature" aria-label={`${person.name}, home`}><span aria-hidden="true">DF<span class="signature-dot">.</span></span><span class="footer-name">{person.name}<span>Full-stack &amp; agentic AI engineer</span></span></a>
+      <nav aria-label="Footer">
+        <ul class="footer-nav">
+          {navItems.map((item) => <li><a href={`/#${item.id}`} class="tap-target" aria-label={`${item.label}: ${item.accessibleName}`}>{item.label}</a></li>)}
+          {pageNavItems.map((item) => <li><a href={item.path} class="tap-target" aria-label={`${item.label}: ${item.accessibleName}`}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-colophon"><p>© {year} {person.name}</p><p>Built with Astro · Last reviewed <time datetime={SITE_UPDATED}>{SITE_UPDATED}</time></p></div>
   </div>
 </footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--line); padding-block: 2rem 1.5rem; background: var(--ink); }
+  .footer-main { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+  .footer-signature { display: inline-flex; align-items: center; gap: 1.1rem; }
+  .footer-signature > span:first-child { font-family: var(--font-display); font-size: 2.5rem; font-weight: 750; letter-spacing: -.08em; line-height: 1; }
+  .signature-dot { color: var(--accent); }
+  .footer-name { font-size: .85rem; font-weight: 550; }
+  .footer-name > span { display: block; margin-top: .25rem; color: var(--text-dim); font-size: .7rem; font-weight: 400; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
+  .footer-nav a { color: var(--text-dim); font-size: .75rem; transition: color 180ms ease; }
+  .footer-nav a:hover { color: var(--accent); }
+  .footer-colophon { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .65rem; color: var(--text-faint); }
+</style>
