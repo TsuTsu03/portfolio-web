@@ -694,20 +694,11 @@
     }
   }
 
-  /* Scroll reveal. Only armed once the script has run, so a JavaScript failure
-     leaves every section fully visible. */
-  html.js .reveal {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-      opacity 620ms var(--ease),
-      transform 620ms var(--ease);
-    transition-delay: var(--d, 0ms);
-  }
-
-  html.js .reveal.is-in {
-    opacity: 1;
-    transform: none;
+  /* Animate only on arrival. No hidden resting state, timeout or dependency
+     on JavaScript to make the content readable. */
+  .reveal.is-revealing {
+    animation: rise 620ms var(--ease) both;
+    animation-delay: var(--d, 0ms);
   }
 
   /* The amber tick that opens every section. Draws itself in from the left
@@ -721,14 +712,8 @@
     transform-origin: left center;
   }
 
-  html.js .reveal.section-tick {
-    opacity: 1;
-    transform: scaleX(0);
-    transition: transform 620ms var(--ease);
-  }
-
-  html.js .reveal.section-tick.is-in {
-    transform: scaleX(1);
+  .reveal.section-tick.is-revealing {
+    animation-name: draw;
   }
 
   /* A rule that draws itself in rather than appearing. */

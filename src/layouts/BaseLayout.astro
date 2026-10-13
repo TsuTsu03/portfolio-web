@@ -186,41 +186,60 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
     <SiteFooter />
 
     <script>
-      // Everything below is enhancement. The `js` class is what arms the
-      // reveal styles, so a script failure leaves the page fully visible.
+      // Content stays visible by default. Entrance animations only start when
+      // the observer sees a section, including after a long pause at the hero.
       const root = document.documentElement;
       root.classList.add("js");
 
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const targets = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
-      const showAll = () => targets.forEach((el) => el.classList.add("is-in"));
+      const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const targets = Array.from(document.querySelectorAll<HTMLElement>(
+        ".reveal, .section-heading-row, .work-card, .profile-heading, .cap-intro, .method-intro, .method-row, .notes-heading, .faq-heading, .contact-grid > div"
+      ));
+      const showAll = () => targets.forEach((el) => {
+        el.classList.add("is-in");
+        el.classList.remove("is-revealing");
+      });
 
-      if (reduced || !("IntersectionObserver" in window)) {
+      if (motionPreference.matches || !("IntersectionObserver" in window)) {
         showAll();
       } else {
         // Anything already on screen is shown immediately rather than waiting
         // for the observer's first callback.
-        targets.forEach((el) => {
-          if (el.getBoundingClientRect().top < window.innerHeight * 0.9) el.classList.add("is-in");
-        });
-
         const observer = new IntersectionObserver(
           (entries) => {
+            let order = 0;
             entries.forEach((entry) => {
               if (!entry.isIntersecting) return;
-              entry.target.classList.add("is-in");
               observer.unobserve(entry.target);
+              const element = entry.target as HTMLElement;
+              element.classList.add("is-in");
+              if (motionPreference.matches || element.contains(document.activeElement)) return;
+              element.style.setProperty("--d", `${Math.min(order++, 2) * 80}ms`);
+              element.classList.add("is-revealing");
+              element.addEventListener("animationend", () => element.classList.remove("is-revealing"), { once: true });
             });
           },
-          { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
+          { rootMargin: "0px 0px -6% 0px", threshold: 0.06 }
         );
-        targets.forEach((el) => observer.observe(el));
-
-        // Safety net: a reveal must never be the reason content stays unread.
-        window.setTimeout(() => {
+        targets.forEach((el) => {
+          el.classList.add("reveal");
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.94) {
+            el.classList.add("is-in");
+          } else {
+            observer.observe(el);
+          }
+          // Keyboard navigation never waits for a decorative entrance.
+          el.addEventListener("focusin", () => {
+            observer.unobserve(el);
+            el.classList.add("is-in");
+            el.classList.remove("is-revealing");
+          });
+        });
+        motionPreference.addEventListener("change", () => {
+          if (!motionPreference.matches) return;
           showAll();
           observer.disconnect();
-        }, 5000);
+        });
       }
 
       // Header state is observer-driven. Reading progress is handled by a CSS
