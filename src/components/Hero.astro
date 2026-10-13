@@ -6,8 +6,6 @@ const { projectCount, agentCount } = Astro.props;
 ---
 <section id="identity" class="night-hero" aria-labelledby="identity-heading">
   <div class="night-architecture" aria-hidden="true">
-    <span class="night-plane night-plane-back"></span>
-    <span class="night-plane night-plane-front"></span>
     <span class="night-light-pass"></span>
   </div>
   <div class="night-signal" aria-hidden="true">
@@ -53,32 +51,29 @@ const { projectCount, agentCount } = Astro.props;
   </div>
 </section>
 <style>
-  .night-hero{position:relative;isolation:isolate;min-height:min(920px,100svh);background:#090b0c;color:#f0eee7;overflow:hidden}
+  .night-hero{position:relative;isolation:isolate;min-height:min(920px,100svh);color:var(--text);overflow:hidden}
   .night-architecture{position:absolute;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
-  .night-plane{position:absolute;inset:0;background:#101416}
-  .night-plane-back{clip-path:polygon(71% 0,100% 0,100% 100%,43% 100%);background:linear-gradient(125deg,#202626,#101416 65%)}
-  .night-plane-front{clip-path:polygon(100% 28%,100% 100%,65% 100%);background:linear-gradient(140deg,#1d2424,#0b0f10 75%)}
   .night-light-pass{position:absolute;inset:-50%;opacity:0;background:linear-gradient(110deg,transparent 46%,#d7b46a0d 49%,#d7b46a16 50%,transparent 54%);transform:translateX(35%)}
   .night-signal{position:absolute;top:24%;right:max(var(--gutter),calc((100vw - 1440px)/2 + var(--gutter)));width:min(42vw,580px);pointer-events:none}
-  .signal-topline{display:flex;justify-content:space-between;gap:16px;border-top:1px solid #ffffff1c;padding-top:14px;font:8px var(--font-mono);letter-spacing:.12em;color:#929a9b}
+  .signal-topline{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:14px;font:8px var(--font-mono);letter-spacing:.12em;color:var(--text-faint)}
   .signal-emblem{width:100%;height:auto;overflow:visible;margin-block:24px}
   .signal-caption{display:flex;align-items:end;justify-content:space-between;gap:16px;padding:0 5%}
-  .signal-caption>span:first-child{font:500 clamp(20px,2vw,28px)/1.3 var(--font-display);letter-spacing:-.025em;color:#c9ccc5}.signal-caption em{font-style:normal;color:#d7b46a}
-  .signal-caption>span:last-child{font:8px/1.8 var(--font-mono);letter-spacing:.12em;text-align:right;color:#929a9b}
+  .signal-caption>span:first-child{font:500 clamp(20px,2vw,28px)/1.3 var(--font-display);letter-spacing:-.025em;color:var(--text)}.signal-caption em{font-style:normal;color:var(--accent)}
+  .signal-caption>span:last-child{font:8px/1.8 var(--font-mono);letter-spacing:.12em;text-align:right;color:var(--text-faint)}
   .night-composition{min-height:min(920px,100svh);display:flex;flex-direction:column;position:relative;padding-top:clamp(140px,18vh,200px)}
   .night-intro{max-width:760px;padding-bottom:85px}
-  .night-eyebrow{display:flex;align-items:center;gap:13px;font-family:var(--font-mono);font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:#d7b46a;margin-bottom:30px}
+  .night-eyebrow{display:flex;align-items:center;gap:13px;font-family:var(--font-mono);font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:var(--accent);margin-bottom:30px}
   .night-eyebrow>span{width:24px;height:1px;background:currentColor}
-  .night-name{color:#f0eee7;font-family:var(--font-display);font-variation-settings:"wdth" 78;font-weight:750;font-size:clamp(4rem,7.6vw,7.4rem);line-height:.91;letter-spacing:-.055em;text-transform:uppercase;margin-left:-.035em}
-  .night-name>span{display:block;color:#d7b46a}.name-period{color:#f0eee7}
-  .night-profession{font-size:clamp(1rem,1.35vw,1.2rem);line-height:1.6;margin-top:30px;font-weight:550}.night-profession>span{color:#c4c5c4}
-  .night-description{font-size:15px;line-height:1.75;max-width:43ch;color:#b8bcbf;margin-top:16px}
-  .night-actions{display:flex;align-items:center;gap:28px;margin-top:30px}.night-actions .btn{background:#d7b46a;color:#10110e;border-color:#d7b46a;font-size:13px;gap:25px;min-height:50px}.night-actions .btn:hover{background:#edcc8b}
-  .night-resume{display:flex;gap:20px;align-items:center;min-height:44px;font-size:13px;color:#e0dfd9}.night-resume:hover{color:#d7b46a}
-  .night-bottom{margin-top:auto;padding:27px 0 28px;border-top:1px solid #ffffff26;display:flex;align-items:center;justify-content:space-between;gap:30px}
-  .night-availability{display:flex;gap:13px;align-items:center;font-size:12px}.night-availability small{display:block;color:#9da6ab;font-size:10px;margin-top:6px}.night-availability>span:last-child{margin-left:15px;color:#d7b46a}.availability-dot{height:6px;width:6px;background:#d7b46a;border-radius:50%;box-shadow:0 0 0 4px #d7b46a15}
-  .night-facts{display:flex;gap:45px}.night-facts>div{display:flex;flex-direction:column-reverse;gap:4px}.night-facts dd{font-size:26px;font-family:var(--font-display);line-height:1;font-weight:550}.night-facts dt{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:#9da6ab}
-  .night-scroll{display:flex;align-items:center;gap:22px;font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#aeb3b6}.night-scroll>span:last-child{font-size:24px;color:#d7b46a}
+  .night-name{color:var(--text);font-family:var(--font-display);font-variation-settings:"wdth" 78;font-weight:750;font-size:clamp(4rem,7.6vw,7.4rem);line-height:.91;letter-spacing:-.055em;text-transform:uppercase;margin-left:-.035em}
+  .night-name>span{display:block;color:var(--accent)}.name-period{color:var(--text)}
+  .night-profession{font-size:clamp(1rem,1.35vw,1.2rem);line-height:1.6;margin-top:30px;font-weight:550}.night-profession>span{color:var(--text-dim)}
+  .night-description{font-size:15px;line-height:1.75;max-width:43ch;color:var(--text-dim);margin-top:16px}
+  .night-actions{display:flex;align-items:center;gap:28px;margin-top:30px}.night-actions .btn{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-size:13px;gap:25px;min-height:50px}.night-actions .btn:hover{background:var(--btn-primary-hover)}
+  .night-resume{display:flex;gap:20px;align-items:center;min-height:44px;font-size:13px;color:var(--text)}.night-resume:hover{color:var(--accent)}
+  .night-bottom{margin-top:auto;padding:27px 0 28px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:30px}
+  .night-availability{display:flex;gap:13px;align-items:center;font-size:12px}.night-availability small{display:block;color:var(--text-dim);font-size:10px;margin-top:6px}.night-availability>span:last-child{margin-left:15px;color:var(--accent)}.availability-dot{height:6px;width:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 4px var(--accent-wash)}
+  .night-facts{display:flex;gap:45px}.night-facts>div{display:flex;flex-direction:column-reverse;gap:4px}.night-facts dd{font-size:26px;font-family:var(--font-display);line-height:1;font-weight:550}.night-facts dt{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:var(--text-dim)}
+  .night-scroll{display:flex;align-items:center;gap:22px;font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim)}.night-scroll>span:last-child{font-size:24px;color:var(--accent)}
   @media(prefers-reduced-motion:no-preference){
     .night-signal{animation:signal-arrive 1200ms var(--ease) 180ms both}
     .signal-outline{stroke-dasharray:1800;stroke-dashoffset:0;animation:signal-trace 1800ms var(--ease) 200ms both}
@@ -92,7 +87,7 @@ const { projectCount, agentCount } = Astro.props;
   @keyframes light-pass{0%{opacity:0;transform:translateX(-35%)}35%,65%{opacity:1}100%{opacity:0;transform:translateX(35%)}}
   @media(max-width:1100px){.signal-topline>span:last-child{display:none}.night-signal{width:37vw;top:29%}.signal-caption>span:last-child{display:none}}
   @media(max-width:1000px){.night-scroll{display:none}.night-name{font-size:clamp(4rem,9vw,6rem)}}
-  @media(max-width:760px){.night-signal{top:85px;right:var(--gutter);width:120px}.signal-emblem{margin:0}.signal-topline,.signal-caption,.signal-guide{display:none}.night-plane-back{clip-path:polygon(100% 0,100% 100%,48% 100%)}.night-plane-front{opacity:.5}}
+  @media(max-width:760px){.night-signal{top:85px;right:var(--gutter);width:120px}.signal-emblem{margin:0}.signal-topline,.signal-caption,.signal-guide{display:none}}
   @media(max-width:640px){.night-hero,.night-composition{min-height:max(800px,100svh)}.night-composition{padding-top:165px}.night-intro{padding-bottom:55px}.night-name{font-size:clamp(3.3rem,13vw,5rem)}.night-eyebrow{font-size:8px;letter-spacing:.12em;margin-bottom:26px;gap:8px}.night-profession{font-size:14px}.night-description{font-size:14px;max-width:34ch}.night-actions{gap:22px}.night-actions .btn{padding-inline:16px;font-size:12px;gap:18px}.night-resume{font-size:12px;gap:10px}.night-bottom{align-items:flex-start;flex-direction:column;gap:25px;padding-top:22px}.night-facts{width:100%;justify-content:space-between;gap:20px}.night-facts dd{font-size:24px}.night-facts dt{font-size:8px}.night-availability{font-size:11px}.night-availability small{font-size:9px}}
   @media(max-width:359px){.night-actions{gap:18px}.night-actions .btn{font-size:11px;padding-inline:12px;gap:12px;white-space:nowrap}.night-resume{font-size:11px;gap:6px;white-space:nowrap}}
   @media(forced-colors:active){.night-architecture,.night-signal{display:none}.night-hero,.night-name,.night-name>span,.night-profession>span,.night-description{color:CanvasText;background:Canvas}.night-eyebrow,.night-resume,.night-availability,.night-facts dt{color:CanvasText}}

@@ -13,9 +13,24 @@ The portfolio leads with an architectural charcoal backdrop and a faceted bat em
 
 ## Implementation
 
-The site stays static-first Astro. Existing Archivo and Instrument Sans fonts remain self-hosted. The hero no longer imports or requests the city artwork. Its replacement uses CSS planes and an inline SVG emblem. Homepage behavior uses small native scripts, and all projects and agent panels remain accessible without JavaScript.
+The site stays static-first Astro. Existing Archivo and Instrument Sans fonts remain self-hosted. The hero no longer imports or requests the city artwork. A shared CSS backdrop carries angular charcoal planes through every section and the footer, while an inline SVG emblem anchors the hero. Homepage behavior uses small native scripts, and all projects and agent panels remain accessible without JavaScript.
 
 Anime.js, shadcn/ui, Uiverse and 21st.dev were evaluated. The existing native disclosures, Astro components and CSS transitions fit this build without adding a client framework or animation dependency. Reduced-motion and forced-colors fallbacks remain in place.
+
+## Background continuity, 14 October 2026
+
+- Removed the rain, drifting fog, skyline silhouettes and separate section lighting. One fixed architectural backdrop now sits behind the full page, including the footer and inner routes.
+- Section boundaries use thin rules. Project cards, demo previews and controls keep their own surfaces so they remain easy to distinguish.
+- The backdrop is static. Existing short entrances, emblem tracing and hover feedback remain; no continuous weather animation runs behind the text.
+- The light theme uses the same angled structure in warm paper tones. Hero text and buttons now follow the shared theme colors. Small metadata colors were adjusted to maintain contrast on the folds.
+- The backdrop is hidden from assistive technology, ignores pointer input and disappears in forced-colors and print modes. It adds no image request, script or dependency.
+
+### Continuity verification
+
+- Build passes: 49 Astro files checked without diagnostics and 21 pages generated. Lint, all eight existing tests and SEO checks pass.
+- All 21 generated portfolio pages contain exactly one shared backdrop and no rain, fog, skyline or old city-image reference. Homepage order remains Hero, About, Work, then AI Agents.
+- Browser checks cover the desktop hero, About, projects, AI Agents, Contact and footer, plus the ClinicFlow case study. Dark and light themes were inspected at desktop and narrow widths, including 320px and 390px layouts. Captured browser logs are clear.
+- Source review covers layering, reduced motion, forced colors and print. The lowest checked text contrast on the backdrop folds is 4.59:1. Preference emulation and physical devices were not retested.
 
 ## Motion refinement, 14 October 2026
 
@@ -31,7 +46,7 @@ Anime.js, shadcn/ui, Uiverse and 21st.dev were evaluated. The existing native di
 - `npm run lint`, all eight existing tests and `npm run qa:seo` pass.
 - Built homepage contains the inline emblem and no reference to `gotham-night`.
 - Browser views checked at 320, 390, 768 and 1440 pixels, plus the default desktop viewport. Project filtering returns seven live builds; the mobile menu closes with Escape and restores focus; arrow-key selection activates Alfred's panel.
-- Both themes checked. The hero name now keeps its light color against the charcoal background when the surrounding site uses the light theme. Captured browser logs contain no warnings or errors.
+- Both themes checked at this stage. The hero initially kept its light name against a charcoal background in either theme; the later background-continuity update above replaces that treatment. Captured browser logs contained no warnings or errors.
 - Reduced-motion, high-contrast and JavaScript-free fallbacks reviewed in source. These preferences were not emulated in the browser. No physical-device testing was performed.
 
 ## Original rebrand verification, 24 September 2026

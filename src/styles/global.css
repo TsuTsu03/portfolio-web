@@ -44,11 +44,10 @@
   --line-strong: #394046;
   --line-control: #5c656d;
 
-  /* Text. --text-faint is the floor: 5:1 on ink, so it can still carry
-     small metadata without dropping below AA. */
+  /* Text. Keep small metadata readable on both the base and raised folds. */
   --text: #eceae4;
   --text-dim: #9ba6ae;
-  --text-faint: #79838c;
+  --text-faint: #818b94;
 
   /* One accent. Warmth, attention, action — used sparingly. */
   --accent: #d7b46a;
@@ -75,18 +74,8 @@
   --hero-shadow: rgb(0 0 0 / 0.52);
   --rule-ghost: 150 165 178;
   --ghost-type: rgb(155 166 174 / 0.04);
-  --zone-cool: rgb(108 149 174 / 0.035);
-  --zone-warm: rgb(224 160 92 / 0.026);
-  --zone-sweep: rgb(104 130 146 / 0.022);
-  --atmo-tint: radial-gradient(55rem 42rem at 78% 18%, rgb(60 91 111 / 0.1), transparent 72%),
-    linear-gradient(to bottom, rgb(5 8 12 / 0.2), transparent 48%);
-  --atmo-rain: rgb(170 205 224 / 0.46);
-  --atmo-rain-opacity: 0.085;
-  --atmo-fog: rgb(108 137 153 / 0.055);
-  --atmo-sky-near: #040608;
-  --atmo-sky-mid: #05080a;
-  --atmo-sky-far: #070a0d;
-  --atmo-sky-opacity: 0.26;
+  --backdrop-plane: #101416;
+  --backdrop-fold: #151b1d;
   --shaft-core: rgb(224 160 92 / 0.12);
   --shaft-edge: rgb(224 160 92 / 0.06);
   --project-light: rgb(154 197 222 / 0.16);
@@ -110,11 +99,10 @@
   --line-strong: #b5ad9b;
   --line-control: #7a7364;
 
-  /* Same contrast floors as the night theme, measured against this ground:
-     text 14.6:1, dim 6.9:1, faint 5:1, accent 5.3:1, controls 4:1. */
+  /* Small text also needs contrast against the darker architectural folds. */
   --text: #191b1d;
   --text-dim: #4a5055;
-  --text-faint: #5f656a;
+  --text-faint: #595f64;
 
   /* Brass rather than tungsten. The night accent is far too pale to survive
      on paper — it lands at 1.5:1 — so the same warmth is taken down until it
@@ -139,18 +127,8 @@
   --hero-shadow: rgb(74 66 52 / 0.16);
   --rule-ghost: 96 92 80;
   --ghost-type: rgb(70 66 56 / 0.05);
-  --zone-cool: rgb(74 108 132 / 0.05);
-  --zone-warm: rgb(139 84 16 / 0.04);
-  --zone-sweep: rgb(90 106 118 / 0.035);
-  --atmo-tint: radial-gradient(55rem 42rem at 78% 18%, rgb(212 195 160 / 0.28), transparent 72%),
-    linear-gradient(to bottom, rgb(255 252 244 / 0.4), transparent 46%);
-  --atmo-rain: rgb(120 128 134 / 0.34);
-  --atmo-rain-opacity: 0.05;
-  --atmo-fog: rgb(255 250 238 / 0.5);
-  --atmo-sky-near: #c9c3b4;
-  --atmo-sky-mid: #d2ccbd;
-  --atmo-sky-far: #dad4c6;
-  --atmo-sky-opacity: 0.4;
+  --backdrop-plane: #e8e4d9;
+  --backdrop-fold: #e2ddcf;
   --shaft-core: rgb(255 236 196 / 0.5);
   --shaft-edge: rgb(255 240 208 / 0.22);
   --project-light: rgb(56 74 92 / 0.13);
@@ -294,7 +272,7 @@
 
   @media (forced-colors: active) {
     .grain,
-    .atmosphere,
+    .site-backdrop,
     .wash-warm,
     .wash-cool,
     .project-glow,
@@ -408,25 +386,6 @@
   .section {
     position: relative;
     padding-block: clamp(4.5rem, 9vw, 8.5rem);
-  }
-
-  /* Static lighting zones stop the long page reading as one flat black plane.
-     They change temperature by chapter without adding DOM or moving layers. */
-  main > section:nth-of-type(3n + 1) {
-    background-image: radial-gradient(52rem 34rem at 88% 22%, var(--zone-cool), transparent 72%);
-  }
-
-  main > section:nth-of-type(3n + 2) {
-    background-image: radial-gradient(48rem 32rem at 12% 54%, var(--zone-warm), transparent 74%);
-  }
-
-  main > section:nth-of-type(3n) {
-    background-image: linear-gradient(
-      105deg,
-      transparent 0 42%,
-      var(--zone-sweep) 56%,
-      transparent 76%
-    );
   }
 
   /* A hairline that starts at the gutter rather than the viewport edge,
@@ -904,100 +863,35 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.5'/></svg>");
   }
 
-  /* Fixed city weather: one rain plane, two drifting fog banks and a static
-     skyline. Content stays in the semantic document above this layer. */
-  .atmosphere {
+  /* One static architectural backdrop shared by every section and footer.
+     Broad folds echo the bat emblem without moving behind readable content. */
+  .site-backdrop {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    background: var(--atmo-tint);
+    background: var(--ink);
   }
 
-  .atmosphere-rain {
+  .backdrop-plane {
     position: absolute;
-    inset: -24% -12%;
-    opacity: var(--atmo-rain-opacity);
-    background-image: repeating-linear-gradient(
-      106deg,
-      transparent 0 28px,
-      var(--atmo-rain) 29px 30px,
-      transparent 31px 58px
-    );
-    background-size: 220px 340px;
-    transform: translate3d(0, -10%, 0);
-    animation: rain-fall 9s linear infinite;
-    will-change: transform;
+    inset: 0;
   }
 
-  /*
-    A blurred, animated element is re-blurred every frame on most phone
-    GPUs, and this one is fixed and full-width — the single biggest cause
-    of the scroll stutter on Android. The mobile block near the end of this
-    file swaps the filter for a pre-feathered gradient, which costs nothing
-    and looks the same at this opacity.
-  */
-  .atmosphere-fog {
-    position: absolute;
-    width: min(68rem, 88vw);
-    height: 18rem;
-    border-radius: 50%;
-    filter: blur(56px);
-    background: var(--atmo-fog);
-    will-change: transform, opacity;
+  .backdrop-plane-back {
+    clip-path: polygon(71% 0, 100% 0, 100% 100%, 43% 100%);
+    background: linear-gradient(125deg, var(--backdrop-fold), var(--backdrop-plane) 65%);
   }
 
-  .atmosphere-fog-a {
-    left: -20rem;
-    top: 26%;
-    animation: fog-drift-a 24s ease-in-out infinite alternate;
+  .backdrop-plane-front {
+    clip-path: polygon(100% 28%, 100% 100%, 65% 100%);
+    background: linear-gradient(140deg, var(--backdrop-fold), var(--ink) 75%);
   }
 
-  .atmosphere-fog-b {
-    right: -24rem;
-    top: 63%;
-    opacity: 0.7;
-    animation: fog-drift-b 31s ease-in-out infinite alternate;
-  }
-
-  .atmosphere-skyline {
-    position: absolute;
-    inset: auto 0 0;
-    height: min(18rem, 28vh);
-    opacity: var(--atmo-sky-opacity);
-    background:
-      linear-gradient(to top, var(--atmo-sky-near) 0 30%, transparent 30%) 0 100% / 100% 100%
-        no-repeat,
-      repeating-linear-gradient(90deg, var(--atmo-sky-mid) 0 5vw, transparent 5vw 7vw) 0 100% / 100%
-        55% no-repeat,
-      repeating-linear-gradient(
-          90deg,
-          transparent 0 3vw,
-          var(--atmo-sky-far) 3vw 8vw,
-          transparent 8vw 12vw
-        )
-        0 100% / 100% 78% no-repeat;
-    mask-image: linear-gradient(to top, black 0 36%, transparent 100%);
-  }
-
-  @keyframes rain-fall {
-    to {
-      transform: translate3d(7%, 12%, 0);
-    }
-  }
-
-  @keyframes fog-drift-a {
-    to {
-      transform: translate3d(18vw, -2rem, 0) scale(1.08);
-      opacity: 0.78;
-    }
-  }
-
-  @keyframes fog-drift-b {
-    to {
-      transform: translate3d(-16vw, 2rem, 0) scale(0.94);
-      opacity: 0.5;
+  @media (max-width: 760px) {
+    .backdrop-plane-back {
+      clip-path: polygon(100% 0, 100% 100%, 48% 100%);
     }
   }
 
@@ -1779,17 +1673,6 @@
     overflow: hidden;
   }
 
-  .case-study::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    z-index: -1;
-    height: min(54rem, 82vh);
-    background:
-      linear-gradient(108deg, transparent 36%, var(--zone-sweep) 36.1% 36.2%, transparent 36.3%),
-      radial-gradient(54rem 42rem at 88% 12%, var(--glow-cool), transparent 72%);
-  }
-
   .case-hero {
     position: relative;
   }
@@ -1949,37 +1832,6 @@
   }
 }
 
-/* ============================================================
-   MOBILE ATMOSPHERE BUDGET
-
-   Everything below is about frame rate, not looks.
-
-   The desktop atmosphere spends its budget on two blur filters and a
-   backdrop filter, all of them full-width and all of them re-evaluated
-   while the page scrolls. A laptop absorbs that. A phone does not: the
-   compositor drops frames, and the first thing a dropped frame kills is
-   the reveal transitions, which is why the motion looked broken on a
-   handset rather than merely reduced.
-
-   So the two blurs become pre-feathered gradients — a radial ramp is
-   painted once and then only translated, which the GPU does for free —
-   and the fixed layers give up the effects they cannot afford. The
-   composition survives; the cost does not.
-   ============================================================ */
-
-@media (max-width: 767px) {
-  .atmosphere-fog-b,
-  .atmosphere-skyline {
-    display: none;
-  }
-
-  .atmosphere-fog {
-    filter: none;
-    border-radius: 0;
-    background: radial-gradient(closest-side, var(--atmo-fog), transparent 100%);
-  }
-}
-
 /*
   Coarse pointer rather than narrow viewport: a large tablet is wide but
   still runs a phone-class GPU, and it is the hardware that cannot pay for
@@ -2025,12 +1877,6 @@
     animation: none;
   }
 
-  .atmosphere-rain,
-  .atmosphere-fog {
-    animation: none;
-    will-change: auto;
-  }
-
   .hero-bat,
   .hero-bat svg {
     animation: none;
@@ -2055,7 +1901,7 @@
 
   .site-header,
   body > .grain,
-  body > .atmosphere,
+  body > .site-backdrop,
   .top-sentinel,
   .resume-screen-only,
   body > footer {
