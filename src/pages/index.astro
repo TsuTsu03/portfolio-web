@@ -54,12 +54,12 @@ const jsonLd = [
 ];
 ---
 
-{/* Lead with identity and inspectable work, then explain the person and process. */}
+{/* Introduce the person before presenting projects and agent demos. */}
 <BaseLayout path="/" jsonLd={jsonLd}>
   <Hero projectCount={entries.length} agentCount={agents.length} />
+  <About />
   <Work entries={entries} />
   <Agents />
-  <About />
   <Capabilities />
   <Approach />
   <Insights entries={insights} />

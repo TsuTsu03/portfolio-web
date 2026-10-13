@@ -125,9 +125,9 @@ export const audiences = [
  * page, so renaming one here moves the link and the target together.
  */
 export const navItems = [
+  { id: "about", label: "About", accessibleName: "who Den is and how he works" },
   { id: "work", label: "Work", accessibleName: "selected projects and case studies" },
   { id: "agents", label: "AI Agents", accessibleName: "interactive AI agent demos" },
-  { id: "about", label: "About", accessibleName: "who Den is and how he works" },
   { id: "contact", label: "Contact", accessibleName: "email, phone and profiles" },
 ] as const;
 

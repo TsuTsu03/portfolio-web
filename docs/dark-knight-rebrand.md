@@ -1,9 +1,10 @@
 # Dark Knight portfolio rebrand
 
-The portfolio leads with an architectural charcoal backdrop and a faceted bat emblem, followed by a browsable project gallery and interactive agent showcase. The design uses aged gold, condensed typography and square edges. Den Jansen Flores remains the primary identity in headings, metadata and structured data; DenForge is the visual wordmark.
+The portfolio leads with an architectural charcoal backdrop and a faceted bat emblem. About follows the hero, before the project gallery and interactive agent showcase. The design uses aged gold, condensed typography and square edges. Den Jansen Flores remains the primary identity in headings, metadata and structured data; DenForge is the visual wordmark.
 
 ## Visitor experience
 
+- Homepage sections and navigation introduce About before Work and AI Agents. Section numbers follow the same order.
 - Project filters show all work, deployed builds or projects with public source. Counts come from the existing collection.
 - Agent tabs expose Mara, Alfred and AI Front Desk, with links to their existing fictional-data demos. Arrow keys, Home and End move between tabs.
 - About retains the original photograph and reversible manga interaction. Capabilities and engineering principles use native disclosures.
