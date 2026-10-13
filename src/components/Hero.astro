@@ -10,7 +10,7 @@ const { projectCount, agentCount } = Astro.props;
   </div>
   <div class="night-signal" aria-hidden="true">
     <div class="signal-topline"><span>DF / ENGINEERING</span><span>DESIGN / BUILD / REFINE</span></div>
-    <svg class="signal-emblem" viewBox="0 70 600 320" fill="none" focusable="false">
+    <svg class="signal-emblem signal-night" viewBox="0 70 600 320" fill="none" focusable="false">
       <defs>
         <linearGradient id="signal-metal" x1="130" y1="130" x2="450" y2="340" gradientUnits="userSpaceOnUse">
           <stop stop-color="#62645d" /><stop offset=".38" stop-color="#292f30" /><stop offset=".7" stop-color="#111719" /><stop offset="1" stop-color="#42443b" />
@@ -26,7 +26,15 @@ const { projectCount, agentCount } = Astro.props;
       <path d="M60 152L225 218L300 318L375 218L540 152M225 218L265 205M375 218L335 205M300 204V318" stroke="url(#signal-edge)" stroke-opacity=".36" />
       <path d="M36 132V118H50M550 118H564V132M36 340V354H50M550 354H564V340" stroke="#d7b46a" stroke-opacity=".65" />
     </svg>
-    <div class="signal-caption"><span>After dark.<br /><em>In focus.</em></span><span>THE DENFORGE PORTFOLIO<br />SOFTWARE / SYSTEMS / AI</span></div>
+    <svg class="signal-emblem signal-day" viewBox="0 70 600 320" fill="none" focusable="false">
+      <path d="M36 118H564M36 354H564M124 86V386M476 86V386" stroke="var(--line)" />
+      <path d="M152 110H448V354H152Z" fill="var(--ink-deep)" />
+      <path d="M140 98H436V342H140Z" fill="var(--surface)" stroke="var(--line-strong)" />
+      <path d="M140 98H436M140 98V342" stroke="var(--accent)" />
+      <text class="signal-monogram" x="280" y="274" text-anchor="middle" fill="var(--text)">DF<tspan fill="var(--accent)">.</tspan></text>
+      <path d="M172 310H218M358 130H404" stroke="var(--accent)" />
+    </svg>
+    <div class="signal-caption"><span><span class="signal-night">After dark.<br /><em>In focus.</em></span><span class="signal-day">Clarity.<br /><em>By design.</em></span></span><span>THE DENFORGE PORTFOLIO<br />SOFTWARE / SYSTEMS / AI</span></div>
   </div>
   <div class="shell night-composition">
     <div class="night-intro">
@@ -53,10 +61,14 @@ const { projectCount, agentCount } = Astro.props;
 <style>
   .night-hero{position:relative;isolation:isolate;min-height:min(920px,100svh);color:var(--text);overflow:hidden}
   .night-architecture{position:absolute;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
-  .night-light-pass{position:absolute;inset:-50%;opacity:0;background:linear-gradient(110deg,transparent 46%,#d7b46a0d 49%,#d7b46a16 50%,transparent 54%);transform:translateX(35%)}
+  .night-light-pass{position:absolute;inset:-50%;opacity:0;background:linear-gradient(110deg,transparent 46%,var(--accent-wash) 50%,transparent 54%);transform:translateX(35%)}
   .night-signal{position:absolute;top:24%;right:max(var(--gutter),calc((100vw - 1440px)/2 + var(--gutter)));width:min(42vw,580px);pointer-events:none}
   .signal-topline{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:14px;font:8px var(--font-mono);letter-spacing:.12em;color:var(--text-faint)}
   .signal-emblem{width:100%;height:auto;overflow:visible;margin-block:24px}
+  .signal-day{display:none}
+  .signal-monogram{font-family:var(--font-display);font-size:172px;font-weight:600;letter-spacing:-12px}
+  :global(:root[data-theme="light"]) .signal-night{display:none}
+  :global(:root[data-theme="light"]) .signal-day{display:block}
   .signal-caption{display:flex;align-items:end;justify-content:space-between;gap:16px;padding:0 5%}
   .signal-caption>span:first-child{font:500 clamp(20px,2vw,28px)/1.3 var(--font-display);letter-spacing:-.025em;color:var(--text)}.signal-caption em{font-style:normal;color:var(--accent)}
   .signal-caption>span:last-child{font:8px/1.8 var(--font-mono);letter-spacing:.12em;text-align:right;color:var(--text-faint)}

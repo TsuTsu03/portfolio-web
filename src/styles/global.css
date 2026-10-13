@@ -12,8 +12,8 @@
    graphite ink, brass — and is entered only when the visitor asks for
    it, so the night identity is what a first visit shows.
 
-   Every colour on the site resolves through these; nothing is
-   hard-coded in markup.
+   Interface colors resolve through these tokens. Project imagery and the
+   decorative night emblem retain their own artwork colors.
    ============================================================ */
 
 :root {
@@ -107,19 +107,19 @@
   /* Brass rather than tungsten. The night accent is far too pale to survive
      on paper — it lands at 1.5:1 — so the same warmth is taken down until it
      carries body text safely. */
-  --accent: #8b5410;
-  --accent-deep: #6d400b;
-  --accent-wash: rgb(139 84 16 / 0.09);
-  --accent-edge: rgb(139 84 16 / 0.42);
+  --accent: #795824;
+  --accent-deep: #604317;
+  --accent-wash: rgb(121 88 36 / 0.07);
+  --accent-edge: rgb(121 88 36 / 0.42);
   --on-accent: #fbf8f2;
 
-  --glow-warm: rgb(139 84 16 / 0.07);
+  --glow-warm: rgb(121 88 36 / 0.07);
   --glow-cool: rgb(74 108 132 / 0.07);
 
   --header-bg: rgb(239 236 228 / 0.84);
   --header-bg-scrolled: rgb(243 240 233 / 0.95);
   --header-bg-solid: rgb(243 240 233 / 0.98);
-  --btn-primary-hover: #6d400b;
+  --btn-primary-hover: #604317;
 
   --blend-light: multiply;
   --grain-opacity: 0.026;

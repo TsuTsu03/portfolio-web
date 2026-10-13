@@ -70,6 +70,7 @@ const onHome = path === "/";
         class="theme-toggle"
         data-theme-toggle
         aria-label="Switch to light theme"
+        title="Bruce Wayne · Light mode"
       >
         <Icon name="sun" class="icon-sun h-[1.15rem] w-[1.15rem]" />
         <Icon name="moon" class="icon-moon h-[1.15rem] w-[1.15rem]" />
@@ -159,6 +160,7 @@ const onHome = path === "/";
     const light = root.getAttribute("data-theme") === "light";
     toggles.forEach((button) => {
       button.setAttribute("aria-label", light ? "Switch to dark theme" : "Switch to light theme");
+      button.setAttribute("title", light ? "The Dark Knight · Dark mode" : "Bruce Wayne · Light mode");
     });
     if (chrome) chrome.content = groundColor();
   };

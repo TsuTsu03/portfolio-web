@@ -13,9 +13,25 @@ The portfolio leads with an architectural charcoal backdrop and a faceted bat em
 
 ## Implementation
 
-The site stays static-first Astro. Existing Archivo and Instrument Sans fonts remain self-hosted. The hero no longer imports or requests the city artwork. A shared CSS backdrop carries angular charcoal planes through every section and the footer, while an inline SVG emblem anchors the hero. Homepage behavior uses small native scripts, and all projects and agent panels remain accessible without JavaScript.
+The site stays static-first Astro. Existing Archivo and Instrument Sans fonts remain self-hosted. The hero no longer imports or requests the city artwork. A shared CSS backdrop carries architectural planes through every section and the footer. The hero uses a bat emblem at night and a personal monogram by day, both inline SVG. Homepage behavior uses small native scripts, and all projects and agent panels remain accessible without JavaScript.
 
 Anime.js, shadcn/ui, Uiverse and 21st.dev were evaluated. The existing native disclosures, Astro components and CSS transitions fit this build without adding a client framework or animation dependency. Reduced-motion and forced-colors fallbacks remain in place.
+
+## Batman and Bruce Wayne themes, 14 October 2026
+
+- Dark is explicitly rendered in the initial HTML. New visits, missing preferences and unavailable or invalid browser storage all use dark mode. A visitor's valid saved choice is applied before the first paint and survives navigation and reloads.
+- Dark mode keeps the Dark Knight direction: charcoal folds, gunmetal, warm gold and a faceted bat emblem.
+- Light mode takes the Bruce Wayne direction: warm ivory, graphite, muted brass and a framed DF monogram. Its decorative caption reads "Clarity. By design." Theme-switch tooltips name the destination while accessible labels continue to describe the light/dark action.
+- Shared colors cover the header, every homepage section, controls, cards, footer and inner pages. Project screenshots retain their source artwork. The hero light pass now uses the active theme's accent.
+- Theme artwork is decorative and changes through CSS without changing page content or layout. Existing motion and forced-colors safeguards cover both versions.
+
+### Theme verification
+
+- Build, lint, eight existing tests and SEO checks pass. Build checks 49 Astro files without diagnostics and generates 21 pages.
+- A script exercised the actual initialization code with missing, invalid, dark, light and blocked storage. All five cases passed; an operating-system light preference does not change the default.
+- Browser checks cover every homepage section in light mode, project filtering, agent selection and the mobile menu. Saved light mode survives the ClinicFlow route and reload; switching back restores the bat artwork and dark choice after reload.
+- Desktop, 390px and 320px layouts have no measured horizontal overflow. Light accent contrast is 4.79:1 on the darkest backdrop fold; text on the filled button is 6.13:1.
+- Read-only source review found no actionable issues. Physical devices and forced-colors/reduced-motion emulation were not retested.
 
 ## Background continuity, 14 October 2026
 
