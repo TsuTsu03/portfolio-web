@@ -435,8 +435,8 @@ export function projectNode(
   return {
     "@type": "SoftwareApplication",
     ...base,
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web browser",
+    applicationCategory: data.category === "Mobile" ? "MobileApplication" : "BusinessApplication",
+    operatingSystem: data.category === "Mobile" ? "Android, iOS" : "Web browser",
     applicationSubCategory: data.category,
   };
 }

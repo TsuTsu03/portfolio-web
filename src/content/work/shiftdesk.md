@@ -39,7 +39,7 @@ repositoryUrl: "https://github.com/TsuTsu03/employee-ticketing-system"
 repositoryVisibility: "public"
 status: "Deployed"
 featured: true
-order: 5
+order: 7
 lastVerified: 2026-08-15
 ---
 

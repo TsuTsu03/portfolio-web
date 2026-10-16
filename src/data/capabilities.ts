@@ -126,6 +126,38 @@ export const capabilityGroups: CapabilityGroup[] = [
     ],
   },
   {
+    id: "mobile",
+    title: "Mobile application development",
+    role: "The same product thinking, on the screen people actually carry.",
+    items: [
+      {
+        name: "React Native and Expo",
+        proof: "A study app for Android and iOS: Expo Router navigation, NativeWind interface system and a release pipeline that runs type checks, tests, Expo Doctor and clean platform exports.",
+        provenBy: ["Kwagi"],
+      },
+      {
+        name: "Flutter and Dart",
+        proof: "A camera field guide for Android and iOS with Riverpod state, go_router navigation, light and dark themes and platform text-to-speech narration.",
+        provenBy: ["Tuklas"],
+      },
+      {
+        name: "Offline-first mobile storage",
+        proof: "A local SQLite schema with versioned migrations, so notes, cards and review history survive without an account or a network.",
+        provenBy: ["Kwagi"],
+      },
+      {
+        name: "Device camera and media pipelines",
+        proof: "Capture, gallery import, tap-to-focus and flash, with file type, size, orientation, resize and blur checks before a photo leaves the phone.",
+        provenBy: ["Tuklas"],
+      },
+      {
+        name: "Mobile release engineering",
+        proof: "EAS build profiles, store listing assets and a documented Google Play submission and rollback procedure. Neither app is published yet, so store release stays unproven here.",
+        provenBy: ["Kwagi"],
+      },
+    ],
+  },
+  {
     id: "ai",
     title: "AI-assisted workflows",
     role: "Models do useful work inside clear permissions, schemas and failure boundaries.",

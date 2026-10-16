@@ -1,0 +1,142 @@
+---
+import { Picture } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+interface Props { entries: CollectionEntry<"work">[] }
+const { entries } = Astro.props;
+---
+<section id="mobile" class="section rule-top mobile-section" aria-labelledby="mobile-heading">
+  <div class="shell">
+    <div class="section-heading-row">
+      <div><p class="section-label">03 / Mobile applications</p><h2 id="mobile-heading" class="display">Built for the<br /><span class="heading-muted">phone in hand.</span></h2></div>
+      <p class="section-intro">Android and iOS apps written with React Native and Expo, and with Flutter and Dart. Real camera work, on-device storage and behaviour that survives a dead signal.</p>
+    </div>
+    <div class="mobile-toolbar">
+      <ul class="mobile-stacks" aria-label="Mobile frameworks">
+        <li>React Native · Expo</li>
+        <li>Flutter · Dart</li>
+      </ul>
+      <p class="mobile-count"><span>{String(entries.length).padStart(2, "0")}</span> apps</p>
+    </div>
+    <div class="mobile-carousel" data-mobile-carousel>
+      <div class="mobile-stage">
+        <ul
+          id="mobile-track"
+          class="mobile-track"
+          data-carousel-track
+          tabindex="0"
+          role="group"
+          aria-roledescription="carousel"
+          aria-label="Mobile app projects. Scroll sideways to browse."
+        >
+          {entries.map((entry, index) => (
+            <li class="mobile-card" data-carousel-slide>
+              <a href={`/work/${entry.id}`} class="mobile-card-link">
+                <div class="mobile-shot">
+                  <Picture src={entry.data.screenshot} alt={entry.data.screenshotAlt} widths={[480, 800, 1200]} sizes="(min-width: 1000px) 420px, 85vw" formats={["avif", "webp"]} fallbackFormat="webp" loading="lazy" />
+                  <span class="mobile-platforms" aria-hidden="true">Android · iOS</span>
+                </div>
+                <div class="mobile-body">
+                  <div class="mobile-meta"><span>{entry.data.sector}</span><span>{String(index + 1).padStart(2, "0")}</span></div>
+                  <h3>{entry.data.shortTitle}<Icon name="arrow-up-right" class="mobile-arrow h-5 w-5 shrink-0" /></h3>
+                  <p>{entry.data.summary}</p>
+                  <ul class="mobile-stack" aria-label="Technologies">{entry.data.technologies.slice(0, 3).map((tech) => <li>{tech}</li>)}</ul>
+                  <div class="mobile-foot"><span class="mobile-status"><span></span>{entry.data.status}</span><span class="mobile-read">View case study <span aria-hidden="true">↗</span></span></div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="mobile-controls">
+        <div class="mobile-nav">
+          <button type="button" data-carousel-prev aria-label="Previous app" aria-controls="mobile-track">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="square" /></svg>
+          </button>
+          <button type="button" data-carousel-next aria-label="Next app" aria-controls="mobile-track">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="square" /></svg>
+          </button>
+        </div>
+        <div class="mobile-dots" role="group" aria-label="Jump to an app">
+          {entries.map((entry, index) => (
+            <button type="button" data-carousel-marker={index} aria-current={index === 0} aria-label={`Show ${entry.data.shortTitle}`}>{entry.data.shortTitle}</button>
+          ))}
+        </div>
+        <p class="mobile-position" role="status" aria-live="polite" data-carousel-status>1 of {entries.length}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import { initCarousel } from "../scripts/carousel";
+
+  const root = document.querySelector<HTMLElement>("[data-mobile-carousel]");
+  if (root) initCarousel(root);
+</script>
+<style>
+  .mobile-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:38px 0 10px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .mobile-stacks{display:flex;gap:8px;flex-wrap:wrap;list-style:none;margin:0;padding:0}
+  .mobile-stacks li{font:9px var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);padding:9px 12px;border:1px solid var(--line-strong)}
+  .mobile-count{white-space:nowrap;font:10px var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint)}.mobile-count span{color:var(--text)}
+
+  /*
+    Where the web carousel flattens its neighbours, this one turns them. Each
+    card is animated by its own position in the scroller, so the deck reads as
+    a row of handsets being turned towards you one at a time.
+  */
+  .mobile-stage{position:relative}
+  .mobile-track{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(300px,42%,520px);list-style:none;margin:0;padding:26px 0 30px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;perspective:1400px;perspective-origin:center}
+  .mobile-track::-webkit-scrollbar{display:none}
+  .mobile-track::before,.mobile-track::after{content:""}
+  .mobile-track:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+  .mobile-card{min-width:0;display:grid;scroll-snap-align:center;scroll-snap-stop:always;transform-style:preserve-3d}
+  .mobile-card-link{display:flex;flex-direction:column;height:100%;border:1px solid var(--line);background:var(--surface);transition:border-color 180ms}
+  .mobile-card:hover .mobile-card-link{border-color:var(--accent-edge)}
+
+  @supports (animation-timeline: view()){
+    .mobile-card{animation:mobile-turn linear both;animation-timeline:view(inline);animation-range:cover 0% cover 100%}
+  }
+  @keyframes mobile-turn{
+    0%{opacity:.25;transform:rotateY(34deg) scale(.78)}
+    38%{opacity:1;transform:rotateY(0deg) scale(1)}
+    62%{opacity:1;transform:rotateY(0deg) scale(1)}
+    100%{opacity:.25;transform:rotateY(-34deg) scale(.78)}
+  }
+
+  .mobile-shot{position:relative;background:var(--ink-deep);border-bottom:1px solid var(--line);padding:18px 18px 0}
+  .mobile-shot :global(img){display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:contain;object-position:center}
+  .mobile-platforms{display:block;padding:12px 2px;font:9px var(--font-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--text-faint);text-align:center}
+  .mobile-body{padding:24px 26px;flex:1;display:flex;flex-direction:column}
+  .mobile-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;color:var(--accent);font:9px var(--font-mono);text-transform:uppercase;letter-spacing:.1em}.mobile-meta>span:last-child{color:var(--text-faint)}
+  .mobile-body h3{display:flex;justify-content:space-between;align-items:center;gap:12px;font:650 clamp(1.5rem,2.3vw,2rem)/1.15 var(--font-display);letter-spacing:-.04em;margin-top:14px}
+  :global(.mobile-arrow){width:21px;height:21px;flex-shrink:0;color:var(--text-faint);transition:color 180ms,transform 180ms}.mobile-card-link:hover :global(.mobile-arrow){color:var(--accent);transform:translate(2px,-2px)}
+  .mobile-body>p{font-size:14px;line-height:1.7;color:var(--text-dim);margin-top:14px}
+  .mobile-stack{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0;list-style:none;padding:0}.mobile-stack li{font:9px var(--font-mono);color:var(--text-dim);padding:6px 8px;border:1px solid var(--line-strong)}
+  .mobile-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:auto;font-size:10px}.mobile-status{display:flex;align-items:center;gap:7px;color:var(--text-dim)}.mobile-status>span{height:4px;width:4px;border-radius:50%;background:var(--accent)}.mobile-read{color:var(--accent);display:flex;gap:12px}
+
+  /* Named markers, because two apps deserve a label rather than a pair of dots. */
+  .mobile-controls{display:flex;align-items:center;gap:16px;border-top:1px solid var(--line);padding-top:18px}
+  .mobile-dots{display:flex;gap:8px;flex-wrap:wrap}
+  .mobile-dots button{min-height:40px;padding:0 14px;background:none;border:1px solid var(--line);color:var(--text-dim);font:9px var(--font-mono);text-transform:uppercase;letter-spacing:.12em;cursor:pointer;transition:color 160ms,border-color 160ms,background 160ms}
+  .mobile-dots button:hover{color:var(--text);border-color:var(--line-control)}
+  .mobile-dots button[aria-current="true"]{color:var(--accent);border-color:var(--accent-edge);background:var(--accent-wash)}
+  .mobile-dots button[hidden]{display:none}
+  .mobile-position{margin-left:auto;font:10px var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint)}
+  .mobile-nav{display:flex;gap:8px}
+  .mobile-nav button{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:50%;background:var(--ink-deep);color:var(--text);opacity:.8;cursor:pointer;transition:opacity 160ms,scale 160ms,color 160ms,border-color 160ms}
+  .mobile-nav button:hover:not(:disabled),.mobile-nav button:focus-visible{opacity:1;scale:1.08;color:var(--accent);border-color:var(--accent-edge)}
+  .mobile-nav button:disabled{opacity:.2;cursor:default}
+  .mobile-nav svg{width:18px;height:18px}
+  .mobile-carousel:not([data-carousel-ready]) .mobile-controls{display:none}
+
+  @media(max-width:900px){.mobile-track{grid-auto-columns:min(82%,420px)}.mobile-body{padding:22px}}
+  @media(max-width:540px){
+    .mobile-track{grid-auto-columns:min(88%,340px)}
+    .mobile-toolbar{flex-wrap:wrap}.mobile-count{width:100%}
+    .mobile-controls{flex-wrap:wrap;gap:12px}.mobile-position{width:100%;margin-left:0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .mobile-track{scroll-behavior:auto}
+    .mobile-card{animation:none;opacity:1;transform:none}
+  }
+</style>

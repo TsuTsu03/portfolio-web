@@ -40,7 +40,7 @@ repositoryUrl: "https://github.com/TsuTsu03/saas-data-analysis-platform"
 repositoryVisibility: "public"
 status: "Deployed"
 featured: true
-order: 6
+order: 8
 lastVerified: 2026-08-15
 ---
 

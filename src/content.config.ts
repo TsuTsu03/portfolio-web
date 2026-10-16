@@ -27,7 +27,7 @@ const work = defineCollection({
          * better in a result page than a cut-off sentence.
          */
         metaDescription: z.string().min(60).max(158).optional(),
-        category: z.enum(["SaaS", "AI Systems", "Operations", "Commerce"]),
+        category: z.enum(["SaaS", "AI Systems", "Operations", "Commerce", "Mobile"]),
         sector: z.string(),
 
         role: z.string(),

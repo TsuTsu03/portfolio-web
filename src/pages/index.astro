@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Work from "../components/Work.astro";
+import MobileWork from "../components/MobileWork.astro";
 import Agents from "../components/Agents.astro";
 import Approach from "../components/Approach.astro";
 import Capabilities from "../components/Capabilities.astro";
@@ -23,6 +24,10 @@ import { sortInsights } from "../lib/insights";
 import { agents } from "../data/agents";
 
 const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+
+/** The three bodies of work are presented as their own sections. */
+const mobileEntries = entries.filter((entry) => entry.data.category === "Mobile");
+const webEntries = entries.filter((entry) => entry.data.category !== "Mobile");
 const insights = sortInsights(await getCollection("insights"));
 
 const liveCount = entries.filter((entry) => entry.data.status === "Deployed").length;
@@ -58,7 +63,8 @@ const jsonLd = [
 <BaseLayout path="/" jsonLd={jsonLd}>
   <Hero projectCount={entries.length} agentCount={agents.length} />
   <About />
-  <Work entries={entries} />
+  <Work entries={webEntries} />
+  <MobileWork entries={mobileEntries} />
   <Agents />
   <Capabilities />
   <Approach />

@@ -40,7 +40,7 @@ repositoryUrl: "https://github.com/TsuTsu03/smiley-app"
 repositoryVisibility: "public"
 status: "Deployed"
 featured: true
-order: 3
+order: 5
 lastVerified: 2026-08-15
 ---
 

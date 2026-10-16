@@ -14,7 +14,7 @@ export const SITE_DOMAIN = "denforge.it.com";
  * engines can attach to that person, not a second identity.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-09-24";
+export const SITE_UPDATED = "2026-10-16";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site
@@ -56,7 +56,7 @@ export const resumeUrl = "/resume";
 export const seo = {
   title: `${person.name} | Full-Stack Developer and AI Engineer`,
   description:
-    "Senior full-stack developer and agentic AI engineer in Metro Manila building operational SaaS, secure web platforms and AI workflows. Eight case studies.",
+    "Senior full-stack developer and agentic AI engineer in Metro Manila building operational SaaS, mobile apps and AI workflows. Ten case studies, web and mobile.",
   ogImage: "/og.png",
   ogImageAlt:
     "Den Jansen Flores, Senior Full-Stack Developer and Agentic AI Engineer, Metro Manila, Philippines.",
@@ -68,6 +68,9 @@ export const primaryTopics = [
   "Operational SaaS development",
   "Agentic AI engineering",
   "React and Next.js development",
+  "React Native and Expo app development",
+  "Flutter and Dart app development",
+  "Cross-platform mobile development",
   "TypeScript application development",
   "Supabase and PostgreSQL architecture",
   "Multi-tenant SaaS architecture",
@@ -126,7 +129,8 @@ export const audiences = [
  */
 export const navItems = [
   { id: "about", label: "About", accessibleName: "who Den is and how he works" },
-  { id: "work", label: "Work", accessibleName: "selected projects and case studies" },
+  { id: "work", label: "Web Apps", accessibleName: "web application case studies" },
+  { id: "mobile", label: "Mobile Apps", accessibleName: "Android and iOS app case studies" },
   { id: "agents", label: "AI Agents", accessibleName: "interactive AI agent demos" },
   { id: "contact", label: "Contact", accessibleName: "email, phone and profiles" },
 ] as const;
@@ -156,7 +160,7 @@ export const faqs = [
   {
     question: "What is his primary stack?",
     answer:
-      "His core stack is React, Next.js and TypeScript on the front end, with Supabase, PostgreSQL and Node.js behind it. He uses Tailwind CSS for interface systems. His AI work uses OpenAI and Claude APIs with tool calling, retrieval and schema-constrained output rather than a chat box added at the end.",
+      "His core stack is React, Next.js and TypeScript on the front end, with Supabase, PostgreSQL and Node.js behind it. He uses Tailwind CSS for interface systems. On mobile he builds for Android and iOS with React Native and Expo, and with Flutter and Dart. His AI work uses OpenAI and Claude APIs with tool calling, retrieval and schema-constrained output rather than a chat box added at the end.",
   },
   {
     question: "What does he mean by agentic AI engineering?",
