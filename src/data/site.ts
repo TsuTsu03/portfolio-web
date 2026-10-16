@@ -99,6 +99,12 @@ export const services = [
       "Scheduling, dispatch, records and workforce platforms with multi-tenant architecture and role-based access control.",
   },
   {
+    name: "Mobile app development for Android and iOS",
+    path: "/services/mobile-app-developer-metro-manila",
+    description:
+      "Cross-platform apps built with React Native and Expo, or with Flutter and Dart, including on-device storage, camera pipelines and offline behaviour.",
+  },
+  {
     name: "Agentic AI engineering",
     path: "/services/agentic-ai-developer-metro-manila",
     description:

@@ -215,4 +215,101 @@ export const servicePages: ServicePage[] = [
       "agentic workflow developer",
     ],
   },
+  {
+    slug: "mobile-app-developer-metro-manila",
+    shortTitle: "Mobile app development",
+    title: "Mobile App Developer in Metro Manila",
+    metaTitle: "Mobile App Developer in Metro Manila | Den Jansen Flores",
+    metaDescription:
+      "Hire Den Jansen Flores, a Metro Manila mobile app developer building Android and iOS apps with React Native and Expo, or with Flutter and Dart.",
+    eyebrow: "Metro Manila · Android and iOS, React Native or Flutter",
+    answer:
+      "Den Jansen Flores is a mobile and full-stack developer based in Muntinlupa City, Metro Manila. He builds Android and iOS applications with React Native and Expo, and with Flutter and Dart. The work covers on-device data models, camera and media pipelines, offline behaviour, navigation and state layers, and the checks a build passes before it is treated as a release candidate. He is available for freelance, contract and full-time work.",
+    scopeHeading: "What does a mobile build cover?",
+    scopeIntro:
+      "A phone app is judged in the worst conditions it meets: no signal, a blurred photo, an interrupted session. The scope below is drawn around those conditions rather than around a list of screens.",
+    scope: [
+      {
+        title: "Cross-platform applications",
+        description:
+          "One codebase for Android and iOS, built with React Native and Expo or with Flutter and Dart. The choice follows what the app needs from the device, not a framework preference.",
+      },
+      {
+        title: "On-device data and offline behaviour",
+        description:
+          "Local SQLite schemas with versioned migrations, so records that exist nowhere else survive an app update and a session with no network.",
+      },
+      {
+        title: "Camera, media and device features",
+        description:
+          "Capture with focus and flash control, gallery import, photo checks before anything is uploaded, and platform text-to-speech, each with a stated path for when it fails.",
+      },
+      {
+        title: "Backend boundary and release checks",
+        description:
+          "Provider keys held in server-side functions instead of the app bundle, then lint, type checks, unit tests and clean platform exports before a build is called a candidate.",
+      },
+    ],
+    fitHeading: "When is a mobile build the right call?",
+    fit: [
+      "The work happens away from a desk, on a phone, often with weak signal or none.",
+      "The app needs the camera, local storage or another device feature a browser tab cannot reach reliably.",
+      "One codebase has to serve Android and iOS without funding two separate teams.",
+      "An existing React Native or Flutter app needs an audit, a data model it can migrate safely, or release checks it can trust.",
+    ],
+    evidenceIds: ["kwagi", "tuklas"],
+    proofIntro:
+      "Two mobile case studies are published here: a React Native study app that keeps its whole loop on the device, and a Flutter camera field guide that keeps provider keys off it. Both are in development, neither is on the App Store or Google Play, and each case study says so alongside its source visibility and the date its status was last checked.",
+    process: [
+      {
+        title: "Decide what the phone owns",
+        description:
+          "Name the records, actions and sessions that must work with no network before choosing screens, because that answer sets the data model.",
+      },
+      {
+        title: "Draw the backend boundary",
+        description:
+          "Keep provider keys and paid calls on the server, and define exactly what the app sends and receives, so an unpacked bundle gives nothing away.",
+      },
+      {
+        title: "Build one loop end to end",
+        description:
+          "Ship a single complete path, from capture through result to a saved record, then widen it once the state and navigation layers hold.",
+      },
+      {
+        title: "Prepare the release honestly",
+        description:
+          "Run lint, type checks, unit tests and clean Android and iOS exports, then separate what is verified from what still waits on a store review or an owner decision.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is Den available as a freelance mobile app developer in Metro Manila?",
+        answer:
+          "Yes. Den is based in Muntinlupa City, Metro Manila and takes freelance projects, contract engagements and full-time roles. He works remotely with Philippine and international teams.",
+      },
+      {
+        question: "Does he build with React Native or with Flutter?",
+        answer:
+          "Both, and the portfolio shows one of each. Kwagi is React Native with Expo, TypeScript, SQLite, NativeWind and Zustand. Tuklas is Flutter with Dart, Riverpod, go_router and a Supabase Edge Function. The choice follows what the app needs from the device and who will maintain it afterwards.",
+      },
+      {
+        question: "Are his mobile apps on the App Store or Google Play?",
+        answer:
+          "Not yet. Kwagi and Tuklas are both marked in development. Kwagi has a public repository and a pipeline that produces clean Android, iOS and web exports, but a local build is not store availability and this site does not claim it.",
+      },
+      {
+        question: "Can he make an app work without a network?",
+        answer:
+          "Yes, where the data allows it. Kwagi keeps notes, flashcards, review scheduling and progress in one local SQLite database with versioned migrations, so the app opens and works in airplane mode and sync stays a later decision rather than an early dependency.",
+      },
+    ],
+    keywords: [
+      "mobile app developer Metro Manila",
+      "React Native developer Philippines",
+      "Flutter developer Metro Manila",
+      "freelance mobile app developer Philippines",
+      "cross-platform app developer Metro Manila",
+    ],
+  },
 ];
