@@ -1,9 +1,11 @@
 import type { CollectionEntry } from "astro:content";
 import portrait from "../assets/portrait/den-jansen-flores.png";
 import {
+  certifications,
+  education,
+  experience,
   faqs,
   person,
-  services,
   primaryTopics,
   SITE_DOMAIN,
   SITE_NAME,
@@ -30,7 +32,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
     alternateName: person.alternateName,
     givenName: "Den Jansen",
     familyName: "Flores",
-    jobTitle: [person.role, person.secondRole],
+    jobTitle: [person.currentTitle, person.role, person.thirdRole, person.secondRole],
     description: seo.description,
     url: `${SITE_URL}/`,
     email: `mailto:${person.email}`,
@@ -42,7 +44,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
       contentUrl: new URL(portrait.src, SITE_URL).href,
       width: portrait.width,
       height: portrait.height,
-      caption: `${person.name}, ${person.role} and ${person.secondRole}`,
+      caption: `${person.name}, ${person.role}, ${person.thirdRole} and ${person.secondRole}`,
     },
     sameAs: [person.github, person.linkedin, person.instagram],
     brand: { "@type": "Brand", name: SITE_NAME, url: `${SITE_URL}/` },
@@ -53,14 +55,49 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
       addressCountry: person.countryCode,
     },
     knowsAbout: topics,
-    hasOccupation: {
-      "@type": "Occupation",
-      name: person.role,
-      description:
-        "Full-stack product engineering across operational SaaS, secure web platforms and agentic AI workflows.",
-      occupationLocation: { "@type": "Country", name: person.country },
-      skills: topics.join(", "),
-    },
+    hasOccupation: [
+      {
+        "@type": "Occupation",
+        name: person.role,
+        description:
+          "Full-stack product engineering across operational SaaS, secure web platforms and agentic AI workflows.",
+        occupationLocation: { "@type": "Country", name: person.country },
+        skills: topics.join(", "),
+      },
+      {
+        "@type": "Occupation",
+        name: person.thirdRole,
+        description:
+          "Cross-platform Android and iOS app development with React Native, Expo, Flutter and Dart.",
+        occupationLocation: { "@type": "Country", name: person.country },
+        skills: "React Native, Expo, Flutter, Dart, Android, iOS, offline-first storage, camera pipelines",
+      },
+    ],
+    /* Former employer and university, both named on the résumé page. */
+    alumniOf: [
+      {
+        "@type": "CollegeOrUniversity",
+        name: education.school,
+      },
+      ...[...new Set(experience.map((role) => role.organization))]
+        .filter((organization) => organization !== "Self-employed")
+        .map((organization) => ({ "@type": "Organization", name: organization })),
+    ],
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        name: education.degree,
+        credentialCategory: "degree",
+        recognizedBy: { "@type": "CollegeOrUniversity", name: education.school },
+      },
+      ...certifications.map((cert) => ({
+        "@type": "EducationalOccupationalCredential",
+        name: cert.name,
+        credentialCategory: "certification",
+        dateCreated: cert.date,
+        recognizedBy: { "@type": "Organization", name: cert.issuer },
+      })),
+    ],
     seeks: {
       "@type": "Demand",
       name: person.engagements,
@@ -76,10 +113,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
         addressCountry: person.countryCode,
       },
     },
-    /* Each offer is also listed inside the visible services catalogue. */
-    makesOffer: services.map((_, index) => ({
-      "@id": `${SITE_URL}/#service-offer-${index + 1}`,
-    })),
+    worksFor: { "@type": "Organization", name: person.currentEmployer },
     mainEntityOfPage: { "@id": `${SITE_URL}/#profilepage` },
   };
 }
@@ -138,7 +172,7 @@ export function resumeWebPageNode(): Record<string, unknown> {
     url,
     name: `${person.name} résumé`,
     description:
-      "Professional profile for Den Jansen Flores with capabilities, selected software case studies, location, availability and direct contact details.",
+      "Résumé of Den Jansen Flores with work history, skills, certifications, education, selected web and mobile case studies, availability and contact details.",
     dateModified: SITE_UPDATED,
     inLanguage: "en-PH",
     isPartOf: { "@id": WEBSITE_ID },
@@ -238,60 +272,6 @@ export function faqNode(): Record<string, unknown> {
   };
 }
 
-/**
- * What Den is actually available to do, as a catalogue rather than prose.
- *
- * This is the node that answers "who builds operational SaaS in Metro Manila"
- * and "can he work with a team outside the Philippines" without an answer
- * engine having to infer either from the page copy.
- */
-export function servicesNode(): Record<string, unknown> {
-  return {
-    "@type": "ProfessionalService",
-    "@id": `${SITE_URL}/#services`,
-    name: `${person.name}: full-stack and agentic AI engineering`,
-    description:
-      "Independent full-stack development and agentic AI engineering for operational SaaS, secure web platforms and controlled AI workflows, delivered remotely from Metro Manila.",
-    url: `${SITE_URL}/#services`,
-    provider: { "@id": PERSON_ID },
-    founder: { "@id": PERSON_ID },
-    email: `mailto:${person.email}`,
-    telephone: person.phoneE164,
-    priceRange: "Project and contract based",
-    inLanguage: "en-PH",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: person.locality,
-      addressRegion: person.region,
-      addressCountry: person.countryCode,
-    },
-    areaServed: [
-      { "@type": "Country", name: person.country },
-      { "@type": "AdministrativeArea", name: `${person.region}, ${person.country}` },
-      { "@type": "Place", name: "Remote worldwide" },
-    ],
-    availableLanguage: [{ "@type": "Language", name: "English" }],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Engineering services",
-      itemListElement: services.map((service, index) => ({
-        "@type": "Offer",
-        "@id": `${SITE_URL}/#service-offer-${index + 1}`,
-        position: index + 1,
-        itemOffered: {
-          "@type": "Service",
-          name: service.name,
-          description: service.description,
-          serviceType: service.name,
-          url: new URL(service.path, SITE_URL).href,
-          provider: { "@id": PERSON_ID },
-          areaServed: { "@type": "Place", name: "Remote worldwide" },
-        },
-      })),
-    },
-  };
-}
-
 export function servicePageNode(service: {
   title: string;
   shortTitle: string;
@@ -315,18 +295,6 @@ export function servicePageNode(service: {
       { "@type": "Country", name: person.country },
       { "@type": "Place", name: "Remote worldwide" },
     ],
-    availableChannel: {
-      "@type": "ServiceChannel",
-      serviceUrl: url,
-      servicePhone: {
-        "@type": "ContactPoint",
-        telephone: person.phoneE164,
-        email: person.email,
-        contactType: "sales",
-        availableLanguage: ["English"],
-      },
-    },
-    termsOfService: `${SITE_URL}/#contact`,
     keywords: service.keywords.join(", "),
   };
 }
@@ -385,7 +353,7 @@ export function portfolioItemListNode(
     "@id": `${SITE_URL}/#portfolio`,
     name: `${person.name} portfolio projects`,
     description:
-      "Eight software case studies covering education technology, operational SaaS, healthcare, logistics, workforce systems, commerce and applied AI.",
+      `${entries.length} software case studies covering web platforms, Android and iOS apps, education technology, operational SaaS, healthcare, logistics, workforce systems, commerce and applied AI.`,
     numberOfItems: entries.length,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     itemListElement: entries.map((entry, index) => ({

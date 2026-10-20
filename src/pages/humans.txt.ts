@@ -4,7 +4,7 @@ import { person, previousDomains, SITE_NAME, SITE_UPDATED, SITE_URL } from "../d
 export const GET: APIRoute = () => {
   const body = `/* PERSON */
 Name: ${person.name}
-Roles: ${person.role}, ${person.secondRole}
+Roles: ${person.role}, ${person.thirdRole}, ${person.secondRole}
 Location: ${person.locality}, ${person.region}, ${person.country}
 Contact: ${person.email}
 GitHub: ${person.github}

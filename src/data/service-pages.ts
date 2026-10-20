@@ -25,11 +25,11 @@ export const servicePages: ServicePage[] = [
     title: "Full-Stack Developer in Metro Manila",
     metaTitle: "Full-Stack Developer in Metro Manila | Den Jansen Flores",
     metaDescription:
-      "Hire Den Jansen Flores, a Metro Manila full-stack developer for freelance, contract or full-time work across SaaS, React, Next.js and Supabase.",
-    eyebrow: "Metro Manila · Freelance, contract or full-time",
+      "Den Jansen Flores is a senior full-stack developer in Metro Manila building operational SaaS with React, Next.js, TypeScript, Supabase and PostgreSQL.",
+    eyebrow: "Metro Manila · React, Next.js and PostgreSQL",
     answer:
-      "Den Jansen Flores is a senior full-stack developer based in Muntinlupa City, Metro Manila. He is available for freelance builds, contract engagements and full-time roles. His work covers React and Next.js interfaces, TypeScript server logic, Supabase and PostgreSQL data models, access control, integrations and deployment.",
-    scopeHeading: "What can one full-stack engagement cover?",
+      "Den Jansen Flores is a senior full-stack developer based in Muntinlupa City, Metro Manila. His work covers React and Next.js interfaces, TypeScript server logic, Supabase and PostgreSQL data models, access control, integrations and deployment.",
+    scopeHeading: "What does his full-stack work cover?",
     scopeIntro:
       "The useful boundary is the system, not one layer of it. Den can own the route from an operational problem to a deployed web application, then make every handoff visible enough to maintain.",
     scope: [
@@ -55,12 +55,12 @@ export const servicePages: ServicePage[] = [
           "Build checks, deployment configuration, responsive QA, failure-state review and a handoff that states what is verified and what still needs an owner decision.",
       },
     ],
-    fitHeading: "When is Den the right fit?",
+    fitHeading: "What problems does this work solve?",
     fit: [
       "A business process has outgrown spreadsheets, chat threads or disconnected tools.",
       "A product needs one accountable engineer across database, API and interface work.",
       "An existing React or Next.js system needs a careful audit, stabilization or feature build.",
-      "A founder or team wants an evidence-backed prototype without pretending it is already production-ready.",
+      "A team needs an evidence-backed prototype without pretending it is already production-ready.",
     ],
     evidenceIds: ["clinicflow", "smiley", "biyahero-express", "shiftdesk"],
     proofIntro:
@@ -89,9 +89,9 @@ export const servicePages: ServicePage[] = [
     ],
     faqs: [
       {
-        question: "Is Den available as a freelance full-stack developer in Metro Manila?",
+        question: "Who is Den Jansen Flores as a full-stack developer?",
         answer:
-          "Yes. Den is based in Muntinlupa City, Metro Manila and is available for freelance projects, contract engagements and full-time roles. He can work remotely with Philippine or international teams.",
+          "Den is a senior full-stack developer based in Muntinlupa City, Metro Manila, currently an Advanced Application Engineer at Artech, LLC. He has 4+ years of experience building React, Next.js and TypeScript applications with Node.js, Supabase and PostgreSQL behind them.",
       },
       {
         question: "Which full-stack technologies does he use?",
@@ -104,14 +104,14 @@ export const servicePages: ServicePage[] = [
           "Yes. His documented work includes relational schemas, row-level security, server logic, authentication, responsive interfaces, integrations, deployment configuration and production-style verification.",
       },
       {
-        question: "How does a potential client start?",
+        question: "How does he approach a new system?",
         answer:
-          "Send the current workflow, the failure it causes and the deadline that matters. Den will identify the first useful boundary, the evidence needed and any scope risks before proposing a build.",
+          "He starts from the current workflow, the failure it causes and the deadline that matters. Then he finds the first useful boundary, the evidence needed and the scope risks before writing the build plan.",
       },
     ],
     keywords: [
       "full-stack developer Metro Manila",
-      "freelance full-stack developer Metro Manila",
+      "senior full-stack developer Philippines",
       "React developer Philippines",
       "Next.js developer Metro Manila",
       "SaaS developer Philippines",
@@ -123,10 +123,10 @@ export const servicePages: ServicePage[] = [
     title: "Agentic AI Developer in Metro Manila",
     metaTitle: "Agentic AI Developer in Metro Manila | Den Jansen Flores",
     metaDescription:
-      "Work with Den Jansen Flores, a Metro Manila agentic AI developer building controlled workflows with typed tools, grounded context and validated outputs.",
+      "Den Jansen Flores is a Metro Manila agentic AI developer building controlled workflows with typed tools, grounded context and validated outputs.",
     eyebrow: "Metro Manila · Applied AI systems, not demo chat boxes",
     answer:
-      "Den Jansen Flores is an agentic AI engineer and full-stack developer in Metro Manila. He builds AI features that perform bounded work inside real applications: calling typed tools, retrieving grounded context, returning schema-validated output and carrying state across guarded steps. He is available for freelance, contract and full-time work.",
+      "Den Jansen Flores is an agentic AI engineer and full-stack developer in Metro Manila. He builds AI features that perform bounded work inside real applications: calling typed tools, retrieving grounded context, returning schema-validated output and carrying state across guarded steps.",
     scopeHeading: "What does agentic AI engineering include?",
     scopeIntro:
       "The model is one component. The engineering value sits around it: authority, tools, state, evaluation, observability, recovery and cost control.",
@@ -187,9 +187,9 @@ export const servicePages: ServicePage[] = [
     ],
     faqs: [
       {
-        question: "Is Den available as a freelance agentic AI developer in Metro Manila?",
+        question: "What AI work has Den Jansen Flores built?",
         answer:
-          "Yes. Den is based in Metro Manila and is available for freelance, contract and full-time agentic AI or full-stack engagements, including remote work with teams outside the Philippines.",
+          "His published AI work includes an AI-assisted data analysis platform and three agent demos with typed tools and validated output. Each one links to a case study or a public demo that states what it does and what it does not do.",
       },
       {
         question: "What is the difference between an AI agent and a chatbot?",
@@ -209,7 +209,7 @@ export const servicePages: ServicePage[] = [
     ],
     keywords: [
       "agentic AI developer Metro Manila",
-      "freelance AI developer Metro Manila",
+      "AI developer Philippines",
       "AI agent developer Philippines",
       "AI engineer Metro Manila",
       "agentic workflow developer",
@@ -221,10 +221,10 @@ export const servicePages: ServicePage[] = [
     title: "Mobile App Developer in Metro Manila",
     metaTitle: "Mobile App Developer in Metro Manila | Den Jansen Flores",
     metaDescription:
-      "Hire Den Jansen Flores, a Metro Manila mobile app developer building Android and iOS apps with React Native and Expo, or with Flutter and Dart.",
+      "Den Jansen Flores is a Metro Manila mobile app developer building Android and iOS apps with React Native and Expo, or with Flutter and Dart.",
     eyebrow: "Metro Manila · Android and iOS, React Native or Flutter",
     answer:
-      "Den Jansen Flores is a mobile and full-stack developer based in Muntinlupa City, Metro Manila. He builds Android and iOS applications with React Native and Expo, and with Flutter and Dart. The work covers on-device data models, camera and media pipelines, offline behaviour, navigation and state layers, and the checks a build passes before it is treated as a release candidate. He is available for freelance, contract and full-time work.",
+      "Den Jansen Flores is a mobile and full-stack developer based in Muntinlupa City, Metro Manila. He builds Android and iOS applications with React Native and Expo, and with Flutter and Dart. The work covers on-device data models, camera and media pipelines, offline behaviour, navigation and state layers, and the checks a build passes before it is treated as a release candidate.",
     scopeHeading: "What does a mobile build cover?",
     scopeIntro:
       "A phone app is judged in the worst conditions it meets: no signal, a blurred photo, an interrupted session. The scope below is drawn around those conditions rather than around a list of screens.",
@@ -284,9 +284,9 @@ export const servicePages: ServicePage[] = [
     ],
     faqs: [
       {
-        question: "Is Den available as a freelance mobile app developer in Metro Manila?",
+        question: "Is Den Jansen Flores a mobile app developer?",
         answer:
-          "Yes. Den is based in Muntinlupa City, Metro Manila and takes freelance projects, contract engagements and full-time roles. He works remotely with Philippine and international teams.",
+          "Yes. Den is a full-stack and mobile app developer based in Muntinlupa City, Metro Manila. He builds Android and iOS apps with React Native and Expo, and with Flutter and Dart, and has published two mobile case studies: Kwagi and Tuklas.",
       },
       {
         question: "Does he build with React Native or with Flutter?",
@@ -308,7 +308,7 @@ export const servicePages: ServicePage[] = [
       "mobile app developer Metro Manila",
       "React Native developer Philippines",
       "Flutter developer Metro Manila",
-      "freelance mobile app developer Philippines",
+      "Android and iOS developer Philippines",
       "cross-platform app developer Metro Manila",
     ],
   },

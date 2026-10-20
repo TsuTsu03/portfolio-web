@@ -15,14 +15,14 @@ import Icon from "./Icon.astro";
     </header>
 
     <section id="services" aria-labelledby="services-heading" class="service-section">
-      <h3 id="services-heading" class="meta">What I can take on</h3>
+      <h3 id="services-heading" class="meta">Areas of expertise</h3>
       <ul class="service-grid">
         {services.map((service, index) => (
           <li class="reveal service-item">
             <span class="meta service-number">{String(index + 1).padStart(2, "0")}</span>
             <h4 class="display-tight">{service.name}</h4>
             <p>{service.description}</p>
-            <a href={service.path} class="link tap-target service-link">Explore service <Icon name="arrow-up-right" class="h-4 w-4" /></a>
+            <a href={service.path} class="link tap-target service-link">Read more <Icon name="arrow-up-right" class="h-4 w-4" /></a>
           </li>
         ))}
       </ul>

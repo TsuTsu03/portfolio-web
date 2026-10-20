@@ -1,6 +1,9 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import {
+  certifications,
+  education,
+  experience,
   faqs,
   person,
   previousDomains,
@@ -68,13 +71,22 @@ Canonical profile: ${SITE_URL}/
 Site name: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}, not a separate company.
 Retired addresses: ${previousDomains.join(", ")}, now permanently redirected here.
 
-${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He has ${person.yearsActive} years of project-based experience and is open to ${person.engagements.toLowerCase()}. His work is documented through case studies, public repositories and dated deployment checks.
+${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He works as a ${person.role.toLowerCase()}, ${person.thirdRole.toLowerCase()} and ${person.secondRole.toLowerCase()}, with ${person.yearsActive} years of professional experience since July 2022, and is open to ${person.engagements.toLowerCase()}. His work is documented through case studies, public repositories and dated deployment checks.
+
+## Work history
+
+${experience.map((role) => `- **${role.title}**, ${role.organization} (${role.period}). ${role.highlights.join(" ")}`).join("\n")}
+
+## Education and certifications
+
+- ${education.degree}, ${education.school} (${education.period}).
+${certifications.map((cert) => `- ${cert.name}, ${cert.issuer} (${cert.period}).`).join("\n")}
 
 ## Expertise
 
 ${primaryTopics.map((topic) => `- ${topic}`).join("\n")}
 
-## Work he can be hired to own
+## Areas of expertise
 
 ${services.map((service) => `- [**${service.name}**](${new URL(service.path, SITE_URL).href}): ${service.description}`).join("\n")}
 
@@ -110,7 +122,7 @@ ${insights.map((entry) => `## ${entry.data.title}\n\nCanonical article: ${SITE_U
 - XML sitemap: ${SITE_URL}/sitemap.xml
 - RSS feed: ${SITE_URL}/rss.xml
 
-The portfolio does not claim customer counts, revenue figures, employers, testimonials, awards or performance outcomes without published evidence.
+The portfolio does not claim customer counts, revenue figures, testimonials, awards or performance outcomes without published evidence. Employment history and certifications are taken from his current CV.
 `;
 
   return new Response(body, {

@@ -119,7 +119,7 @@ for (const [path, html] of htmlDocuments) {
   const types = new Set(graph.map((node) => node["@type"]));
   if (path === "index.html") {
     homepageGraph = graph;
-    for (const type of ["Person", "WebSite", "ProfilePage", "ItemList", "FAQPage", "ProfessionalService"]) {
+    for (const type of ["Person", "WebSite", "ProfilePage", "ItemList", "FAQPage"]) {
       assert(types.has(type), `${path}: missing ${type} schema`);
     }
     const profile = graph.find((node) => node["@type"] === "ProfilePage");
@@ -274,13 +274,13 @@ for (const insight of portfolio.insights) {
 }
 
 const personSchema = homepageGraph.find((node) => node["@type"] === "Person");
-const serviceSchema = homepageGraph.find((node) => node["@type"] === "ProfessionalService");
-const offerIds = new Set(
-  serviceSchema.hasOfferCatalog.itemListElement.map((offer) => offer["@id"])
-);
-assert(personSchema.makesOffer.length === portfolio.services.length, "schema: Person offer count mismatch");
-for (const offer of personSchema.makesOffer) {
-  assert(offerIds.has(offer["@id"]), `schema: dangling Person offer reference ${offer["@id"]}`);
+const types = (graph) => new Set(graph.map((node) => node["@type"]));
+/* The site presents an employed engineer, not a for-hire business. */
+assert(!types(homepageGraph).has("ProfessionalService"), "schema: homepage must not publish a ProfessionalService");
+assert(!personSchema.makesOffer, "schema: Person must not publish service offers");
+assert(personSchema.worksFor?.name, "schema: Person is missing the current employer");
+for (const [path, html] of htmlDocuments) {
+  assert(!/available for freelance|freelance, contract|contract engagements/i.test(html), `${path}: for-hire availability copy found`);
 }
 const llms = await read("llms.txt");
 for (const endpoint of ["llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml", "rss.xml"]) {

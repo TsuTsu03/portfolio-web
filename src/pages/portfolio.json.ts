@@ -2,7 +2,11 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import {
   audiences,
+  certifications,
+  education,
+  experience,
   faqs,
+  skillGroups,
   person,
   primaryTopics,
   services,
@@ -50,7 +54,7 @@ export const GET: APIRoute = async () => {
     person: {
       name: person.name,
       alternateName: person.alternateName,
-      roles: [person.role, person.secondRole],
+      roles: [person.role, person.thirdRole, person.secondRole],
       location: `${person.locality}, ${person.region}, ${person.country}`,
       timezone: person.timezone,
       yearsActive: person.yearsActive,
@@ -64,6 +68,10 @@ export const GET: APIRoute = async () => {
         instagram: person.instagram,
       },
     },
+    experience,
+    education,
+    certifications,
+    skills: skillGroups,
     audiences,
     expertise: primaryTopics,
     services,

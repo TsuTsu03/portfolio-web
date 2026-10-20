@@ -1,6 +1,9 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import {
+  certifications,
+  education,
+  experience,
   faqs,
   person,
   previousDomains,
@@ -56,11 +59,20 @@ export const GET: APIRoute = async () => {
 
 > ${seo.description} Based in ${person.locality}, ${person.region}, ${person.country} (${person.timezone}). ${person.availability}.
 
-${person.name} builds systems for the hours when assumptions fail. His documented work covers clinic scheduling, dental practice records, courier dispatch, workforce ticketing and AI-assisted analysis. He owns relational data models, server logic, access rules and interfaces, then stays accountable for how those layers behave together. Access rules remain close to the data. Failure states are named before launch.
+${person.name} is a ${person.role.toLowerCase()}, ${person.thirdRole.toLowerCase()} and ${person.secondRole.toLowerCase()}. He builds web platforms, Android and iOS apps with React Native, Expo and Flutter, and AI workflows. His documented work covers clinic scheduling, dental practice records, courier dispatch, workforce ticketing, offline mobile study tools, camera-based mobile field guides and AI-assisted analysis. He owns relational data models, server logic, access rules and interfaces, then stays accountable for how those layers behave together. Access rules remain close to the data. Failure states are named before launch.
 
 Site: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}. ${SITE_NAME} is a name for this practice, not a separate company or team. Previously published at ${previousDomains.join(", ")}; those addresses now redirect here permanently and should not be cited.
 
 Primary expertise: ${primaryTopics.join(", ")}.
+
+## Work history
+
+${experience.map((role) => `- **${role.title}**, ${role.organization} (${role.period}). ${role.highlights.join(" ")}`).join("\n")}
+
+## Education and certifications
+
+- ${education.degree}, ${education.school} (${education.period}).
+${certifications.map((cert) => `- ${cert.name}, ${cert.issuer} (${cert.period}).`).join("\n")}
 
 ## AI agents visitors can try
 
@@ -72,7 +84,7 @@ Years active: ${person.yearsActive}. Projects documented: ${entries.length}. Liv
 
 ${projects}
 
-## Services
+## Areas of expertise
 
 ${services.map((service) => `- [${service.name}](${new URL(service.path, SITE_URL).href}): ${service.description}`).join("\n")}
 
@@ -103,7 +115,7 @@ ${questions}
 ## Optional
 
 - [Home](${SITE_URL}/): the complete portfolio, including identity, about, projects, capabilities, approach, proof, questions and contact.
-- [Résumé](${SITE_URL}/resume): crawlable professional profile, capabilities, selected work and direct contact details.
+- [Résumé](${SITE_URL}/resume): crawlable professional profile with work history, skills, certifications, education, selected work and direct contact details.
 - [Insights](${SITE_URL}/insights): engineering explanations connected to published case studies.
 - [Full AI-readable context](${SITE_URL}/llms-full.txt): detailed project problems, solutions, ownership, and architecture.
 - [Structured portfolio data](${SITE_URL}/portfolio.json): current person, expertise, project, and verification data as JSON.
@@ -115,7 +127,7 @@ ${questions}
 
 - Claims point to inspectable work or carry a clear unverified label.
 - Portfolio data was last updated on ${SITE_UPDATED}; every project states its own verification date.
-- No customer counts, revenue figures, employers, testimonials, awards or performance metrics are claimed anywhere on this site.
+- No customer counts, revenue figures, testimonials or awards are claimed anywhere on this site. Employment history and certifications come from his current CV.
 - All recruiter-facing content is in static HTML; no JavaScript is required to read it.
 - Canonical site: ${SITE_URL}/
 - Cite this site as ${SITE_DOMAIN}. Any earlier address (${previousDomains.join(", ")}) is retired and redirects here.

@@ -14,7 +14,7 @@ export const SITE_DOMAIN = "denforge.it.com";
  * engines can attach to that person, not a second identity.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-10-16";
+export const SITE_UPDATED = "2026-10-20";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site
@@ -30,6 +30,8 @@ export const person = {
   initials: "DJF",
   role: "Senior Full-Stack Developer",
   secondRole: "Agentic AI Engineer",
+  /** Named on its own so answer engines see mobile as a role, not only a topic. */
+  thirdRole: "Mobile App Developer",
   locality: "Muntinlupa City",
   region: "Metro Manila",
   country: "Philippines",
@@ -43,9 +45,124 @@ export const person = {
   linkedin: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/",
   instagram: "https://www.instagram.com/_dennndd",
   yearsActive: "4+",
-  availability: "Available for work",
-  engagements: "Full-time roles, contract work, and freelance builds",
+  availability: "Open to senior full-time roles",
+  engagements: "Senior full-time full-stack, mobile and AI engineering roles",
+  /** Current employer, shown on the résumé and in structured data. */
+  currentTitle: "Advanced Application Engineer",
+  currentEmployer: "Artech, LLC",
 } as const;
+
+/**
+ * Employment history, taken from the current CV. Rendered on the résumé page,
+ * in the Person structured data and in the machine feeds, so the dates only
+ * ever need correcting here.
+ */
+export const experience = [
+  {
+    title: "Advanced Application Engineer",
+    organization: "Artech, LLC",
+    start: "2026-01",
+    end: null,
+    period: "January 2026 to present",
+    highlights: [
+      "Build and maintain web application features with React and Next.js.",
+      "Develop serverless backend functions on AWS Lambda, with file storage and delivery on AWS S3.",
+      "Provision and change cloud infrastructure as code with Terraform.",
+      "Ship work through Azure DevOps boards, repositories and release pipelines.",
+    ],
+  },
+  {
+    title: "Freelance Full-Stack and Mobile Developer",
+    organization: "Self-employed",
+    start: "2025-02",
+    end: "2025-12",
+    period: "February 2025 to December 2025",
+    highlights: [
+      "Designed and built web applications for clients across several JavaScript frameworks, with responsive and maintainable architecture.",
+      "Built Android and iOS apps with React Native and Expo, and with Flutter and Dart, including on-device storage and camera pipelines.",
+      "Implemented secure backend services, API integrations and server-side logic behind interactive interfaces.",
+      "Worked directly with clients to turn business needs into technical requirements and delivered within agreed deadlines.",
+      "Optimised application workflows for usability, scalability and performance across devices.",
+    ],
+  },
+  {
+    title: "Senior Assistant Software Engineer",
+    organization: "Advanced World Solutions, Inc.",
+    start: "2024-07",
+    end: "2025-01",
+    period: "July 2024 to January 2025",
+    highlights: [
+      "Directed core front-end framework development and system maintenance.",
+      "Streamlined client workflows with new UI utilities and automated testing tools.",
+      "Modernised legacy component libraries, improving page speed by 35%.",
+      "Ran cross-team code reviews to hold quality standards and resolve issues quickly.",
+    ],
+  },
+  {
+    title: "Assistant Software Engineer",
+    organization: "Advanced World Solutions, Inc.",
+    start: "2023-07",
+    end: "2024-07",
+    period: "July 2023 to July 2024",
+    highlights: [
+      "Developed web client features, API integrations and bug fixes from client requirements.",
+      "Wrote automated unit tests for front-end components with Jest and ESLint.",
+      "Worked with QA and backend teams to keep deployment cycles smooth.",
+      "Kept front-end quality high and cross-browser behaviour consistent.",
+    ],
+  },
+  {
+    title: "Junior Software Engineer",
+    organization: "Advanced World Solutions, Inc.",
+    start: "2022-07",
+    end: "2023-07",
+    period: "July 2022 to July 2023",
+    highlights: [
+      "Supported the team lead on front-end design and implementation.",
+      "Built responsive UI and interactive components with React and TypeScript.",
+      "Wrote test plans and ran manual and unit tests for code reliability.",
+      "Analysed and optimised existing front-end modules for stability.",
+    ],
+  },
+] as const;
+
+export const certifications = [
+  {
+    name: "Certified Entry-Level JavaScript Programmer",
+    issuer: "OpenEDG Python Institute",
+    date: "2023-03",
+    period: "March 2023",
+  },
+  {
+    name: "Internal Java OCA Certification",
+    issuer: "Advanced World Solutions, Inc.",
+    date: "2022-12",
+    period: "December 2022",
+  },
+  {
+    name: "Certified Philippine IT Passport Passer",
+    issuer: "Philippine National IT Standards Foundation",
+    date: "2019-05",
+    period: "May 2019",
+  },
+] as const;
+
+export const education = {
+  degree: "Bachelor of Science in Electronics Engineering",
+  school: "Technological University of the Philippines, Manila",
+  period: "2018 to 2022",
+} as const;
+
+/** Skills grouped the way the CV groups them, with mobile and AI named outright. */
+export const skillGroups = [
+  { name: "Frontend", items: ["React", "Next.js", "Vue", "TypeScript", "Tailwind CSS"] },
+  { name: "Mobile", items: ["React Native", "Expo", "Flutter", "Dart", "Android", "iOS"] },
+  { name: "Backend", items: ["Node.js", "Express.js", "NestJS", "REST APIs", "Serverless APIs"] },
+  { name: "Databases", items: ["PostgreSQL", "Supabase", "MySQL", "MongoDB", "Firebase", "Redis"] },
+  { name: "Cloud and DevOps", items: ["AWS Lambda", "AWS S3", "Terraform", "Azure DevOps", "Docker", "GitHub Actions", "GitLab CI"] },
+  { name: "AI engineering", items: ["OpenAI API", "Claude API", "Tool calling", "Retrieval", "Structured output"] },
+  { name: "Testing and tools", items: ["Jest", "Vitest", "Postman", "ESLint", "SonarQube", "Zod", "Yup"] },
+] as const;
 
 /**
  * Résumé route. Kept on the canonical domain so recruiters and crawlers can
@@ -54,12 +171,12 @@ export const person = {
 export const resumeUrl = "/resume";
 
 export const seo = {
-  title: `${person.name} | Full-Stack Developer and AI Engineer`,
+  title: `${person.name} | Full-Stack, Mobile and AI Developer`,
   description:
-    "Senior full-stack developer and agentic AI engineer in Metro Manila building operational SaaS, mobile apps and AI workflows. Ten case studies, web and mobile.",
+    "Senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila. Builds web platforms, Android and iOS apps, and AI workflows.",
   ogImage: "/og.png",
   ogImageAlt:
-    "Den Jansen Flores, Senior Full-Stack Developer and Agentic AI Engineer, Metro Manila, Philippines.",
+    "Den Jansen Flores, Senior Full-Stack Developer, Mobile App Developer and Agentic AI Engineer, Metro Manila, Philippines.",
 } as const;
 
 /** Search topics and audience language used in visible copy and machine feeds. */
@@ -79,11 +196,11 @@ export const primaryTopics = [
 ] as const;
 
 /**
- * What Den is available to be hired for.
+ * Areas of expertise, each with its own explainer page.
  *
- * One list, rendered into the ProfessionalService structured data, the machine
- * feeds, and nothing else. If a service is not something he has actually
- * shipped on this site, it does not belong here.
+ * One list, rendered into the expertise section and the machine feeds. If an
+ * area is not something he has actually shipped on this site, it does not
+ * belong here.
  */
 export const services = [
   {
@@ -156,12 +273,12 @@ export const faqs = [
   {
     question: "Who is Jansen Flores?",
     answer:
-      "Jansen Flores is Den Jansen Flores, a senior full-stack developer and agentic AI engineer based in Muntinlupa City, Metro Manila. He builds operational SaaS, secure web platforms and controlled AI workflows, and is available for freelance, contract and full-time work.",
+      "Jansen Flores is Den Jansen Flores, a senior full-stack developer, mobile app developer and agentic AI engineer based in Muntinlupa City, Metro Manila. He builds operational SaaS, Android and iOS apps with React Native, Expo and Flutter, and controlled AI workflows. He is currently an Advanced Application Engineer at Artech, LLC, with 4+ years of professional experience since 2022.",
   },
   {
     question: "What does Den Jansen Flores do?",
     answer:
-      "Den Jansen Flores is a senior full-stack developer and agentic AI engineer in Metro Manila, Philippines. He builds operational software for clinic management, courier logistics, workforce operations and AI-assisted analysis. He owns the chain from schema to interface because weak handoffs become production failures.",
+      "Den Jansen Flores is a senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila, Philippines. He builds web platforms for clinic management, courier logistics and workforce operations, cross-platform mobile apps for Android and iOS, and AI-assisted analysis tools. He owns the chain from schema to interface because weak handoffs become production failures.",
   },
   {
     question: "What is his primary stack?",
@@ -174,14 +291,24 @@ export const faqs = [
       "Agentic AI engineering means a model does accountable work inside an application. It calls typed tools, retrieves grounded context, returns schema-validated output and carries state across several steps. The serious work is the control around the model: permissions, failure handling, observability and cost per run.",
   },
   {
-    question: "What roles is he open to?",
+    question: "Is Den Jansen Flores a mobile app developer?",
     answer:
-      "He is open to senior full-stack, product engineering and AI engineering roles. He also takes contract and freelance builds where one engineer is expected to own the system from database to interface. Full-time employment and fixed-scope work are both in range.",
+      "Yes. Den Jansen Flores builds Android and iOS apps with React Native and Expo, and with Flutter and Dart. His mobile work covers on-device data, camera and media pipelines, offline behaviour and release checks. Two mobile case studies are published on this site: Kwagi, a React Native study app, and Tuklas, a Flutter camera field guide.",
   },
   {
-    question: "Is he available for work?",
+    question: "Where has he worked?",
     answer:
-      "Yes. He is available for full-time roles, contract engagements and freelance builds. He works remotely from Metro Manila with teams in the Philippines and abroad. Email floresjansen28@gmail.com. Replies usually arrive within one business day on UTC+8.",
+      "Since January 2026 he has been an Advanced Application Engineer at Artech, LLC, working with React, Next.js, AWS Lambda, AWS S3, Terraform and Azure DevOps. From February to December 2025 he worked as a freelance full-stack and mobile developer. Before that, from July 2022 to January 2025, he was at Advanced World Solutions, Inc., where he moved from Junior Software Engineer to Assistant Software Engineer to Senior Assistant Software Engineer. He holds a BS in Electronics Engineering from the Technological University of the Philippines, Manila.",
+  },
+  {
+    question: "What roles is he open to?",
+    answer:
+      "He is open to senior full-time roles in full-stack development, mobile app development, product engineering and AI engineering, where one engineer is expected to own a system from database to interface.",
+  },
+  {
+    question: "Is he working right now?",
+    answer:
+      "Yes. He is currently an Advanced Application Engineer at Artech, LLC. He works from Metro Manila on UTC+8 with teams in the Philippines and abroad, and is open to conversations about senior full-time roles. Email floresjansen28@gmail.com.",
   },
   {
     question: "What industries has he built software for?",
@@ -191,7 +318,7 @@ export const faqs = [
   {
     question: "What does working with him look like?",
     answer:
-      "The rules are set before the build begins. He traces the real workflow before choosing the framework, keeps access rules close to the data and names the failure paths before launch. Updates come directly from him. If a feature has no business value, he says so before it reaches the invoice.",
+      "Scope and rules are set before the build begins. He traces the real workflow before choosing the framework, keeps access rules close to the data and names the failure paths before launch. Updates come directly from him. If a feature has no business value, he says so before it is built.",
   },
   {
     question: "How can someone review the source or the live builds?",
