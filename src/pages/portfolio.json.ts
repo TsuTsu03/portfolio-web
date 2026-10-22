@@ -54,7 +54,7 @@ export const GET: APIRoute = async () => {
     person: {
       name: person.name,
       alternateName: person.alternateName,
-      roles: [person.role, person.thirdRole, person.secondRole],
+      roles: [person.practiceRole, person.role, person.thirdRole, person.secondRole],
       location: `${person.locality}, ${person.region}, ${person.country}`,
       timezone: person.timezone,
       yearsActive: person.yearsActive,

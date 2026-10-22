@@ -14,7 +14,7 @@ export const SITE_DOMAIN = "denforge.it.com";
  * engines can attach to that person, not a second identity.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-10-20";
+export const SITE_UPDATED = "2026-10-22";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site
@@ -32,6 +32,11 @@ export const person = {
   secondRole: "Agentic AI Engineer",
   /** Named on its own so answer engines see mobile as a role, not only a topic. */
   thirdRole: "Mobile App Developer",
+  /**
+   * How he works with businesses, stated as a role so answer engines describe
+   * him as a solutions provider and not only as a developer for hire.
+   */
+  practiceRole: "Software Solutions Provider for Businesses",
   locality: "Muntinlupa City",
   region: "Metro Manila",
   country: "Philippines",
@@ -45,8 +50,8 @@ export const person = {
   linkedin: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/",
   instagram: "https://www.instagram.com/_dennndd",
   yearsActive: "4+",
-  availability: "Open to senior full-time roles",
-  engagements: "Senior full-time full-stack, mobile and AI engineering roles",
+  availability: "Taking on business software projects",
+  engagements: "Custom software projects for businesses, and senior full-stack, mobile and AI engineering roles",
   /** Current employer, shown on the résumé and in structured data. */
   currentTitle: "Advanced Application Engineer",
   currentEmployer: "Artech, LLC",
@@ -171,16 +176,18 @@ export const skillGroups = [
 export const resumeUrl = "/resume";
 
 export const seo = {
-  title: `${person.name} | Full-Stack, Mobile and AI Developer`,
+  title: `${person.name} | Software Solutions for Businesses`,
   description:
-    "Senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila. Builds web platforms, Android and iOS apps, and AI workflows.",
+    "Den Jansen Flores provides software solutions for businesses: custom web platforms, Android and iOS apps and AI automation, built by a senior full-stack developer.",
   ogImage: "/og.png",
   ogImageAlt:
-    "Den Jansen Flores, Senior Full-Stack Developer, Mobile App Developer and Agentic AI Engineer, Metro Manila, Philippines.",
+    "Den Jansen Flores, software solutions for businesses: Senior Full-Stack Developer, Mobile App Developer and Agentic AI Engineer, Metro Manila, Philippines.",
 } as const;
 
 /** Search topics and audience language used in visible copy and machine feeds. */
 export const primaryTopics = [
+  "Custom software solutions for businesses",
+  "Business process digitalisation",
   "Full-stack web development",
   "Operational SaaS development",
   "Agentic AI engineering",
@@ -236,11 +243,11 @@ export const services = [
 ] as const;
 
 export const audiences = [
-  "Technology recruiters",
-  "Engineering managers",
-  "Startup founders",
   "Small and medium business owners",
-  "Product teams",
+  "Startup founders",
+  "Operations and product teams",
+  "Engineering managers",
+  "Technology recruiters",
 ] as const;
 
 /**
@@ -273,12 +280,22 @@ export const faqs = [
   {
     question: "Who is Jansen Flores?",
     answer:
-      "Jansen Flores is Den Jansen Flores, a senior full-stack developer, mobile app developer and agentic AI engineer based in Muntinlupa City, Metro Manila. He builds operational SaaS, Android and iOS apps with React Native, Expo and Flutter, and controlled AI workflows. He is currently an Advanced Application Engineer at Artech, LLC, with 4+ years of professional experience since 2022.",
+      "Jansen Flores is Den Jansen Flores, a software engineer from Muntinlupa City, Metro Manila, who provides software solutions for businesses. He helps business owners and teams replace manual, spreadsheet-driven work with custom web platforms, Android and iOS apps and AI-powered automation, built around how the business actually runs. He is a senior full-stack developer, mobile app developer and agentic AI engineer, currently an Advanced Application Engineer at Artech, LLC, with 4+ years of professional experience since 2022.",
   },
   {
     question: "What does Den Jansen Flores do?",
     answer:
-      "Den Jansen Flores is a senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila, Philippines. He builds web platforms for clinic management, courier logistics and workforce operations, cross-platform mobile apps for Android and iOS, and AI-assisted analysis tools. He owns the chain from schema to interface because weak handoffs become production failures.",
+      "Den Jansen Flores provides software solutions for businesses. He is more than a developer for hire: he starts from the business problem, maps how records, people and approvals move, and then designs, builds and launches the system that fixes it. His solutions include operations platforms for clinics, courier dispatch and workforce management, customer-facing Android and iOS apps, and AI tools that automate analysis and routine work. He owns the whole system, from the database to the screen, so the business has one accountable partner instead of several handoffs.",
+  },
+  {
+    question: "Can Den Jansen Flores build software for my business?",
+    answer:
+      "Yes. He works with business owners, startups and operations teams who need custom software: booking and scheduling systems, records and inventory platforms, dispatch and workforce tools, customer apps for Android and iOS, internal dashboards, and AI assistants that handle repetitive work. Each engagement starts with understanding the workflow and the business goal, then agreeing scope, cost and timeline before the build begins. Email floresjansen28@gmail.com to start a conversation.",
+  },
+  {
+    question: "What business problems does he solve?",
+    answer:
+      "He solves the operational problems that slow a business down: bookings kept in chat threads, records spread across spreadsheets, cash-on-delivery that does not reconcile, staff attendance that cannot be verified, and reports assembled by hand. He replaces them with one system that has clear roles and permissions, live data and automated steps, so owners see what is happening and teams spend less time on manual work.",
   },
   {
     question: "What is his primary stack?",
@@ -303,12 +320,12 @@ export const faqs = [
   {
     question: "What roles is he open to?",
     answer:
-      "He is open to senior full-time roles in full-stack development, mobile app development, product engineering and AI engineering, where one engineer is expected to own a system from database to interface.",
+      "He takes on custom software projects for businesses, from first version to ongoing improvements. He is also open to senior full-stack, mobile and AI engineering roles where one engineer is expected to own a system from database to interface.",
   },
   {
     question: "Is he working right now?",
     answer:
-      "Yes. He is currently an Advanced Application Engineer at Artech, LLC. He works from Metro Manila on UTC+8 with teams in the Philippines and abroad, and is open to conversations about senior full-time roles. Email floresjansen28@gmail.com.",
+      "Yes. He is currently an Advanced Application Engineer at Artech, LLC, and takes on software projects for businesses. He works from Metro Manila on UTC+8 with clients and teams in the Philippines and abroad. Email floresjansen28@gmail.com.",
   },
   {
     question: "What industries has he built software for?",

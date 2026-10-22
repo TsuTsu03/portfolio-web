@@ -71,7 +71,7 @@ Canonical profile: ${SITE_URL}/
 Site name: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}, not a separate company.
 Retired addresses: ${previousDomains.join(", ")}, now permanently redirected here.
 
-${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He works as a ${person.role.toLowerCase()}, ${person.thirdRole.toLowerCase()} and ${person.secondRole.toLowerCase()}, with ${person.yearsActive} years of professional experience since July 2022, and is open to ${person.engagements.toLowerCase()}. His work is documented through case studies, public repositories and dated deployment checks.
+${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He helps businesses replace spreadsheets, chat threads and manual steps with software built around how they operate, and stays accountable for it from the first database table to the launched product. He works as a ${person.role.toLowerCase()}, ${person.thirdRole.toLowerCase()} and ${person.secondRole.toLowerCase()}, with ${person.yearsActive} years of professional experience since July 2022, and is open to ${person.engagements.toLowerCase()}. His work is documented through case studies, public repositories and dated deployment checks.
 
 ## Work history
 

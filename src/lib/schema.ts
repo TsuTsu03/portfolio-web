@@ -32,7 +32,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
     alternateName: person.alternateName,
     givenName: "Den Jansen",
     familyName: "Flores",
-    jobTitle: [person.currentTitle, person.role, person.thirdRole, person.secondRole],
+    jobTitle: [person.practiceRole, person.currentTitle, person.role, person.thirdRole, person.secondRole],
     description: seo.description,
     url: `${SITE_URL}/`,
     email: `mailto:${person.email}`,
@@ -56,6 +56,14 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
     },
     knowsAbout: topics,
     hasOccupation: [
+      {
+        "@type": "Occupation",
+        name: person.practiceRole,
+        description:
+          "Custom software solutions for businesses: web platforms, Android and iOS apps and AI automation, scoped from the business workflow and delivered end to end.",
+        occupationLocation: { "@type": "Country", name: person.country },
+        skills: "Business process analysis, solution design, full-stack development, mobile app development, AI automation",
+      },
       {
         "@type": "Occupation",
         name: person.role,
