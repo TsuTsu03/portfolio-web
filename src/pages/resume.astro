@@ -37,8 +37,8 @@ const jsonLd = [
 
 <BaseLayout
   path={path}
-  title={`${person.name} résumé | Full-stack, mobile and AI developer`}
-  description="Résumé of Den Jansen Flores, a senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila: work history, skills, certifications and projects."
+  title={`${person.name} résumé | Software solutions consultant and developer`}
+  description="Résumé of Den Jansen Flores, a software solutions consultant and full-stack, mobile and AI developer in Metro Manila: experience, skills, certifications and projects."
   dateModified={SITE_UPDATED}
   jsonLd={jsonLd}
 >
@@ -57,11 +57,11 @@ const jsonLd = [
           <p class="meta mb-5">Professional profile</p>
           <h1 class="display text-[clamp(3rem,8vw,6.5rem)]">{person.name}</h1>
           <p class="mt-6 text-xl leading-relaxed text-text">
-            {person.role}, {person.thirdRole} and {person.secondRole}
+            {person.businessRole}. {person.role}, {person.thirdRole} and {person.secondRole}
           </p>
           <p class="lede mt-5">
-            Full-stack developer with {person.yearsActive} years of experience building web platforms, Android and iOS apps,
-            and controlled AI workflows. I work across React, Next.js, Vue and TypeScript on the front end, Node.js, Express.js
+            I help businesses replace manual work with software, and advise them on what is worth building. {person.yearsActive} years
+            of experience building web platforms, Android and iOS apps, and controlled AI workflows. I work across React, Next.js, Vue and TypeScript on the front end, Node.js, Express.js
             and NestJS behind it, React Native, Expo and Flutter on mobile, and PostgreSQL, Supabase, MySQL, MongoDB and
             Firebase for data.
           </p>
@@ -74,7 +74,7 @@ const jsonLd = [
               <dd class="text-right text-sm text-text">{person.locality}, {person.region}</dd>
             </div>
             <div class="flex justify-between gap-4 border-b border-line py-3">
-              <dt class="meta">Open to</dt>
+              <dt class="meta">Services</dt>
               <dd class="max-w-[18rem] text-right text-sm text-text">{person.engagements}</dd>
             </div>
             <div class="flex justify-between gap-4 border-b border-line py-3">

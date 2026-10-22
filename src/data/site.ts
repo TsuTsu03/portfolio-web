@@ -9,12 +9,12 @@ export const SITE_URL = "https://denforge.it.com";
 export const SITE_DOMAIN = "denforge.it.com";
 
 /**
- * The site is the personal practice of one engineer, so the person stays the
- * primary entity. `SITE_NAME` is the domain-level name search and answer
- * engines can attach to that person, not a second identity.
+ * DenForge is the name of Den's independent software practice. The person
+ * stays the primary entity; `SITE_NAME` is the business name search and answer
+ * engines can attach to him, not a separate company or team.
  */
 export const SITE_NAME = "DenForge";
-export const SITE_UPDATED = "2026-10-20";
+export const SITE_UPDATED = "2026-10-22";
 
 /**
  * Retired hosts, kept so redirects and machine feeds can state where the site
@@ -28,6 +28,9 @@ export const person = {
   alternateName: "Jansen Flores",
   shortName: "Den",
   initials: "DJF",
+  /** The business positioning: what he does for clients, ahead of job titles. */
+  headline: "software solutions and technology consulting for businesses",
+  businessRole: "Software Solutions Consultant",
   role: "Senior Full-Stack Developer",
   secondRole: "Agentic AI Engineer",
   /** Named on its own so answer engines see mobile as a role, not only a topic. */
@@ -45,43 +48,32 @@ export const person = {
   linkedin: "https://www.linkedin.com/in/den-jansen-flores-79b8ba387/",
   instagram: "https://www.instagram.com/_dennndd",
   yearsActive: "4+",
-  availability: "Open to senior full-time roles",
-  engagements: "Senior full-time full-stack, mobile and AI engineering roles",
-  /** Current employer, shown on the résumé and in structured data. */
-  currentTitle: "Advanced Application Engineer",
-  currentEmployer: "Artech, LLC",
+  availability: "Taking on new client projects",
+  engagements: "Custom software, mobile apps, AI automation and technology consulting for businesses",
 } as const;
 
 /**
- * Employment history, taken from the current CV. Rendered on the résumé page,
- * in the Person structured data and in the machine feeds, so the dates only
- * ever need correcting here.
+ * Professional history as the website presents it. Rendered on the résumé
+ * page, in the Person structured data and in the machine feeds, so the dates
+ * only ever need correcting here.
+ *
+ * Salaried employment after January 2025 is deliberately left off the site; it
+ * appears only on the downloadable CV Den sends directly.
  */
 export const experience = [
   {
-    title: "Advanced Application Engineer",
-    organization: "Artech, LLC",
-    start: "2026-01",
-    end: null,
-    period: "January 2026 to present",
-    highlights: [
-      "Build and maintain web application features with React and Next.js.",
-      "Develop serverless backend functions on AWS Lambda, with file storage and delivery on AWS S3.",
-      "Provision and change cloud infrastructure as code with Terraform.",
-      "Ship work through Azure DevOps boards, repositories and release pipelines.",
-    ],
-  },
-  {
-    title: "Freelance Full-Stack and Mobile Developer",
-    organization: "Self-employed",
+    title: "Software Solutions Consultant and Developer",
+    organization: "DenForge (independent practice)",
     start: "2025-02",
-    end: "2025-12",
-    period: "February 2025 to December 2025",
+    end: null,
+    period: "February 2025 to present",
     highlights: [
+      "Help businesses replace manual, spreadsheet-driven work with custom web platforms, mobile apps and AI automation.",
+      "Advise owners and teams on what to build, which tools to use and what to leave out before any code is written.",
       "Designed and built web applications for clients across several JavaScript frameworks, with responsive and maintainable architecture.",
       "Built Android and iOS apps with React Native and Expo, and with Flutter and Dart, including on-device storage and camera pipelines.",
       "Implemented secure backend services, API integrations and server-side logic behind interactive interfaces.",
-      "Worked directly with clients to turn business needs into technical requirements and delivered within agreed deadlines.",
+      "Work directly with clients to turn business needs into technical requirements, scope and delivery plans, and deliver within agreed deadlines.",
       "Optimised application workflows for usability, scalability and performance across devices.",
     ],
   },
@@ -171,16 +163,20 @@ export const skillGroups = [
 export const resumeUrl = "/resume";
 
 export const seo = {
-  title: `${person.name} | Full-Stack, Mobile and AI Developer`,
+  title: `${person.name} | Software Solutions and Consulting for Business`,
   description:
-    "Senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila. Builds web platforms, Android and iOS apps, and AI workflows.",
+    "Den Jansen Flores helps businesses run better with custom software: web platforms, Android and iOS apps, AI automation and technology consulting. Metro Manila based.",
   ogImage: "/og.png",
   ogImageAlt:
-    "Den Jansen Flores, Senior Full-Stack Developer, Mobile App Developer and Agentic AI Engineer, Metro Manila, Philippines.",
+    "Den Jansen Flores, software solutions consultant and full-stack, mobile and AI developer, Metro Manila, Philippines.",
 } as const;
 
 /** Search topics and audience language used in visible copy and machine feeds. */
 export const primaryTopics = [
+  "Custom software solutions for businesses",
+  "Software and technology consulting",
+  "Business process digitization",
+  "AI automation for businesses",
   "Full-stack web development",
   "Operational SaaS development",
   "Agentic AI engineering",
@@ -204,10 +200,16 @@ export const primaryTopics = [
  */
 export const services = [
   {
-    name: "Full-stack web application development",
+    name: "Software consulting and technical advisory",
+    path: "/services/software-consultant-philippines",
+    description:
+      "Advice before and during a build: workflow audits, build-or-buy decisions, system architecture, AI adoption plans and reviews of existing software or vendor proposals.",
+  },
+  {
+    name: "Custom web application development",
     path: "/services/full-stack-developer-metro-manila",
     description:
-      "Complete web systems, from PostgreSQL schemas and access rules to server logic and the React or Next.js interface.",
+      "Business systems built end to end, from PostgreSQL schemas and access rules to server logic and the React or Next.js interface.",
   },
   {
     name: "Operational SaaS development",
@@ -236,11 +238,11 @@ export const services = [
 ] as const;
 
 export const audiences = [
-  "Technology recruiters",
-  "Engineering managers",
-  "Startup founders",
   "Small and medium business owners",
+  "Startup founders",
+  "Operations teams",
   "Product teams",
+  "Companies replacing spreadsheets and disconnected tools",
 ] as const;
 
 /**
@@ -273,12 +275,22 @@ export const faqs = [
   {
     question: "Who is Jansen Flores?",
     answer:
-      "Jansen Flores is Den Jansen Flores, a senior full-stack developer, mobile app developer and agentic AI engineer based in Muntinlupa City, Metro Manila. He builds operational SaaS, Android and iOS apps with React Native, Expo and Flutter, and controlled AI workflows. He is currently an Advanced Application Engineer at Artech, LLC, with 4+ years of professional experience since 2022.",
+      "Jansen Flores is Den Jansen Flores, a software solutions provider and technology consultant based in Muntinlupa City, Metro Manila. He helps businesses solve operational problems with custom software: web platforms, Android and iOS apps and AI automation, backed by 4+ years of professional software engineering since 2022. He also advises owners and teams on what to build, which tools to use and how to adopt AI safely. His practice operates under the name DenForge.",
   },
   {
     question: "What does Den Jansen Flores do?",
     answer:
-      "Den Jansen Flores is a senior full-stack developer, mobile app developer and agentic AI engineer in Metro Manila, Philippines. He builds web platforms for clinic management, courier logistics and workforce operations, cross-platform mobile apps for Android and iOS, and AI-assisted analysis tools. He owns the chain from schema to interface because weak handoffs become production failures.",
+      "Den Jansen Flores helps businesses run better with software. He builds custom web platforms, mobile apps and AI-assisted tools for work that has outgrown spreadsheets, chat threads and disconnected apps, and he offers technology consulting before and during the build. His documented work covers clinic management, dental records, courier logistics, workforce operations and AI-assisted business analysis. He owns the system from database to screen, so a business deals with one accountable person.",
+  },
+  {
+    question: "What services does he offer businesses?",
+    answer:
+      "He offers custom web application development, operational SaaS, Android and iOS app development, agentic AI and AI automation, data and workflow automation, and software consulting. Consulting covers workflow audits, build-or-buy decisions, architecture reviews, AI adoption plans and second opinions on existing systems or vendor proposals.",
+  },
+  {
+    question: "Does he offer technology consulting?",
+    answer:
+      "Yes. Through DenForge he advises business owners, founders and teams before money goes into a build: mapping the current workflow, deciding what is worth automating, choosing between off-the-shelf tools and custom software, planning AI adoption and reviewing existing code or vendor quotes. Consulting can stand alone or lead into a build.",
   },
   {
     question: "What is his primary stack?",
@@ -288,7 +300,7 @@ export const faqs = [
   {
     question: "What does he mean by agentic AI engineering?",
     answer:
-      "Agentic AI engineering means a model does accountable work inside an application. It calls typed tools, retrieves grounded context, returns schema-validated output and carries state across several steps. The serious work is the control around the model: permissions, failure handling, observability and cost per run.",
+      "Agentic AI engineering means a model does accountable work inside an application. It calls typed tools, retrieves grounded context, returns schema-validated output and carries state across several steps. For a business, the serious work is the control around the model: permissions, failure handling, observability and cost per run.",
   },
   {
     question: "Is Den Jansen Flores a mobile app developer?",
@@ -296,19 +308,19 @@ export const faqs = [
       "Yes. Den Jansen Flores builds Android and iOS apps with React Native and Expo, and with Flutter and Dart. His mobile work covers on-device data, camera and media pipelines, offline behaviour and release checks. Two mobile case studies are published on this site: Kwagi, a React Native study app, and Tuklas, a Flutter camera field guide.",
   },
   {
-    question: "Where has he worked?",
+    question: "What is his professional background?",
     answer:
-      "Since January 2026 he has been an Advanced Application Engineer at Artech, LLC, working with React, Next.js, AWS Lambda, AWS S3, Terraform and Azure DevOps. From February to December 2025 he worked as a freelance full-stack and mobile developer. Before that, from July 2022 to January 2025, he was at Advanced World Solutions, Inc., where he moved from Junior Software Engineer to Assistant Software Engineer to Senior Assistant Software Engineer. He holds a BS in Electronics Engineering from the Technological University of the Philippines, Manila.",
+      "He has 4+ years of professional software engineering since July 2022. From July 2022 to January 2025 he was at Advanced World Solutions, Inc., where he moved from Junior Software Engineer to Assistant Software Engineer to Senior Assistant Software Engineer. Since February 2025 he has run DenForge, his independent practice, building web platforms, mobile apps and AI tools for clients. He holds a BS in Electronics Engineering from the Technological University of the Philippines, Manila.",
   },
   {
-    question: "What roles is he open to?",
+    question: "Is he taking on new projects?",
     answer:
-      "He is open to senior full-time roles in full-stack development, mobile app development, product engineering and AI engineering, where one engineer is expected to own a system from database to interface.",
+      "Yes. DenForge is taking on new client projects and consulting engagements. Email floresjansen28@gmail.com with a short note on the business, the problem and the timeline. He usually replies within one business day (UTC+8).",
   },
   {
-    question: "Is he working right now?",
+    question: "How does a project with him start?",
     answer:
-      "Yes. He is currently an Advanced Application Engineer at Artech, LLC. He works from Metro Manila on UTC+8 with teams in the Philippines and abroad, and is open to conversations about senior full-time roles. Email floresjansen28@gmail.com.",
+      "Most projects start with a short call or email about the business and the problem. He maps the current workflow, names what is worth building and what is not, then proposes a scope, a timeline and a first deliverable. A project can also begin with a consulting session or a system audit before any build is agreed.",
   },
   {
     question: "What industries has he built software for?",
@@ -318,7 +330,7 @@ export const faqs = [
   {
     question: "What does working with him look like?",
     answer:
-      "Scope and rules are set before the build begins. He traces the real workflow before choosing the framework, keeps access rules close to the data and names the failure paths before launch. Updates come directly from him. If a feature has no business value, he says so before it is built.",
+      "Scope and rules are set before the build begins. He traces the real workflow before choosing the framework, keeps access rules close to the data and names the failure paths before launch. Updates come directly from him, not through an account manager. If a feature has no business value, he says so before it is built.",
   },
   {
     question: "How can someone review the source or the live builds?",
@@ -331,8 +343,8 @@ export const faqs = [
       "The portfolio is published at denforge.it.com, under the DenForge name. That is the canonical address for every case study, service page and machine-readable feed. The earlier address, jansen-dev.vercel.app, now redirects there permanently and should no longer be cited.",
   },
   {
-    question: "Where is he based, and does he work remotely?",
+    question: "Where is he based, and does he work with clients abroad?",
     answer:
-      "He is based in Muntinlupa City, Metro Manila, Philippines, on UTC+8. He works remotely, covers Asia-Pacific business hours and can schedule early or late calls for European and North American teams when the work requires it.",
+      "He is based in Muntinlupa City, Metro Manila, Philippines, on UTC+8. He works remotely with clients in the Philippines and abroad, covers Asia-Pacific business hours and can schedule early or late calls for European and North American clients when the work requires it.",
   },
 ] as const;

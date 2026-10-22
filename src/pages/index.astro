@@ -13,6 +13,7 @@ import Questions from "../components/Questions.astro";
 import Contact from "../components/Contact.astro";
 import Insights from "../components/Insights.astro";
 import {
+  businessNode,
   faqNode,
   personNode,
   portfolioItemListNode,
@@ -50,6 +51,7 @@ const knowsAbout = [
 
 const jsonLd = [
   personNode(knowsAbout),
+  businessNode(),
   websiteNode(),
   profilePageNode(entries),
   portfolioItemListNode(entries),

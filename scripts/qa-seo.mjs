@@ -275,12 +275,19 @@ for (const insight of portfolio.insights) {
 
 const personSchema = homepageGraph.find((node) => node["@type"] === "Person");
 const types = (graph) => new Set(graph.map((node) => node["@type"]));
-/* The site presents an employed engineer, not a for-hire business. */
-assert(!types(homepageGraph).has("ProfessionalService"), "schema: homepage must not publish a ProfessionalService");
-assert(!personSchema.makesOffer, "schema: Person must not publish service offers");
-assert(personSchema.worksFor?.name, "schema: Person is missing the current employer");
-for (const [path, html] of htmlDocuments) {
-  assert(!/available for freelance|freelance, contract|contract engagements/i.test(html), `${path}: for-hire availability copy found`);
+/* The site presents DenForge, an independent practice selling builds and consulting. */
+const business = homepageGraph.find((node) => node["@type"] === "ProfessionalService");
+assert(business, "schema: homepage is missing the ProfessionalService");
+assert(personSchema.worksFor?.["@id"] === business["@id"], "schema: Person should work for the business node");
+assert(personSchema.makesOffer?.length === portfolio.services.length, "schema: Person offers do not match the visible services");
+assert(business.hasOfferCatalog?.itemListElement?.length === portfolio.services.length, "schema: business catalog does not match the visible services");
+
+/* Salaried employment after January 2025 appears only on the downloadable CV,
+   never on the site, its structured data or its machine feeds. */
+const publishedFiles = (await readdir(dist, { recursive: true })).filter((file) => /\.(html|txt|json|xml)$/i.test(file));
+for (const file of publishedFiles) {
+  const text = await read(file.replaceAll("\\", "/"));
+  assert(!/artech|full-time role|open to senior/i.test(text), `${file}: current-employment or job-seeking copy found`);
 }
 const llms = await read("llms.txt");
 for (const endpoint of ["llms-full.txt", "portfolio.json", "humans.txt", "sitemap.xml", "rss.xml"]) {

@@ -7,6 +7,7 @@ import {
   faqs,
   person,
   primaryTopics,
+  services,
   SITE_DOMAIN,
   SITE_NAME,
   SITE_UPDATED,
@@ -16,6 +17,28 @@ import {
 
 const PERSON_ID = `${SITE_URL}/#person`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
+const BUSINESS_ID = `${SITE_URL}/#business`;
+
+const areaServed = [
+  { "@type": "AdministrativeArea", name: `${person.region}, ${person.country}` },
+  { "@type": "Country", name: person.country },
+  { "@type": "Place", name: "Remote worldwide" },
+];
+
+/** One Offer per service listed on the page, so the graph offers nothing the page does not. */
+function serviceOffers(): Record<string, unknown>[] {
+  return services.map((service) => ({
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name: service.name,
+      description: service.description,
+      url: new URL(service.path, SITE_URL).href,
+      provider: { "@id": BUSINESS_ID },
+      areaServed,
+    },
+  }));
+}
 
 /**
  * Structured data is generated from the same values the page renders, so a
@@ -32,7 +55,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
     alternateName: person.alternateName,
     givenName: "Den Jansen",
     familyName: "Flores",
-    jobTitle: [person.currentTitle, person.role, person.thirdRole, person.secondRole],
+    jobTitle: [person.businessRole, person.role, person.thirdRole, person.secondRole],
     description: seo.description,
     url: `${SITE_URL}/`,
     email: `mailto:${person.email}`,
@@ -58,6 +81,14 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
     hasOccupation: [
       {
         "@type": "Occupation",
+        name: person.businessRole,
+        description:
+          "Software solutions and technology consulting for businesses: workflow audits, build-or-buy decisions, architecture reviews, AI adoption plans and custom builds.",
+        occupationLocation: { "@type": "Country", name: person.country },
+        skills: "Business process analysis, software architecture, technical scoping, AI adoption planning, code and vendor review",
+      },
+      {
+        "@type": "Occupation",
         name: person.role,
         description:
           "Full-stack product engineering across operational SaaS, secure web platforms and agentic AI workflows.",
@@ -73,14 +104,13 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
         skills: "React Native, Expo, Flutter, Dart, Android, iOS, offline-first storage, camera pipelines",
       },
     ],
-    /* Former employer and university, both named on the résumé page. */
+    /* Former employers and university, all named on the résumé page. */
     alumniOf: [
       {
         "@type": "CollegeOrUniversity",
         name: education.school,
       },
-      ...[...new Set(experience.map((role) => role.organization))]
-        .filter((organization) => organization !== "Self-employed")
+      ...[...new Set(experience.filter((role) => role.end !== null).map((role) => role.organization))]
         .map((organization) => ({ "@type": "Organization", name: organization })),
     ],
     hasCredential: [
@@ -98,10 +128,7 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
         recognizedBy: { "@type": "Organization", name: cert.issuer },
       })),
     ],
-    seeks: {
-      "@type": "Demand",
-      name: person.engagements,
-    },
+    makesOffer: serviceOffers(),
     knowsLanguage: [{ "@type": "Language", name: "English", alternateName: "en" }],
     workLocation: {
       "@type": "Place",
@@ -113,8 +140,40 @@ export function personNode(knowsAbout: string[]): Record<string, unknown> {
         addressCountry: person.countryCode,
       },
     },
-    worksFor: { "@type": "Organization", name: person.currentEmployer },
+    worksFor: { "@id": BUSINESS_ID },
     mainEntityOfPage: { "@id": `${SITE_URL}/#profilepage` },
+  };
+}
+
+/** DenForge, the practice through which Den sells software builds and consulting. */
+export function businessNode(): Record<string, unknown> {
+  return {
+    "@type": "ProfessionalService",
+    "@id": BUSINESS_ID,
+    name: SITE_NAME,
+    alternateName: `${SITE_NAME} by ${person.name}`,
+    description: `${SITE_NAME} is the independent practice of ${person.name}, providing ${person.headline}: custom web platforms, Android and iOS apps, AI automation and software consulting.`,
+    slogan: person.headline.charAt(0).toUpperCase() + person.headline.slice(1),
+    url: `${SITE_URL}/`,
+    logo: `${SITE_URL}/icon-512.png`,
+    image: `${SITE_URL}${seo.ogImage}`,
+    email: `mailto:${person.email}`,
+    telephone: person.phoneE164,
+    founder: { "@id": PERSON_ID },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: person.locality,
+      addressRegion: person.region,
+      addressCountry: person.countryCode,
+    },
+    areaServed,
+    knowsAbout: [...primaryTopics],
+    sameAs: [person.github, person.linkedin],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `${SITE_NAME} services`,
+      itemListElement: serviceOffers(),
+    },
   };
 }
 
@@ -172,7 +231,7 @@ export function resumeWebPageNode(): Record<string, unknown> {
     url,
     name: `${person.name} résumé`,
     description:
-      "Résumé of Den Jansen Flores with work history, skills, certifications, education, selected web and mobile case studies, availability and contact details.",
+      "Résumé of Den Jansen Flores with professional history, services, skills, certifications, education, selected web and mobile case studies and contact details.",
     dateModified: SITE_UPDATED,
     inLanguage: "en-PH",
     isPartOf: { "@id": WEBSITE_ID },
@@ -290,11 +349,8 @@ export function servicePageNode(service: {
     serviceType: service.shortTitle,
     url,
     provider: { "@id": PERSON_ID },
-    areaServed: [
-      { "@type": "AdministrativeArea", name: `${person.region}, ${person.country}` },
-      { "@type": "Country", name: person.country },
-      { "@type": "Place", name: "Remote worldwide" },
-    ],
+    brand: { "@id": BUSINESS_ID },
+    areaServed,
     keywords: service.keywords.join(", "),
   };
 }

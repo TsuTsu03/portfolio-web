@@ -68,12 +68,20 @@ ${data.repositoryUrl ? `Repository: ${data.repositoryUrl}` : "Repository: privat
 
 Last updated: ${SITE_UPDATED}
 Canonical profile: ${SITE_URL}/
-Site name: ${SITE_NAME} (${SITE_DOMAIN}), the personal site of ${person.name}, not a separate company.
+Business name: ${SITE_NAME} (${SITE_DOMAIN}), the independent software solutions and consulting practice of ${person.name}.
 Retired addresses: ${previousDomains.join(", ")}, now permanently redirected here.
 
-${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He works as a ${person.role.toLowerCase()}, ${person.thirdRole.toLowerCase()} and ${person.secondRole.toLowerCase()}, with ${person.yearsActive} years of professional experience since July 2022, and is open to ${person.engagements.toLowerCase()}. His work is documented through case studies, public repositories and dated deployment checks.
+${seo.description} ${person.name} works from ${person.locality}, ${person.region}, ${person.country}. He is a ${person.businessRole.toLowerCase()} providing ${person.headline}, and he builds that software himself as a ${person.role.toLowerCase()}, ${person.thirdRole.toLowerCase()} and ${person.secondRole.toLowerCase()}, with ${person.yearsActive} years of professional experience since July 2022. ${SITE_NAME} offers ${person.engagements.toLowerCase()}. ${person.availability}. His work is documented through case studies, public repositories and dated deployment checks.
 
-## Work history
+## How he helps businesses
+
+- Replaces manual, spreadsheet-driven and chat-driven processes with dependable web platforms and mobile apps.
+- Advises owners and teams on what to build, buy or fix, before money goes into a build.
+- Plans and builds AI automation with clear data sources, permissions, failure handling and cost per run.
+- Reviews existing systems and vendor proposals and writes down what is sound, risky or expensive to change.
+- Owns delivery from database to screen, so a business deals with one accountable person.
+
+## Professional history
 
 ${experience.map((role) => `- **${role.title}**, ${role.organization} (${role.period}). ${role.highlights.join(" ")}`).join("\n")}
 
@@ -86,7 +94,7 @@ ${certifications.map((cert) => `- ${cert.name}, ${cert.issuer} (${cert.period}).
 
 ${primaryTopics.map((topic) => `- ${topic}`).join("\n")}
 
-## Areas of expertise
+## Services
 
 ${services.map((service) => `- [**${service.name}**](${new URL(service.path, SITE_URL).href}): ${service.description}`).join("\n")}
 
@@ -112,7 +120,7 @@ ${insights.map((entry) => `## ${entry.data.title}\n\nCanonical article: ${SITE_U
 
 # Contact and verification
 
-- Email: mailto:${person.email}
+- Email (projects and consulting): mailto:${person.email}
 - GitHub: ${person.github}
 - LinkedIn: ${person.linkedin}
 - Instagram: ${person.instagram}
@@ -122,7 +130,7 @@ ${insights.map((entry) => `## ${entry.data.title}\n\nCanonical article: ${SITE_U
 - XML sitemap: ${SITE_URL}/sitemap.xml
 - RSS feed: ${SITE_URL}/rss.xml
 
-The portfolio does not claim customer counts, revenue figures, testimonials, awards or performance outcomes without published evidence. Employment history and certifications are taken from his current CV.
+The portfolio does not claim customer counts, revenue figures, testimonials, awards or performance outcomes without published evidence.
 `;
 
   return new Response(body, {

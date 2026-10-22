@@ -20,6 +20,104 @@ export interface ServicePage {
 
 export const servicePages: ServicePage[] = [
   {
+    slug: "software-consultant-philippines",
+    shortTitle: "Software consulting",
+    title: "Software Solutions Consultant in the Philippines",
+    metaTitle: "Software Consultant in the Philippines | Den Jansen Flores",
+    metaDescription:
+      "Den Jansen Flores helps businesses decide what software to build, buy or fix: workflow audits, architecture reviews, AI adoption plans and custom builds.",
+    eyebrow: "Metro Manila · Advice before the build, ownership during it",
+    answer:
+      "Den Jansen Flores is a software solutions consultant based in Muntinlupa City, Metro Manila. Through his independent practice, DenForge, he helps business owners, founders and operations teams decide what software to build, buy or fix, then builds it when a custom system is the right answer.",
+    scopeHeading: "What does his consulting cover?",
+    scopeIntro:
+      "Most software money is lost before the first line of code, when the wrong problem gets solved. Consulting starts with how the business actually runs and ends with a decision the owner can act on.",
+    scope: [
+      {
+        title: "Workflow and systems audit",
+        description:
+          "A walk through the real process: who touches each record, where work waits, which spreadsheets and chat threads carry the business, and what breaks when someone is away.",
+      },
+      {
+        title: "Build, buy or fix decisions",
+        description:
+          "A plain comparison of off-the-shelf tools, a custom build and repairing what already exists, with the cost, risk and lock-in of each stated up front.",
+      },
+      {
+        id: "ai-adoption",
+        title: "AI adoption planning",
+        description:
+          "Where AI saves real hours and where it adds risk. Each use case gets a data source, a permission boundary, a failure plan and a cost per run before anything is built.",
+      },
+      {
+        title: "Architecture and code review",
+        description:
+          "A second opinion on an existing system or a vendor proposal: security, data model, access rules, scalability and the parts that will be expensive to change later.",
+      },
+    ],
+    fitHeading: "When is a consultation worth it?",
+    fit: [
+      "The business runs on spreadsheets, group chats and manual checks, and it is not clear what to replace first.",
+      "A vendor quote or development proposal needs an independent technical read before it is signed.",
+      "An existing app is slow, fragile or hard to change, and the team needs to know whether to repair or rebuild.",
+      "Leadership wants to use AI but needs a grounded plan instead of a demo.",
+    ],
+    evidenceIds: ["clinicflow", "biyahero-express", "shiftdesk", "data-analysis-platform"],
+    proofIntro:
+      "The advice comes from systems he has built and shipped himself: clinic scheduling, courier dispatch with cash-on-delivery reconciliation, workforce coordination and AI-assisted business analysis. Each case study names the problem, the architecture and what is verified.",
+    process: [
+      {
+        title: "Listen to the business",
+        description:
+          "Start with the goal, the deadline and the pain: lost hours, errors, slow reporting or a process that only one person understands.",
+      },
+      {
+        title: "Map the real workflow",
+        description:
+          "Trace the people, records, approvals and handoffs as they actually happen, not as the org chart says they should.",
+      },
+      {
+        title: "Recommend a path",
+        description:
+          "Deliver a short written recommendation: what to build, buy or fix, in what order, with scope, risks and a realistic first milestone.",
+      },
+      {
+        title: "Build or hand over",
+        description:
+          "Either build the first slice with DenForge or hand the plan to an internal team with the decisions and trade-offs written down.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does Den Jansen Flores offer software consulting?",
+        answer:
+          "Yes. Den Jansen Flores offers software and technology consulting through DenForge, his independent practice in Metro Manila. He helps businesses audit workflows, choose between off-the-shelf tools and custom software, plan AI adoption and review existing systems or vendor proposals.",
+      },
+      {
+        question: "Who is his consulting for?",
+        answer:
+          "Small and medium business owners, startup founders and operations teams in the Philippines and abroad, especially where daily work depends on spreadsheets, chat threads or disconnected tools and the next step is unclear.",
+      },
+      {
+        question: "Does consulting lead to a build?",
+        answer:
+          "It can, but it does not have to. Some clients take the recommendation to their own team or an existing vendor. Others ask DenForge to build the first slice, in which case the same person who gave the advice owns the delivery.",
+      },
+      {
+        question: "Can he review an existing app or a vendor proposal?",
+        answer:
+          "Yes. He reviews data models, access rules, security, code quality, hosting and scope, then writes down what is sound, what is risky and what will be expensive to change later, so the owner can decide with clear information.",
+      },
+    ],
+    keywords: [
+      "software consultant Philippines",
+      "IT consultant Metro Manila",
+      "software solutions for small business Philippines",
+      "AI consultant Philippines",
+      "technology consultant for startups",
+    ],
+  },
+  {
     slug: "full-stack-developer-metro-manila",
     shortTitle: "Full-stack development",
     title: "Full-Stack Developer in Metro Manila",
@@ -91,7 +189,7 @@ export const servicePages: ServicePage[] = [
       {
         question: "Who is Den Jansen Flores as a full-stack developer?",
         answer:
-          "Den is a senior full-stack developer based in Muntinlupa City, Metro Manila, currently an Advanced Application Engineer at Artech, LLC. He has 4+ years of experience building React, Next.js and TypeScript applications with Node.js, Supabase and PostgreSQL behind them.",
+          "Den is a senior full-stack developer and software solutions consultant based in Muntinlupa City, Metro Manila, building business systems through his independent practice, DenForge. He has 4+ years of experience building React, Next.js and TypeScript applications with Node.js, Supabase and PostgreSQL behind them.",
       },
       {
         question: "Which full-stack technologies does he use?",
